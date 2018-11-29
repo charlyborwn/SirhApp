@@ -1,0 +1,27 @@
+/* Add your customizations of theme here */
+ body .ui-fileupload-content{
+     transform:scale(0.74);-webkit-transform:scale(0.74);transform-origin:0 0;-webkit-transform-origin:0 0;
+    /*margin-top: -30px;
+    margin-left: 80px*/;
+  border:0px;}
+    body  .ui-messages{
+    /*margin-top: -16px;
+    font-size: 10pt;*/}
+  /*Hide the advanced buttons and progress*/  
+  body .ui-fileupload-upload, .ui-fileupload-cancel, .ui-fileupload-progress{
+    /*display: none;*/}
+  body .ui-fileupload-buttonbar{
+    /*margin: 0px !important;
+    padding: 0px !important;*/}
+  body .ui-fileupload-buttonbar, .ui-fileupload-choose {
+    background:  whitesmoke;
+    border: none;
+    color:red;}
+  body .ui-fileupload-choose {
+    background: red !important;
+    border: none;}
+  /*Remove some of the margin from the file name to align correctly*/
+  body .ui-fileupload-files{
+    margin: 0;}
+  
+

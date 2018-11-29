@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Especialidades"></h:outputText>
+        </ui:define>
+
+
+        <f:metadata>
+            <f:event listener="#{espec05Backing.getListEspec05()}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="#{espec05Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup  id="results" class="table-responsive">
+                    <p:dataTable var="espec05" value="#{espec05Backing.espec05List}" selectionMode="single" reflow="true"
+                                 selection="#{espec05Backing.selectedEspec05}" rowKey="#{espec05.idesp}" paginator="true" 
+                                 rows="10"
+                                 rowsPerPageTemplate="10,50,100,500" emptyMessage="#{msg['espec05.EmptyList']}">
+
+                        <f:facet name="header">
+                            <div style="position: relative; width: 100%;">
+                                <div style="width: 100%; text-align: left;">Catalogo de Especialidades
+                                    <div  style="position: absolute; width: 100%;text-align: right; top:-6px;">
+                                        <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                                            <p:commandButton action="#{espec05Backing.go(0)}"  process="@this" icon="ui-icon-plus" value="Nuevo" style="width:auto;" styleClass="blue-btn flat" >
+                                            </p:commandButton>
+                                        </c:if>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </f:facet>
+
+                        <p:column headerText="Nombre de la Especialidad">
+                            <h:outputText value="#{espec05.noesp}" />
+                        </p:column>
+
+                        <p:column width="190" headerText="Acciones">
+                            <p:commandButton action="#{espec05Backing.go(3)}" actionListener="#{userSessionBean.setIdesp(espec05.idesp)}"   
+                                             style="width:auto;" styleClass="blue-btn flat" 
+                                             value="Seleccionar" process="@this">
+                            </p:commandButton>
+                            <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                                <p:commandButton action="#{espec05Backing.go(1)}"  process="@this"
+                                                 style="width:auto;" styleClass="blue-btn flat" 
+                                                 value="Editar">
+                                    <f:setPropertyActionListener target="#{userSessionBean.idesp}" 
+                                                                 value="#{espec05.idesp}" />
+                                </p:commandButton>
+                            </c:if>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="escolaridadViewDlg" widgetVar="escolaridadViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Escolaridad">
+            <h:form id="escolaridadViewForm">
+                <p:panel header="Datos del Escolaridad" rendered="#{traba36aWizardBacking.selectedEscol30aWiz != null}">
+                    <h:panelGroup   id="displayEscolaridadEdit" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <p:tabView id="tabEscolaridadCreate"  activeIndex="#{traba36aWizardBacking.escol30aTab}"  >
+                            <p:ajax event="tabChange" listener="#{traba36aWizardBacking.onTabChangeEscol30a}"  process="tabEscolaridadCreate" />
+                            <p:tab title="Datos">
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield"  >
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tnescA" value="#{traba36aWizardBacking.selectedEscol30aWiz.tnescA}" readonly="true"/>
+                                        <label>Escolaridad</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="niescA" value="#{traba36aWizardBacking.selectedEscol30aWiz.niescA}" readonly="true" />
+                                        <label>Nombre Institución</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield" layout="block">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="esescA" value="#{traba36aWizardBacking.selectedEscol30aWiz.esescA}" readonly="true" />
+                                        <label>Especialidad</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield" >
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ceescA" value="#{traba36aWizardBacking.selectedEscol30aWiz.ceescA}" readonly="true" />
+                                        <label>Certificado</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="acescA" value="#{traba36aWizardBacking.selectedEscol30aWiz.acescA}" readonly="true" />
+                                        <p:slider for="acescA" minValue="1" maxValue="10" step=".5" disabled="true">
+                                            <p:ajax event="slideEnd"  process="@this" />
+                                        </p:slider>
+                                        <p:outputLabel for="acescA" value="Años cursados"/>
+                                    </h:panelGroup>
+                                    <!-- Observaciones -->
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obescA" value="#{traba36aWizardBacking.selectedEscol30aWiz.obescA}" readonly="true" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+                            </p:tab>
+                            <p:tab title="Cursa Actualmente">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup>
+                                        <p:selectOneRadio id="caescA" value="#{traba36aWizardBacking.selectedEscol30aWiz.caescA}" 
+                                                          columns="2"  
+                                                          style="text-align: center;  white-space: nowrap;" disabled="true">
+                                            <f:selectItem itemLabel="Si" itemValue="si" />
+                                            <f:selectItem itemLabel="No" itemValue="no" />
+                                            <f:ajax event="change" execute="caescA" listener="#{traba36aWizardBacking.handleChange}"  render="escol30aIH escolaridadEditForm"/>
+                                        </p:selectOneRadio>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield" rendered="#{traba36aWizardBacking.selectedEscol30aWiz.caescA.equals('si')}">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="hcescA" value="#{traba36aWizardBacking.selectedEscol30aWiz.hcescA}" readonly="true" />
+                                        <label>Horarios que cursa actualmente</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Documento">
+                                <p:lightBox rendered="#{traba36aWizardBacking.selectedEscol30aWiz.paescA.length() eq 0 || traba36aWizardBacking.selectedEscol30aWiz.paescA eq null }"> 
+                                    <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Documento de escolaridad #{traba36aWizardBacking.selectedEscol30aWiz.tnescA}"  >  
+                                        <h:graphicImage  class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 340px"  />
+                                    </h:outputLink>
+                                </p:lightBox>
+
+                                <p:lightBox  id="lightBox1" rendered="#{traba36aWizardBacking.selectedEscol30aWiz.paescA.length() gt 0 and traba36aWizardBacking.selectedEscol30aWiz.paescA ne null}"  > 
+                                    <h:outputLink  value="#{bundle.PathRelativeFull}#{traba36aWizardBacking.selectedEscol30aWiz.paescA}"  title="Documento de escolaridad #{traba36aWizardBacking.selectedEscol30aWiz.tnescA}"  > 
+                                        <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{traba36aWizardBacking.selectedEscol30aWiz.paescA}"  style="width: 200px" />
+                                    </h:outputLink>
+                                </p:lightBox>
+                            </p:tab>
+                        </p:tabView>
+
+                    </h:panelGroup>
+
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton value="#{bundle.Close}" onclick="escolaridadViewDialog.hide()"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

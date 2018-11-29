@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <f:metadata> 
+        <f:viewAction action="#{loginBean.checkAuthentication}" />
+    </f:metadata>
+
+
+    <f:view encoding="UTF-8" contentType="text/html" locale="#{localeBean.locale}">
+        <h:head>
+            <f:facet name="first">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+                <meta name="apple-mobile-web-app-capable" content="yes" />
+                <meta name="google" value="notranslate" />
+                <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, post-check=0, pre-check=0, max-age=0" />
+                <meta http-equiv="expires" content="-1" />
+                <meta http-equiv="Last-Modified" content="0"/>
+                <meta http-equiv="content-language" content="es-ES" />
+                <meta http-equiv="Pragma" content="no-cache"/>
+                <meta name="theme-color" content="#{guestPreferences.themeColors[guestPreferences.theme]}" />
+            </f:facet>
+            <title>SirhApp - Sistema de Información de Recursos Humanos</title>
+            <h:outputScript name="js/ripple.js" library="ultima-layout" />
+            <h:outputScript name="js/layout.js" library="ultima-layout" />
+            <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
+            <h:outputScript name="jquery/jquery.js" library="primefaces"/>
+            <h:outputScript name="js/sirh.js?v=#{hashBean.md5}" library="ultima-layout"/>
+            <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/favicon.ico"/>
+            <link rel="icon" type="image/x-icon" href="#{request.contextPath}/favicon.ico"/>
+        </h:head>
+
+        <h:body styleClass="login-body">
+            <p:growl id="growl" life="3000" showDetail="true" />
+            <h:form id="loginForm" prependId="false">
+                <div class="card ui-fluid login-panel">
+                    <p:graphicImage name="images/logo.png" library="ultima-layout" width="100"/>
+                    <div style="text-align: center;">
+                        <p:outputLabel style="font-family:'LibreBaskerville';font-size:12px;" value="Sistema de Información de Recursos Humanos" />
+                    </div>  
+                    <p:separator style="height:0px"/>
+                    <div style="width: 217px; margin-right:auto; margin-left:auto; justify-content: center;">
+                        <div class="ui-g-12 input-group">
+                            <div class="ui-inputgroup">
+                                <span class="ui-inputgroup-addon"><i class="fa fa-user">*</i></span>
+                                <p:focus id="focusUsername" for="username"/>
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="username"  value="#{loginBean.username}" 
+                                             required="true" requiredMessage="Usuario requerido"
+                                             validatorMessage="El nombre de usuario no cumple la longitud minima requerida" maxlength="10" 
+                                             tabindex="1"  pt:placeholder="Usuario" 
+                                             style="height: 28px; padding-bottom: 0px !important; "
+                                             >
+                                    <f:validateLength maximum="10" minimum="2" />
+                                </p:inputText>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 input-group">
+                            <div class="ui-inputgroup">
+                                <span class="ui-inputgroup-addon"><i class="fa fa-lock">*</i></span>
+                                <p:password  id="password"   value="#{loginBean.password}" 
+                                             required="true" requiredMessage="El password es requerido" 
+                                             validatorMessage="El password no cumple la longitud minima requerida" maxlength="10" 
+                                             tabindex="2" pt:placeholder="Password" 
+                                             style="height: 28px; padding-bottom: 0px !important;">
+                                    <f:validateLength maximum="10" minimum="2" />
+                                </p:password>
+                            </div>
+                        </div>
+                        <div class=" ui-g-12">
+                            <p:commandButton style="width: 200px;" 
+                                             type="submit" value="Entrar" oncomplete="applyChangeHandler();document.getElementById('password').focus();"
+                                             action="#{loginBean.login}" icon="fa fa-sign-in" tabindex="3" update="username password growl" >
+                            </p:commandButton>
+                        </div>
+                        
+                        <div class=" ui-g-12">
+                            <p:button  outcome="/public/recover" style="width: 200px;" value="Recuperar Password" icon="ui-icon-help" styleClass="secondary"/>
+                        </div>
+                        <div class=" ui-g-12">
+                            <h:link value="Registrar Usuario" 
+                                    styleClass="input-block-level" 
+                                    outcome="/public/register.xhtml"/>
+                        </div>
+                        <div class="ui-g">
+                            <label>#{applicationBean.infoMessage}</label>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+            <div class="login-footer"> SirhApp - Sistema de Información de Recursos Humanos</div>
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/login.css" library="ultima-layout" />
+        </h:body>
+    </f:view>
+</html>

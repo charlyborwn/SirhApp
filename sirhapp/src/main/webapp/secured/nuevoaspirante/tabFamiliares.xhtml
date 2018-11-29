@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <h:form id="familiarListForm">
+            <h:panelGroup rendered="#{traba36aWizardBacking.currentStep.equals('familiares')}">
+                <p:panel header="Lista de Familiares" id="panel" collapsed="true" />
+                <p:dataTable id="familiarDatalist" var="famil32a" value="#{traba36aWizardBacking.famil32aList}" selectionMode="single" reflow="true"
+                             selection="#{traba36aWizardBacking.selectedFamil32aWiz}" rowKey="#{famil32a.idfamA}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['familiaresa.EmptyList']}">
+
+                    <p:ajax event="rowSelect"   update="familiarCreateButton familiarViewButton familiarEditButton familiarDeleteButton"/>
+                    <p:ajax event="rowUnselect" update="familiarCreateButton familiarViewButton familiarEditButton familiarDeleteButton"/>
+
+                    <p:column headerText="Tipo de familiar" >
+                        <h:outputText value="#{famil32a.tpfamA}" />
+                    </p:column>
+                    <p:column headerText="Nombre" >
+                        <h:outputText value="#{famil32a.ncfamA}" />
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" process="@form" id="familiarCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}"  actionListener="#{traba36aWizardBacking.prepareCreateFamil32a()}" update=":familiarCreateForm" oncomplete="PF('familiarCreateDialog').show(); "/>
+                        <p:commandButton type="submit" process="@form" id="familiarViewButton" icon="ui-icon-search" value="#{bundle.View}" update=":familiarViewForm" actionListener="#{traba36aWizardBacking.prepareSelectFamil32a()}" oncomplete="PF('familiarViewDialog').show(); " disabled="#{empty traba36aWizardBacking.selectedFamil32aWiz}"/>
+                        <p:commandButton type="submit" process="@form" id="familiarEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" update=":familiarEditForm" actionListener="#{traba36aWizardBacking.prepareSelectFamil32a()}" oncomplete="PF('familiarEditDialog').show(); " disabled="#{empty traba36aWizardBacking.selectedFamil32aWiz}"/>
+                        <p:commandButton type="submit" process="@form" id="familiarDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{traba36aWizardBacking.deleteFamil32a()}" update="growl,familiarDatalist" disabled="#{empty traba36aWizardBacking.selectedFamil32aWiz}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:panelGroup>
+        </h:form>
+    </ui:composition>
+</html>

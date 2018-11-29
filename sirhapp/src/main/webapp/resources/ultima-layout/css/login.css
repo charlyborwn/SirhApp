@@ -1,0 +1,54 @@
+.fa-user-circle-o{
+    color: gray;
+}
+
+.fa-lock{
+    color: gray;
+}
+
+
+spanx{
+  position: absolute;
+  margin-left: 5px;
+  height: 25px;
+
+  align-items: center;
+}
+
+input{
+  padding-left: 25px;
+  height: 20px;
+}
+
+
+.g-recaptcha {
+  margin-left: 20px;transform:scale(0.74);-webkit-transform:scale(0.74);transform-origin:0 0;-webkit-transform-origin:0 0;
+}
+
+
+.login-footer-1 {
+
+    text-align: center;
+    vertical-align: central;
+
+    color: #FFFFFF; 
+    background-color: #d4d4d4;
+    width:100%;
+
+    background:black;
+    font-weight:bold;
+    font-size:14px;
+    text-align:center;
+    position:fixed!important;
+    bottom:0;          /*to the bottom of the window*/
+    left:0;            /*and to the left of the window.*/
+
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";       /* IE 8 */
+    filter: alpha(opacity=70);  /* IE 5-7 */
+    -moz-opacity: 0.7;          /* Netscape */
+    -khtml-opacity: 0.7;        /* Safari 1.x */
+    opacity: 0.7;             /* Good browsers */
+    white-space: nowrap;
+    text-align:center;
+    visibility:visible;
+}

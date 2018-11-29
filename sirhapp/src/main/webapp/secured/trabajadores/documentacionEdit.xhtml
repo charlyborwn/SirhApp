@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="documentacionEditDlg" widgetVar="documentacionEditDialog" modal="true" resizable="false" appendTo="@(body)" header="Documentacion">
+            <h:form id="documentacionEditForm">
+                <p:panel header="Actualizar datos del documento" rendered="#{docum29Backing.selectedDocum29 != null}">
+                    <h:panelGroup   id="displayDocumentacionEdit">
+                        <p:accordionPanel style="width: 600px;">
+                            <p:tab title="Documento">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup  styleClass="md-inputfield">
+
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tddoc" value="#{docum29Backing.selectedDocum29.tddoc}" required="true" style="margin-bottom:10px;"  >
+                                            <f:selectItem itemLabel="Seleccione el tipo de documento" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tidoc18Backing.tidoc18List}" var="doc" itemLabel="#{doc.notid}" itemValue="#{doc.notid}"/>
+                                            <f:ajax event="change" execute="@this" listener="#{docum29Backing.prepareFileUpload}" render="documentacionEditForm fileUploadFotografia"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Documento" for="tddoc" />
+                                    </h:panelGroup>
+
+                                    <p:fileUpload id="fileUploadFotografia" 
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                  invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                  label="#{bundle.LblDOCEXP}" 
+                                                  uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="documentacionEditForm"
+                                                  auto="true" required="true" requiredMessage="Debe proporcionar el archivo"
+                                                  rendered="#{docum29Backing.selectedDocum29.padoc.length() eq 0 || docum29Backing.selectedDocum29.padoc eq null}"
+                                                  value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                        <h:panelGroup rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension eq 'pdf' }">
+                                            <div id="ui-graphicimage">
+                                                <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{''.concat(fileUploadBean.webFolder).concat(fileUploadBean.fileName)}');"  style="height: 140px;max-height: 140px" 
+                                                                value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" />
+                                            </div>
+                                        </h:panelGroup>
+                                        <p:lightBox  id="lightBoxFileUpload" rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension ne 'pdf' }"  > 
+                                            <h:outputLink  value="#{bundle.PathRelativeFull}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  title="Documento: #{selectedDocum29.tddoc}"  > 
+                                                <h:graphicImage id="imageFileUpload" class=" w3-card-4" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" style="height: 140px;max-height: 140px" />
+                                            </h:outputLink>
+                                        </p:lightBox>
+                                        <f:attribute name="rootFolderAttr" value="#{selectedTraba36.rftra}/"></f:attribute>
+                                        <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                        <f:attribute name="fileTypeAttr" value="#{docum29Backing.selectedDocum29.w1doc}"></f:attribute>
+                                        <f:attribute name="idAttr" value="#{selectedTraba36.rftra}"></f:attribute>
+                                        <f:attribute name="ownBackingAttr" value="#{'docum29Backing'}"></f:attribute>
+                                        <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                    </p:fileUpload>
+
+                                    <h:panelGroup rendered="#{docum29Backing.selectedDocum29.ftdoc}">
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" onclick="rcPdfViewForm();"  style="height: 140px;max-height: 140px" 
+                                                            value="#{bundle.PathRelativeShort}#{docum29Backing.selectedDocum29.padoc}" />
+
+                                            <p:remoteCommand id="rcPdfViewForm" name="rcPdfViewForm" oncomplete="PF('pdfViewDialog').show();"  update="pdfViewForm" 
+                                                             actionListener="#{mediaBean.getPdf(docum29Backing.selectedDocum29.padoc)}"/>
+
+                                        </div>
+                                    </h:panelGroup>
+                                    <p:lightBox rendered="#{!docum29Backing.selectedDocum29.ftdoc}"> 
+                                        <h:outputLink value="#{bundle.PathRelativeFull}#{docum29Backing.selectedDocum29.padoc}"  title="Imagen del documento #{docum29Backing.selectedDocum29.tddoc}" rendered="#{docum29Backing.selectedDocum29.padoc.length() gt 0 and docum29Backing.selectedDocum29.padoc ne null }" >  
+                                            <div id="ui-graphicimage">
+                                                <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px;"  value="#{bundle.PathRelativeShort}#{docum29Backing.selectedDocum29.padoc}"  />
+                                            </div>
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <p:commandButton type="submit" value="Borrar" rendered="#{docum29Backing.selectedDocum29.padoc.length() gt 0 and docum29Backing.selectedDocum29.padoc ne null}"
+                                                     icon="ui-icon-delete" class="red-btn" 
+                                                     actionListener="#{docum29Backing.updateDocum29Foto}"
+                                                     update="documentacionEditForm growl" >
+                                    </p:commandButton>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="indoc" value="#{docum29Backing.selectedDocum29.indoc}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  />
+                                        <label>Inicio de Vigencia</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tedoc" value="#{docum29Backing.selectedDocum29.tedoc}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  />
+                                        <label>Vigencia</label>
+                                    </h:panelGroup>
+                                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="dedoc" value="#{docum29Backing.selectedDocum29.dedoc}" style="margin-bottom:10px;" >
+                                        <f:selectItem itemLabel="Seleccione la Causa sin documento" itemValue=" " noSelectionOption="true" />
+                                        <f:selectItems value="#{razon02Backing.razon02List}" var="raz" itemLabel="#{raz.deraz}" itemValue="#{raz.deraz}"/>
+                                    </p:selectOneMenu> <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cutra" value="#{docum29Backing.selectedDocum29.cadoc}" />
+                                        <label>Características</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Observaciones">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <p:inputTextarea  rows="3" id="obdoc" value="#{docum29Backing.selectedDocum29.obdoc}" />
+                                </p:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{docum29Backing.updateDocum29}" value="#{bundle.Save}" update="displayDocumentacionEdit,documentacionListForm:documentacionDatalist,growl" oncomplete="handleSubmit(args, 'documentacionEditDialog');"/>
+                            <p:commandButton value="#{bundle.Close}" onclick="documentacionEditDialog.hide()"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

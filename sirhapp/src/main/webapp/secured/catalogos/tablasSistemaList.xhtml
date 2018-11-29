@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{tabla52Backing.getListTabla52()}" type="preRenderView"/>
+   </f:metadata>
+    <ui:define name="content">
+        <h:form id="panelForm">
+            
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar>
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton onclick="PF('pdf').show();noCopy();" type="button"  icon="ui-icon-print">
+                            </p:commandButton>
+                            <p:commandButton onclick="PF('mail').show()" type="button"  icon="ui-icon-send">
+                                <p:resetInput target="panelForm" />
+                            </p:commandButton>
+                            <span class="ui-separator" style="padding-right: 5px;">
+                                <span class="fa fa-ellipsis-v SoftGray" />
+                            </span>
+                            <p:commandButton update="growl" action="#{tabla52Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            </p:commandButton> 
+                            <!--Secciones-->
+                            <section id="secAll">
+                                <!--Seccion Dialogo Pdf-->
+                                <section id="secPdf">
+                                    <div>
+                                        <p:dialog id="pdf" widgetVar="pdf" width="100%" height="700" minHeight="700" modal="true" closeOnEscape="true" >
+                                            <pe:documentViewer id="pdfFrame" cache="false" style="width:100%; height:100%;" value="#{mediaBean.streamedContent}"  download="Lista_Categorias_Trabajadroes.pdf"/> 
+                                            <p:ajax event="close" update="pdf" />
+                                        </p:dialog>
+                                    </div>
+                                </section>
+                                <!--Seccion Dialogo Enviar Mail-->
+                                <section id="secMail">
+                                    <div class="ui-g">
+                                        <p:dialog id="mail"  widgetVar="mail" header="Enviar correo electronico" closeOnEscape="true" modal="true"  resizable="false">
+                                            <p:panelGrid id="pgmail" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{not empty tabla52Backing.tabla52List}">
+                                                <h:panelGroup styleClass="md-inputfield" >
+                                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="name"  value="#{mailServiceBean.subject}"
+                                                                 requiredMessage="El nombre es requerido" style="width: 100%"/>
+                                                    <label>Nombre</label>
+                                                </h:panelGroup>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="email" value="#{mailServiceBean.toAddress}" size="40"
+                                                                 requiredMessage="El correo es requerido"
+                                                                 validatorMessage="El correo no tiene el formato correcto"
+                                                                 required="true">
+                                                        <f:validateRegex
+                                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                                    </p:inputText>
+                                                    <label>Enviar correo para:</label>
+                                                </h:panelGroup>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputTextarea  id="text" value="#{mailServiceBean.text}"  required="true" requiredMessage="Escriba su mensaje" style="width: 100%"/>
+                                                    <label>Mensaje</label>
+                                                </h:panelGroup>
+                                            </p:panelGrid>
+                                            <f:facet name="footer">
+                                                <p:panelGrid columns="2" layout="grid" style="text-align: center;" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{not empty tabla52Backing.tabla52List}">
+                                                    <p:commandButton  oncomplete="if (args &amp;&amp; !args.validationFailed) PF('mail').hide()"   update="growl  pgmail" type="submit"   id="submit" value="Enviar" actionListener="#{mailServiceBean.sendEmailWithAttachments(tabla52Backing.contentListPdf)}" icon="ui-icon-send"  >
+                                                    </p:commandButton> 
+                                                    <p:commandButton    update="panelForm"  type="reset" id="reset" process="@this"  value="Limpiar" icon="ui-icon-clear-all" rendered="#{mailServiceBean.toAddress.length() eq 0}"  >
+                                                    </p:commandButton>  
+                                                    <p:commandButton    update="panelForm"  type="submit" id="rst" process="@this"  value="Limpiar" icon="ui-icon-clear-all" rendered="#{mailServiceBean.toAddress.length() gt 0}"  >
+                                                        <f:setPropertyActionListener target="#{mailServiceBean.text}" 
+                                                                                     value="#{null}" />
+                                                        <f:setPropertyActionListener target="#{mailServiceBean.toAddress}" 
+                                                                                     value="#{null}" />
+                                                        <f:setPropertyActionListener target="#{mailServiceBean.subject}" 
+                                                                                     value="#{null}" />
+                                                        <p:resetInput target="panelForm" />
+                                                    </p:commandButton> 
+                                                </p:panelGrid>
+
+                                                <p:panelGrid columns="1" layout="grid" style="text-align: center;" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{empty tabla52Backing.tabla52List}">
+                                                    <p:outputLabel  style="color:#000000" value="#{msg['tabla52.EmptyList']}"/>
+                                                </p:panelGrid>
+                                            </f:facet>
+                                            <p:ajax event="close" update="mail" />
+                                        </p:dialog>
+                                    </div>
+                                </section>
+                            </section>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:panel id="panel" >
+                        <h:panelGroup  id="results" class="table-responsive">
+                            <p:dataTable var="tabla52" value="#{tabla52Backing.tabla52List}" selectionMode="single" reflow="true"
+                                         selection="#{tabla52Backing.selectedTabla52}" rowKey="#{tabla52.idtab}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['tabla52.EmptyList']}">
+
+                                <f:facet name="header">
+                                    <div style="position: relative; width: 100%;">
+                                        <div style="width: 100%; text-align: left;">Tablas del Sistema
+                                            <div  style="position: absolute; width: 100%;text-align: right; top:-6px;">
+                                                <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                                                    <p:commandButton action="#{tabla52Backing.go(0)}"  process="@this" icon="ui-icon-plus" value="Nuevo" style="width:auto;" styleClass="blue-btn flat" >
+                                                    </p:commandButton>
+                                                </c:if>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </f:facet>
+
+
+                                <p:column headerText="id">
+                                    <h:outputText value="#{tabla52.idtab}" />
+                                </p:column>
+                                <p:column headerText="Nombre Tabla">
+                                    <h:outputText value="#{tabla52.notab}" />
+                                </p:column>
+                                <p:column headerText="Descripción de la Tabla">
+                                    <h:outputText value="#{tabla52.detab}" />
+                                </p:column>
+                                <p:column headerText="Detalle de la Tabla">
+                                    <h:outputText value="#{tabla52.dttab}" />
+                                </p:column>
+
+
+
+
+                                <p:column width="190" headerText="Acciones">
+                                    <p:commandButton action="#{tabla52Backing.go(3)}" actionListener="#{userSessionBean.setIdtab(tabla52.idtab)}"   
+                                                     style="width:auto;" styleClass="blue-btn flat" 
+                                                     value="Seleccionar" process="@this">
+                                    </p:commandButton>
+                                    <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                                        <p:commandButton action="#{tabla52Backing.go(1)}"  process="@this"
+                                                         style="width:auto;" styleClass="blue-btn flat" 
+                                                         value="Editar">
+                                            <f:setPropertyActionListener target="#{userSessionBean.idtab}" 
+                                                                         value="#{tabla52.idtab}" />
+                                        </p:commandButton>
+                                    </c:if>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

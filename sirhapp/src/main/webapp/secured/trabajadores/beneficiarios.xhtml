@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Beneficiarios"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="beneficiarioListForm" >
+                <p:toolbar >
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="#{traba36BackingBean.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup  class="table-responsive">
+                    <p:dataTable 
+                        id="beneficiarioDatalist" value="#{benef26BackingBean.benef26List}" var="benef26" 
+                        selectionMode="single" selection="#{benef26BackingBean.selectedBenef26Bean}"
+                        paginator="true"
+                        rowKey="#{benef26.idben}" 
+                        rows="10"
+                        rowsPerPageTemplate="10,20,30,40,50"
+                        emptyMessage="#{msg['beneficiarios.EmptyList']}">
+
+                        <p:ajax event="rowSelect"   update="beneficiarioCreateButton beneficiarioViewButton beneficiarioEditButton beneficiarioDeleteButton"/>
+                        <p:ajax event="rowUnselect" update="beneficiarioCreateButton beneficiarioViewButton beneficiarioEditButton beneficiarioDeleteButton"/>
+
+                        <p:column headerText="Tipo de beneficiario">
+                            <h:outputText value="#{benef26.tpben}" />
+                        </p:column>
+                        <p:column headerText="Nombre" >
+                            <h:outputText value="#{benef26.ncben}" />
+                        </p:column>
+
+                        <p:column headerText="%" >
+                            <h:outputText value="#{benef26.poben}" >
+                                <f:convertNumber type="percent" />
+                            </h:outputText>
+                        </p:column>
+
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="beneficiarioCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}"  actionListener="#{benef26BackingBean.prepareCreateBenef26()}" update="beneficiarioListForm  beneficiarioCreateForm" oncomplete="PF('beneficiarioCreateDialog').show(); " disabled="#{benef26BackingBean.percentage le 0}"/>
+                            <p:commandButton type="submit" process="@form" id="beneficiarioViewButton" icon="ui-icon-search" value="#{bundle.View}" actionListener="#{benef26BackingBean.prepareSelectBenef26()}" update="beneficiarioListForm  beneficiarioViewForm beneficiarioCreateButton"  oncomplete="PF('beneficiarioViewDialog').show(); " disabled="#{empty benef26BackingBean.selectedBenef26Bean}"/>
+                            <p:commandButton type="submit" process="@form" id="beneficiarioEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" actionListener="#{benef26BackingBean.prepareSelectBenef26()}" update="beneficiarioListForm  beneficiarioEditForm beneficiarioCreateButton"  oncomplete="PF('beneficiarioEditDialog').show(); " disabled="#{empty benef26BackingBean.selectedBenef26Bean}"/>
+                            <p:commandButton type="submit" process="@form" id="beneficiarioDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{benef26BackingBean.deleteBenef26()}" update="beneficiarioListForm  beneficiarioCreateButton growl" disabled="#{empty benef26BackingBean.selectedBenef26Bean}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="beneficiarioCreate.xhtml"/>
+            <ui:include src="beneficiarioEdit.xhtml"/>
+            <ui:include src="beneficiarioView.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>

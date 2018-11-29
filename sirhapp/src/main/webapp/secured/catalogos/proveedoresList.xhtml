@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Proveedores"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{prove48Backing.getListProve48()}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="#{prove48Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+
+                    </f:facet>
+                </p:toolbar>
+
+                    <h:panelGroup  id="results" class="table-responsive">
+                        <p:dataTable var="prove48" value="#{prove48Backing.prove48List}" selectionMode="single" reflow="true"
+                                     selection="#{prove48Backing.selectedProve48}" rowKey="#{prove48.idpro}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['prove48.EmptyList']}">
+
+                            <f:facet name="header">
+                                <div style="position: relative; width: 100%;">
+                                    <div style="width: 100%; text-align: left;">Lista de proveedores
+                                        <div  style="position: absolute; width: 100%;text-align: right; top:-6px;">
+                                            <p:commandButton action="#{prove48Backing.go(0)}"  process="@this" icon="ui-icon-plus" value="Nuevo" style="width:auto;" styleClass="blue-btn flat"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </f:facet>
+
+                            <p:column headerText="RFC del Proveedor">
+                                <h:outputText value="#{prove48.rfpro}" />
+                            </p:column>
+                            <p:column headerText="Nombre Corto del Proveedor">
+                                <h:outputText value="#{prove48.ncpro}" />
+                            </p:column>
+                            <p:column headerText="Nombre Largo del Proveedor">
+                                <h:outputText value="#{prove48.nlpro}" />
+                            </p:column>
+                            <p:column headerText="Especialidad">
+                                <h:outputText value="#{prove48.eppro}" />
+                            </p:column>
+                            <p:column width="190" headerText="Acciones">
+                                <p:commandButton action="#{prove48Backing.go(3)}" actionListener="#{userSessionBean.setIdpro(prove48.idpro)}"   
+                                                 style="width:auto;" styleClass="blue-btn flat" 
+                                                 value="Seleccionar" process="@this">
+                                </p:commandButton>
+
+                                <p:commandButton action="#{prove48Backing.go(1)}"  process="@this"
+                                                 style="width:auto;" styleClass="blue-btn flat" 
+                                                 value="Editar">
+                                    <f:setPropertyActionListener target="#{userSessionBean.idpro}" 
+                                                                 value="#{prove48.idpro}" />
+                                </p:commandButton>
+
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGroup>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{tapri16Backing.getListTapri16()}" type="preRenderView"/>
+    </f:metadata>
+    <ui:define name="content">
+        <h:form id="panelForm">
+            <p:toolbar>
+                <f:facet name="left"> </f:facet>
+                <f:facet name="right">
+                    <span class="ui-separator" style="padding-right: 5px;">
+                        <span class="fa fa-ellipsis-v SoftGray" />
+                    </span>
+                    <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                        <p:commandButton action="#{tapri16Backing.go(0)}"  process="@this" icon="ui-icon-plus" value="Nuevo" style="width:auto;" styleClass="blue-btn flat" >
+                        </p:commandButton>
+                    </c:if>
+                    <p:commandButton update="growl" action="/secured/empty.xhtml" process="@this" value="Cancelar" icon="ui-icon-home">
+                    </p:commandButton> 
+                </f:facet>
+            </p:toolbar>
+            <p:panel header="Catalogo de ausencias, permisos, retardos, incapacidades, vacaciones, etc" id="panel" collapsed="true" />
+            <h:panelGroup  id="results" class="table-responsive">
+                <p:dataTable var="tapri16" value="#{tapri16Backing.tapri16List}" selectionMode="single" reflow="true"
+                             selection="#{tapri16Backing.selectedTapri16}" rowKey="#{tapri16.idtap}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['tapri16.EmptyList']}">
+                    <p:column headerText="Grupo de Ausencia">
+                        <h:outputText value="#{tapri16.grtap}" />
+                    </p:column>
+                    <p:column headerText="Descripción de Ausencia">
+                        <h:outputText value="#{tapri16.detap}" />
+                    </p:column>
+                    <p:column headerText="Homoclave de Ausencia">
+                        <h:outputText value="#{tapri16.hmtap}" />
+                    </p:column>
+
+                    <p:column width="190" headerText="Acciones">
+                        <p:commandButton action="#{tapri16Backing.go(3)}" actionListener="#{userSessionBean.setIdtap(tapri16.idtap)}"   
+                                         style="width:auto;" styleClass="blue-btn flat" 
+                                         value="Seleccionar" process="@this">
+                        </p:commandButton>
+                        <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                            <p:commandButton action="#{tapri16Backing.go(1)}"  process="@this"
+                                             style="width:auto;" styleClass="blue-btn flat" 
+                                             value="Editar">
+                                <f:setPropertyActionListener target="#{userSessionBean.idtap}" 
+                                                             value="#{tapri16.idtap}" />
+                            </p:commandButton>
+                        </c:if>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

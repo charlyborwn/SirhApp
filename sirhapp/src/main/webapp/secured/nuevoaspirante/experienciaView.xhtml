@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="experienciaViewDlg" widgetVar="experienciaViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Experiencia">
+            <h:form id="experienciaViewForm">
+                <p:panel header="Datos del Experiencia" rendered="#{traba36aWizardBacking.selectedExper31aWiz != null}">
+                    <h:panelGroup   id="displayExperienciaView">
+                        <p:tabView id="tabExperienciaCreate"  activeIndex="#{traba36aWizardBacking.exper31aTab}"   style="width: 600px"  >
+                            <p:ajax event="tabChange" listener="#{traba36aWizardBacking.onTabChangeExper31a}"  process="tabExperienciaCreate" />
+                            <p:tab title="Datos" >
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="emexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.emexpA}" readonly="true" />
+                                        <p:outputLabel value="Empresa" for="emexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ceexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.ceexpA}" readonly="true" />
+                                        <label>Cargo en Experiencia</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="inexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.inexpA}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" readonly="true" disabled="true" />
+                                        <p:outputLabel value="Inicio" for="inexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="teexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.teexpA}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" readonly="true" disabled="true" />
+                                        <p:outputLabel value="Término" for="teexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="csexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.csexpA}" readonly="true" />
+                                        <label>Causa de Separación</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.sxexpA}"  readonly="true">
+                                            <f:convertNumber type="currency" locale="#{localeBean.locale}"  currencySymbol="$" />
+                                        </p:inputText>
+                                        <p:outputLabel value="Salario Percibido ($)" for="sxexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="siexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.siexpA}" readonly="true" />
+                                        <label>SirhApp</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tdexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.tdexpA}" mask="(99)9999-9999" readonly="true" >
+                                            <f:ajax event="change" execute="tcbenA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono de la Empresa</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="jiexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.jiexpA}" readonly="true" />
+                                        <label>Jefe Inmediato</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cjexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.cjexpA}" readonly="true" />
+                                        <label>Cargo Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tcexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.tcexpA}" mask="(99)9999-9999" readonly="true" >
+                                            <f:ajax event="change" execute="tcbenA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono Contacto Jefe</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="email" value="#{traba36aWizardBacking.selectedExper31aWiz.maexpA}"
+                                                     validatorMessage="El correo no tiene el formato correcto"
+                                                     required="false" class="ui-minusculas" readonly="true">
+                                            <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />
+                                            <f:ajax event="change" execute="tcbenA" />       
+                                        </p:inputText>
+                                        <label>Correo Electrónico del Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obdocA" value="#{traba36aWizardBacking.selectedExper31aWiz.obexpA}" readonly="true" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Direccion Empresa"  >
+                                <p:panelGrid  columns="3"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cpexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.cpexpA}" readonly="true" />
+                                        <label>Código Postal</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="paexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.paexpA}" readonly="true" />
+                                        <label>País</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="esexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.esexpA}" readonly="true" />
+                                        <label>Estado</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mdexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.mdexpA}" readonly="true" />
+                                        <label>Mun/Del</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="loexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.loexpA}"  readonly="true"/>
+                                        <label>Población</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="coexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.coexpA}" readonly="true" />
+                                        <label>Colonia</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="caexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.caexpA}" readonly="true" />
+                                        <label>Calle y Número</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Documento">
+                                <p:panelGrid  columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{traba36aWizardBacking.selectedExper31aWiz.tiexpA}" readonly="true" disabled="true"/>
+                                        <label> Tipo de documento experiencia</label>
+                                    </h:panelGroup>
+
+                                    <p:panelGrid  columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                                        <p:lightBox rendered="#{traba36aWizardBacking.selectedExper31aWiz.ptexpA.length() eq 0 || traba36aWizardBacking.selectedExper31aWiz.ptexpA eq null }"> 
+                                            <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Sin Documento de Experiencia  #{traba36aWizardBacking.selectedExper31aWiz.tiexpA}"  >  
+                                                <h:graphicImage  class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 340px"  />
+                                            </h:outputLink>
+                                        </p:lightBox>
+                                        <p:lightBox  id="lightBox1" rendered="#{traba36aWizardBacking.selectedExper31aWiz.ptexpA.length() gt 0 and traba36aWizardBacking.selectedExper31aWiz.ptexpA ne null}"  > 
+                                            <h:outputLink  value="#{bundle.PathRelativeFull}#{traba36aWizardBacking.selectedExper31aWiz.ptexpA}"  title="Documento de Experiencia  #{traba36aWizardBacking.selectedExper31aWiz.tiexpA}"  > 
+                                                <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{traba36aWizardBacking.selectedExper31aWiz.ptexpA}"  style="width: 200px" />
+                                            </h:outputLink>
+                                        </p:lightBox>
+
+                                    </p:panelGrid>
+                                </p:panelGrid>
+                            </p:tab>
+
+                        </p:tabView>
+
+
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton value="#{bundle.Close}" onclick="experienciaViewDialog.hide()"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

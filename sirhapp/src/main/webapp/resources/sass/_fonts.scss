@@ -1,0 +1,114 @@
+/* roboto-300 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.eot']}"); /* IE9 Compat Modes */
+  src: local('Roboto Light'), local('Roboto-Light'),
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.eot']}#iefix") format('embedded-opentype'), /* IE6-IE8 */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.woff2']}") format('woff2'), /* Super Modern Browsers */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.woff']}") format('woff'), /* Modern Browsers */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.ttf']}") format('truetype'), /* Safari, Android, iOS */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-300.svg']}#Roboto") format('svg'); /* Legacy iOS */
+}
+/* roboto-regular - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url("\#{resource['ultima-layout:fonts/roboto-v15-latin-regular.eot']}"); /* IE9 Compat Modes */
+  src: local('Roboto'), local('Roboto-Regular'),
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-regular.eot']}#iefix") format('embedded-opentype'), /* IE6-IE8 */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-regular.woff2']}") format('woff2'), /* Super Modern Browsers */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-regular.woff']}") format('woff'), /* Modern Browsers */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-regular.ttf']}") format('truetype'), /* Safari, Android, iOS */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-regular.svg']}#Roboto") format('svg'); /* Legacy iOS */
+}
+/* roboto-700 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url("\#{resource['ultima-layout:fonts/roboto-v15-latin-700.eot']}"); /* IE9 Compat Modes */
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-700.eot']}#iefix") format('embedded-opentype'), /* IE6-IE8 */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-700.woff2']}") format('woff2'), /* Super Modern Browsers */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-700.woff']}") format('woff'), /* Modern Browsers */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-700.ttf']}") format('truetype'), /* Safari, Android, iOS */
+       url("\#{resource['ultima-layout:fonts/roboto-v15-latin-700.svg']}#Roboto") format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url("\#{resource['ultima-layout:fonts/MaterialIcons-Regular.eot']}"); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url("\#{resource['ultima-layout:fonts/MaterialIcons-Regular.woff2']}") format('woff2'),
+       url("\#{resource['ultima-layout:fonts/MaterialIcons-Regular.woff']}") format('woff'),
+       url("\#{resource['ultima-layout:fonts/MaterialIcons-Regular.ttf']}") format('truetype');
+}
+
+@font-face {
+    font-family: 'Benguiat Bold BT';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Benguiat Bold BT'), url("\#{resource['ultima-layout:fonts/BENGUIAB.woff']}") format('woff');
+}
+
+@font-face {
+    font-family: 'LibreBaskerville';
+    src: url("\#{resource['ultima-layout:fonts/LibreBaskerville-Bold.eot?']}") format('eot'), 
+        url("\#{resource['ultima-layout:fonts/LibreBaskerville-Bold.woff']}") format('woff'),
+        url("\#{resource['ultima-layout:fonts/LibreBaskerville-Bold.otf']}")  format('opentype'),
+        url("\#{resource['ultima-layout:fonts/LibreBaskerville-Bold.ttf']}")  format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'LibreBaskerville';
+    src: url("\#{resource['ultima-layout:fonts/LibreBaskerville-Italic.eot?']}") format('eot'), 
+        url("\#{resource['ultima-layout:fonts/LibreBaskerville-Italic.woff']}") format('woff'),
+        url("\#{resource['ultima-layout:fonts/LibreBaskerville-Italic.otf']}")  format('opentype'),
+        url("\#{resource['ultima-layout:fonts/LibreBaskerville-Italic.ttf']}")  format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'LibreBaskerville';
+    src: url("\#{resource['ultima-layout:fonts/LibreBaskerville-Regular.eot?']}") format('eot'), 
+        url("\#{resource['ultima-layout:fonts/LibreBaskerville-Regular.woff']}") format('woff'),
+        url("\#{resource['ultima-layout:fonts/LibreBaskerville-Regular.otf']}")  format('opentype'),
+        url("\#{resource['ultima-layout:fonts/LibreBaskerville-Regular.ttf']}")  format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'hinted-LibreBaskerville';
+    src: url("\#{resource['ultima-layout:fonts/hinted-LibreBaskerville-Bold.eot?']}") format('eot'), 
+        url("\#{resource['ultima-layout:fonts/hinted-LibreBaskerville-Bold.woff']}") format('woff'),
+        url("\#{resource['ultima-layout:fonts/hinted-LibreBaskerville-Bold.ttf']}")  format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'hinted-LibreBaskerville';
+    src: url("\#{resource['ultima-layout:fonts/hinted-LibreBaskerville-Italic.eot?']}") format('eot'), 
+        url("\#{resource['ultima-layout:fonts/hinted-LibreBaskerville-Italic.woff']}") format('woff'),
+        url("\#{resource['ultima-layout:fonts/hinted-LibreBaskerville-Italic.ttf']}")  format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'hinted-LibreBaskerville';
+    src: url("\#{resource['ultima-layout:fonts/hinted-LibreBaskerville-Regular.eot?']}") format('eot'), 
+        url("\#{resource['ultima-layout:fonts/hinted-LibreBaskerville-Regular.woff']}") format('woff'),
+        url("\#{resource['ultima-layout:fonts/hinted-LibreBaskerville-Regular.ttf']}")  format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}

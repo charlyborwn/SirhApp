@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+        <h:form id="escolaridadListForm">
+            <h:panelGroup rendered="#{traba36aWizardBacking.currentStep.equals('escolaridad')}">
+                <p:panel header="Lista de Escolaridad" id="panel" collapsed="true" />
+                <p:dataTable 
+                    id="escolaridadDatalist" value="#{traba36aWizardBacking.escol30aList}" var="escol30a" 
+                    selectionMode="single" selection="#{traba36aWizardBacking.selectedEscol30aWiz}"
+                    paginator="true"
+                    rowKey="#{escol30a.idescA}" 
+                    rows="10"
+                    rowsPerPageTemplate="10,20,30,40,50"
+                    emptyMessage="#{msg['escolaridada.EmptyList']}" >
+
+                    <p:ajax event="rowSelect"   update="escolaridadCreateButton escolaridadViewButton escolaridadEditButton escolaridadDeleteButton"/>
+                    <p:ajax event="rowUnselect" update="escolaridadCreateButton escolaridadViewButton escolaridadEditButton escolaridadDeleteButton"/>
+
+                    <p:column headerText="Tipo Nivel de Estudios">
+                        <h:outputText value="#{escol30a.tnescA}" />
+                    </p:column>
+                    <p:column headerText="Nombre Institución">
+                        <h:outputText value="#{escol30a.niescA}" />
+                    </p:column>
+                    <p:column headerText="Años cursados">
+                        <h:outputText value="#{escol30a.acescA}" />
+                    </p:column>
+                    <p:column headerText="Cursando Actualmente">
+                        <h:outputText value="#{escol30a.caescA}" />
+                    </p:column>
+
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" process="@form" id="escolaridadCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}"  actionListener="#{traba36aWizardBacking.prepareCreateEscol30a()}" update=":escolaridadCreateForm" oncomplete="PF('escolaridadCreateDialog').show(); "/>
+                        <p:commandButton type="submit" process="@form" id="escolaridadViewButton" icon="ui-icon-search" value="#{bundle.View}" update="escolaridadViewForm"  oncomplete="PF('escolaridadViewDialog').show(); " disabled="#{empty traba36aWizardBacking.selectedEscol30aWiz}"/>
+                        <p:commandButton type="submit" process="@form" id="escolaridadEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" update="escolaridadEditForm"  oncomplete="PF('escolaridadEditDialog').show(); " disabled="#{empty traba36aWizardBacking.selectedEscol30aWiz}"/>
+                        <p:commandButton type="submit" process="@form" id="escolaridadDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{traba36aWizardBacking.deleteEscol30a()}" update="escolaridadDatalist,growl" disabled="#{empty traba36aWizardBacking.selectedEscol30aWiz}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:panelGroup>
+        </h:form>
+    </ui:composition>
+</html>

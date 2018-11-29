@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/sirhapp">
+  <Realm appName="SirhApp-jaas" className="org.apache.catalina.realm.JAASRealm" roleClassNames="com.hrm.sirhapp.security.JAASRolePrincipal" useContextClassLoader="true" userClassNames="com.hrm.sirhapp.security.JAASUserPrincipal, com.hrm.sirhapp.security.JAASPasswordPrincipal"/>
+</Context>

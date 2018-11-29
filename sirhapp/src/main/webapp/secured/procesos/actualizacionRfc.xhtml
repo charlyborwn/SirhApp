@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Actualización de RFC"></h:outputText>
+        </ui:define>
+
+
+        <f:metadata>
+            <f:event listener="#{traba36aUpdateRfcBacking.getTraba36aRequest(userSessionBean.aspiranteActualizacionRfc)}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm" rendered="#{userSessionBean.aspiranteActualizacionRfc ne null}" >
+                <p:toolbar>
+                    <f:facet name="left"><ui:include src="headerActualizacionRfc.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <p:dialog id="aspiranteActualizacionRfc" widgetVar="aspiranteActualizacionRfc" header="¿Deseas actualizar el RFC del Aspirante?" closeOnEscape="true" modal="true"  >
+                            <p:panel header="Actualizacion del RFC" style="width: 400px;">
+                                <p:panelGrid columns="1" layout="grid"  styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rfcSearch"   maxlength="13" class="search-query input-medium"  
+                                                     value="#{traba36aUpdateRfcBacking.selectedTraba36aUpdateRfc.rftraA}" 
+                                                     pt:data-tooltip="RFC Actual del Aspirante" title="RFC Actual del Aspirante"
+                                                     readonly="true"/>
+                                        <p:tooltip  for="rfcSearch" showEvent="focus" hideEvent="blur" />
+                                        <h:outputLabel>RFC Actual del Aspirante</h:outputLabel>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="nuevorfc"   mask="aaaa999999***" maxlength="13" class="search-query input-medium"  autoClear="false" required="true"  requiredMessage="Ingrese el Nuevo RFC del Aspirante"
+                                                     value="#{traba36aUpdateRfcBacking.nuevorfc}" pt:data-tooltip="Ingrese el Nuevo RFC del Aspirante" title="Ingrese el Nuevo RFC del Aspirante">
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputMask>
+                                        <p:tooltip  for="nuevorfc" showEvent="focus" hideEvent="blur" />
+                                        <h:outputLabel>Nuevo RFC del Aspirante:</h:outputLabel>
+
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:panel>
+                            <f:facet name="footer">
+                                <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <p:commandButton value="Cancelar" update="growl" onclick="PF('aspiranteActualizacionRfc').hide();"  />
+                                    <p:commandButton type="submit" update="growl" value="Actualizar RFC" action="/secured/procesos/actualizacionRfc.xhtml?faces-redirect=true" 
+                                                     actionListener="#{traba36aUpdateRfcBacking.updateTraba36aRfc()}"   class="red-btn">
+                                        <f:setPropertyActionListener target="#{userSessionBean.aspiranteActualizacionRfc}" 
+                                                                     value="#{traba36aUpdateRfcBacking.nuevorfc}" />
+                                    </p:commandButton>
+                                </p:panelGrid>
+                            </f:facet>
+                            <p:ajax event="close" update="aspiranteActualizacionRfc" />
+                        </p:dialog>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group ">
+                        <p:commandButton update="growl" action="/secured/procesos/findActualizacionRfc.xhtml?faces-redirect=true" process="@this" value="Cancelar" icon="ui-icon-home">
+                            <f:setPropertyActionListener target="#{userSessionBean.aspiranteActualizacionRfc}" 
+                                                         value="#{null}" />
+                        </p:commandButton> 
+                        <p:commandButton  update="growl" value="Actualizar RFC" 
+                                          onclick="PF('aspiranteActualizacionRfc').show();" process="@this"   class="red-btn">
+
+                        </p:commandButton>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-10,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group ">
+                        <h:panelGroup>
+                            <p:panelGrid columns="3" layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-10" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield" style="width:170px"  >
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  
+                                                 value="#{selectedTraba36aUpdateRfc.fxtraA}"  size="18" />
+                                    <label>Folio:</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.cctraA}" readonly="true" size="18" >
+                                        <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                    </p:inputText>
+                                    <label>Fecha de Solicitud</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield" layout="block">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="estraA" value="#{selectedTraba36aUpdateRfc.estraA}" />
+                                    <label>Especialidad Laboral</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                <h:panelGroup styleClass="md-inputfield" >
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.nctraA}" readonly="true"/>
+                                    <label>Nombre Completo</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-4,ui-grid-col-2,ui-grid-col-4,ui-grid-col-12" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.fntraA}"  readonly="true" size="18" >
+                                        <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                    </p:inputText>
+                                    <label>Fecha de Nacimiento</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"   id="sel_edtraA" value="#{selectedTraba36aUpdateRfc.edtraA}" required="true" requiredMessage="El Nombre es Obligatorio"/>
+                                    <label>Edad</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield" >
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.setraA}" readonly="true"/>
+                                    <label>Sexo</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield" layout="block">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="natraA" value="#{selectedTraba36aUpdateRfc.natraA}" />
+                                    <label>Nacionalidad</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="sel_rftraA"  value="#{selectedTraba36aUpdateRfc.rftraA}"  size="18" />
+                                    <label>RFC</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="sel_curp"
+                                                 value="#{selectedTraba36aUpdateRfc.cutraA}"  size="18">
+                                    </p:inputText>
+                                    <p:outputLabel value="CURP" for="sel_curp" />
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="sel_imss"
+                                                 value="#{selectedTraba36aUpdateRfc.ritraA}"  size="18">
+                                    </p:inputText>
+                                    <p:outputLabel value="IMSS" for="sel_imss" />
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield" layout="block">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="sitraA" value="#{sedes53Backing.getSedes53RequestString(selectedTraba36aUpdateRfc.sitraA)}" />
+                                    <label>Complejo</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" layout="block">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="eitraA" value="#{empre04Backing.getEmpre04RequestString(selectedTraba36aUpdateRfc.eitraA)}" />
+                                    <label>Empresa</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" layout="block">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="ditraA" value="#{depar03Backing.getDepar03Request(selectedTraba36aUpdateRfc.eitraA,selectedTraba36aUpdateRfc.ditraA)}" />
+                                    <label>Departamento</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <p:outputLabel value=""/>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.extraA}"  readonly="true" size="12" id="sel_extraA" >
+                                        <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                    </p:inputText>
+                                    <label>F/Exámen Médico</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" layout="block">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="rxtraA" value="#{selectedTraba36aUpdateRfc.rxtraA}" />
+                                    <label>Resultado Exámen Médico</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="sel_oetraA" 
+                                                 size="10"   value="#{selectedTraba36aUpdateRfc.oetraA}" >
+                                    </p:inputText>
+                                    <label>Numero de Oficio Entrevista</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"   id="sel_entraA" value="#{selectedTraba36aUpdateRfc.entraA}"  size="12" >
+                                        <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy hh:mm" />
+                                    </p:inputText>
+                                    <label>F/Entrevista</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield" layout="block">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="retraA" value="#{selectedTraba36aUpdateRfc.retraA}" />
+                                    <label>Resultado Entrevista</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true"  id="sel_odtraA" autocomplete="true" transient="true" 
+                                                 size="10"
+                                                 value="#{selectedTraba36aUpdateRfc.odtraA}" mask="9999999999" maxlength="10" autoClear="false" slotChar="">
+                                    </p:inputMask>
+                                    <label>Numero de Oficio Documento</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true"  id="sel_octraA" autocomplete="true" transient="true" 
+                                                 size="10"
+                                                 value="#{selectedTraba36aUpdateRfc.octraA}" mask="9999999999" maxlength="10" autoClear="false" slotChar="">
+                                    </p:inputMask>
+                                    <label>Numero de Oficio Envio Contrato</label>
+                                </h:panelGroup>
+
+                            </p:panelGrid>
+                        </h:panelGroup>
+                        <p:panelGrid >
+
+                            <p:lightBox rendered="#{selectedTraba36aUpdateRfc.patraA.length() gt 0 || not selectedTraba36aUpdateRfc.patraA eq null }"> 
+                                <h:outputLink value="#{bundle.PathRelativeFull}#{selectedTraba36aUpdateRfc.patraA}"  title="Fotografia de #{selectedTraba36aUpdateRfc.nctraA}" rendered="#{selectedTraba36aUpdateRfc.patraA.length() gt 0 and selectedTraba36aUpdateRfc.patraA ne null }" >  
+
+                                    <h:graphicImage class="w3-card-4 " value="#{bundle.PathRelativeShort}#{selectedTraba36aUpdateRfc.patraA}"  style="height: 140px;max-height: 340px"  />
+
+                                </h:outputLink>
+                            </p:lightBox>
+                            <p:lightBox rendered="#{selectedTraba36aUpdateRfc.patraA.length() eq 0 || selectedTraba36aUpdateRfc.patraA eq null }"> 
+                                <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Sin Fotografia del aspirante #{selectedTraba36aUpdateRfc.nctraA}" rendered="#{selectedTraba36aUpdateRfc.patraA.length() eq 0 or selectedTraba36aUpdateRfc.patraA eq null}" >  
+
+                                    <h:graphicImage  class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 340px"  />
+
+                                </h:outputLink>
+                            </p:lightBox>
+                        </p:panelGrid>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

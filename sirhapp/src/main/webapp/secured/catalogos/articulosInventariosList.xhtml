@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Articulos"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{catin44Backing.getListCatin44()}" type="preRenderView"/>
+        </f:metadata>
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton action="#{catin44Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel id="panel" header="Listas de articulos de Inventario" collapsed="true"/>
+                <h:panelGroup  id="results" class="table-responsive">
+                    <p:dataTable id="inventarioListForm" var="catin44" value="#{catin44Backing.catin44List}" selectionMode="single" reflow="true"
+                                 selection="#{catin44Backing.selectedCatin44}" rowKey="#{catin44.idcin}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['catin44.EmptyList']}">
+
+                        <p:ajax event="rowSelect"   update="inventarioCreateButton inventarioViewButton inventarioEditButton"/>
+                        <p:ajax event="rowUnselect" update="inventarioCreateButton inventarioViewButton inventarioEditButton"/>
+
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="inventarioCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}"  action="#{catin44Backing.go(0)}" update="inventarioListForm" />
+                            <p:commandButton type="submit" process="@form" id="inventarioViewButton" icon="ui-icon-search" value="#{bundle.View}" action="#{catin44Backing.go(3)}" actionListener="#{userSessionBean.setIdcin(catin44Backing.selectedCatin44.idcin)}" update="inventarioListForm" disabled="#{empty catin44Backing.selectedCatin44}"/>
+                            <p:commandButton type="submit" process="@form" id="inventarioEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" action="#{catin44Backing.go(1)}" actionListener="#{userSessionBean.setIdcin(catin44Backing.selectedCatin44.idcin)}" update="inventarioListForm" disabled="#{empty catin44Backing.selectedCatin44}"/>
+                        </f:facet>
+
+                        <p:column headerText="Nombre Empresa">
+                            <h:outputText value="#{catin44.necin}" />
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{catin44.arcin}" />
+                        </p:column>
+                        <p:column headerText="Marca">
+                            <h:outputText value="#{catin44.macin}" />
+                        </p:column>
+                        <p:column headerText="Modelo">
+                            <h:outputText value="#{catin44.mocin}" />
+                        </p:column>
+                        <p:column headerText="Color">
+                            <h:outputText value="#{catin44.cocin}" />
+                        </p:column>
+                        <p:column headerText="Talla">
+                            <h:outputText value="#{catin44.tacin}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

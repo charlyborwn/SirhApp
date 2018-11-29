@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="SirhAppPU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <shared-cache-mode>ALL</shared-cache-mode>
+    <validation-mode>NONE</validation-mode>
+    <properties>
+      <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.MySQLPlatform"/>
+      <property name="eclipselink.logging.logger" value="JavaLogger"/>
+      <property name="eclipselink.register.dev.mbean" value="false"/>
+      <property name="eclipselink.register.run.mbean" value="false"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+      <property name="eclipselink.logging.timestamp" value="true"/>
+      <property name="eclipselink.logging.session" value="true"/>
+      <property name="eclipselink.logging.thread" value="true"/>
+      <property name="eclipselink.logging.exceptions" value="true"/>
+      <property name="eclipselink.logging.level" value="SEVERE"/>
+      <property name="eclipselink.query-results-cache" value="false"/>
+      <property name="eclipselink.cache.type.default" value=""/>
+      <property name="eclipselink.query-results-cache" value="false"/>
+    </properties>
+    <jta-data-source>jdbc/SirhAppDS</jta-data-source>
+    <class>com.hrm.sirhapp.model.Apriv25</class>
+    <class>com.hrm.sirhapp.model.Benef26</class>
+    <class>com.hrm.sirhapp.model.Benef26a</class>
+    <class>com.hrm.sirhapp.model.Categ01</class>
+    <class>com.hrm.sirhapp.model.Chofe40</class>
+    <class>com.hrm.sirhapp.model.Civil06</class>
+    <class>com.hrm.sirhapp.model.Comit08</class>
+    <class>com.hrm.sirhapp.model.Contr27</class>
+    <class>com.hrm.sirhapp.model.Datos28</class>
+    <class>com.hrm.sirhapp.model.Datos28a</class>
+    <class>com.hrm.sirhapp.model.Depar03</class>
+    <class>com.hrm.sirhapp.model.Docum29</class>
+    <class>com.hrm.sirhapp.model.Docum29a</class>
+    <class>com.hrm.sirhapp.model.Empre04</class>
+    <class>com.hrm.sirhapp.model.Escol30</class>
+    <class>com.hrm.sirhapp.model.Escol30a</class>
+    <class>com.hrm.sirhapp.model.Espec05</class>
+    <class>com.hrm.sirhapp.model.Estud10</class>
+    <class>com.hrm.sirhapp.model.Event43</class>
+    <class>com.hrm.sirhapp.model.Exper31</class>
+    <class>com.hrm.sirhapp.model.Exper31a</class>
+    <class>com.hrm.sirhapp.model.Famil32</class>
+    <class>com.hrm.sirhapp.model.Famil32a</class>
+    <class>com.hrm.sirhapp.model.Infor39</class>
+    <class>com.hrm.sirhapp.model.Inven37</class>
+    <class>com.hrm.sirhapp.model.Meses07</class>
+    <class>com.hrm.sirhapp.model.Nacio09</class>
+    <class>com.hrm.sirhapp.model.Niacc33</class>
+    <class>com.hrm.sirhapp.model.Petic51</class>
+    <class>com.hrm.sirhapp.model.Prypr34</class>
+    <class>com.hrm.sirhapp.model.Razon02</class>
+    <class>com.hrm.sirhapp.model.Relig11</class>
+    <class>com.hrm.sirhapp.model.Repor50</class>
+    <class>com.hrm.sirhapp.model.Rutas41</class>
+    <class>com.hrm.sirhapp.model.Sanci35</class>
+    <class>com.hrm.sirhapp.model.Sangr21</class>
+    <class>com.hrm.sirhapp.model.Sexoo12</class>
+    <class>com.hrm.sirhapp.model.Stcon14</class>
+    <class>com.hrm.sirhapp.model.Strab15</class>
+    <class>com.hrm.sirhapp.model.Tapri16</class>
+    <class>com.hrm.sirhapp.model.Ticon17</class>
+    <class>com.hrm.sirhapp.model.Tidoc18</class>
+    <class>com.hrm.sirhapp.model.Tiinf38</class>
+    <class>com.hrm.sirhapp.model.Tipar19</class>
+    <class>com.hrm.sirhapp.model.Tipyp20</class>
+    <class>com.hrm.sirhapp.model.Traba36</class>
+    <class>com.hrm.sirhapp.model.Traba36a</class>
+    <class>com.hrm.sirhapp.model.Turno22</class>
+    <class>com.hrm.sirhapp.model.Ubica23</class>
+    <class>com.hrm.sirhapp.model.Unida42</class>
+    <class>com.hrm.sirhapp.model.Usuar24</class>
+    <class>com.hrm.sirhapp.model.Catin44</class>
+    <class>com.hrm.sirhapp.model.Ident49</class>
+    <class>com.hrm.sirhapp.model.Ident49a</class>
+    <class>com.hrm.sirhapp.model.Moned46</class>
+    <class>com.hrm.sirhapp.model.Prove48</class>
+    <class>com.hrm.sirhapp.model.Tabla52</class>
+    <class>com.hrm.sirhapp.model.Tdhab45</class>
+    <class>com.hrm.sirhapp.model.Tipsa47</class>
+    <class>com.hrm.sirhapp.model.Sedes53</class>
+    <class>com.hrm.sirhapp.model.Requi54</class>
+    <class>com.hrm.sirhapp.model.Seqen55</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+  </persistence-unit>
+</persistence>

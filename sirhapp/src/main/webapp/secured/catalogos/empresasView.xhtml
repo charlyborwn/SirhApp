@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Empresas"></h:outputText>
+        </ui:define>
+
+
+        <f:metadata>
+            <f:event listener="#{empre04Backing.getEmpre04Request(userSessionBean.idemp)}" type="preRenderView" rendered="#{userSessionBean.idemp gt 0}"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:toolbar>
+                    <f:facet name="left"> </f:facet>
+                    <f:facet name="right">
+
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton action="#{empre04Backing.go(1)}"  process="@this" value="Editar" rendered="#{not empty selectedEmpre04}"  icon="ui-icon-update"/>
+                        <p:commandButton update="growl" action="#{empre04Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            <f:setPropertyActionListener target="#{userSessionBean.idemp}" 
+                                                         value="#{-1}" />
+                        </p:commandButton> 
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Datos del Registro"  styleClass=" ui-g-12">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvemp" value="#{selectedEmpre04.cvemp}" readonly="true" />
+                            <label>Clave Empresa</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="noemp" value="#{selectedEmpre04.noemp}" readonly="true" />
+                            <label>Nombre Empresa</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="seemp" value="#{selectedEmpre04.seemp}" readonly="true" />
+                            <label>Complejo</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="oremp" value="#{selectedEmpre04.oremp}" readonly="true" />
+                            <label>Orden Empresa</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="giemp" value="#{selectedEmpre04.giemp}" readonly="true" />
+                            <label>Giro Empresa</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="paemp" value="#{selectedEmpre04.paemp}" readonly="true" />
+                            <label> País</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="esemp" value="#{selectedEmpre04.esemp}" readonly="true" />
+                            <label> Estado</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mdemp" value="#{selectedEmpre04.mdemp}" readonly="true" />
+                            <label> Mun/Del</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="loemp" value="#{selectedEmpre04.loemp}" readonly="true" />
+                            <label> Población</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="coemp" value="#{selectedEmpre04.coemp}" readonly="true" />
+                            <label> Colonia</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cpemp" value="#{selectedEmpre04.cpemp}" readonly="true" />
+                            <label> Código Postal</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="neemp" value="#{selectedEmpre04.neemp}" readonly="true" />
+                            <label> Calle y Número</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="beneficiarioCreateDlg" widgetVar="beneficiarioCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Beneficiario">
+            <h:form id="beneficiarioCreateForm">
+                <p:panel header="Agregar" rendered="#{benef26aBackingBean.newBenef26aBean != null}">
+                    <h:panelGroup id="displayBeneficiarioCreate">
+                        <p:tabView id="tabBeneficiarioCreate"  activeIndex="#{benef26aBackingBean.benef26aTab}"  style="width: 600px"   >
+                            <p:ajax event="tabChange" listener="#{benef26aBackingBean.onTabChangeBenef26a}"  process="tabBeneficiarioCreate"  update="@form"  />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tpbenA" label="Parentesco" value="#{benef26aBackingBean.newBenef26aBean.tpbenA}" 
+                                                         required="true">
+                                            <f:selectItem itemLabel="Seleccione el parentesco" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tipar19Backing.tipar19List}" var="ben" itemLabel="#{ben.notip}" itemValue="#{ben.notip}"/>
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Parentesco" for="tpbenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="sebenA" label="Sexo" value="#{benef26aBackingBean.newBenef26aBean.sebenA}" 
+                                                         required="true"   >
+                                            <f:selectItem itemLabel="Seleccione el Sexo" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{sexoo12Backing.sexoo12List}" var="sex" itemLabel="#{sex.nosex}" itemValue="#{sex.nosex}"/>
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Sexo" for="sebenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fnbenA" value="#{benef26aBackingBean.newBenef26aBean.fnbenA}" required="true"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  >
+                                            <p:ajax event="dateSelect" process="@this" />
+                                        </p:calendar>
+                                        <p:outputLabel value="Fecha de nacimiento" for="fnbenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="pobenA" validator="percentageMaskValidator" value="#{benef26aBackingBean.newBenef26aBean.pobenA}"  required="true" requiredMessage="Debe proporcionar el porcentage"  mask=""  >
+                                            <f:convertNumber type="percent" />
+                                            <p:ajax event="change" process="@this" update="@this" listener="#{benef26aBackingBean.handleChange}" />
+                                        </p:inputMask>
+                                        <p:outputLabel value="Porcentaje a otorgar" for="pobenA" />
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Nombre Completo del Beneficiario -->                  
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apbenA" value="#{benef26aBackingBean.newBenef26aBean.apbenA}">
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputText>
+                                        <p:outputLabel value="Apellido Paterno" for="apbenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ambenA" value="#{benef26aBackingBean.newBenef26aBean.ambenA}">
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputText>
+                                        <p:outputLabel value="Apellido Materno" for="ambenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nobenA" value="#{benef26aBackingBean.newBenef26aBean.nobenA}">
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputText>
+                                        <p:outputLabel value="Nombre(s)" for="nobenA" />
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obbenA" value="#{benef26aBackingBean.newBenef26aBean.obbenA }">
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputTextarea>
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab  title="Direccion">
+
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                            </p:tab>
+
+                        </p:tabView>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{benef26aBackingBean.registerBenef26a()}" value="#{bundle.Save}" update="displayBeneficiarioCreate beneficiarioListForm growl" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('beneficiarioCreateDialog').hide(); handleSubmit(args,'beneficiarioCreateDialog');"  class="red-btn" />
+                            <p:commandButton type="button"  value="#{bundle.Cancel}" onclick="PF('beneficiarioCreateDialog').hide();" />
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+                <p:panel header="Actualizar datos" rendered="#{benef26aBackingBean.selectedBenef26aBean != null and benef26aBackingBean.add eq false}">
+                    <h:panelGroup id="displayBeneficiarioEdit">
+                        <p:tabView id="tabBeneficiarioEdit" onTabChange="" activeIndex="#{benef26aBackingBean.benef26aTab}" prependId="false"  style="width: 600px"  >
+                            <p:ajax event="tabChange" listener="#{benef26aBackingBean.onTabChangeBenef26a}"/>
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tpbenA" label="Parentesco" value="#{benef26aBackingBean.selectedBenef26aBean.tpbenA}" 
+                                                         required="true">
+                                            <f:selectItem itemLabel="Seleccione el parentesco" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tipar19Backing.tipar19List}" var="ben" itemLabel="#{ben.notip}" itemValue="#{ben.notip}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Parentesco" for="tpbenA" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="sebenA" label="Sexo" value="#{benef26aBackingBean.selectedBenef26aBean.sebenA}" required="true"  style="margin-bottom:10px;">
+                                            <f:selectItem itemLabel="Seleccione el Sexo" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{sexoo12Backing.sexoo12List}" var="sex" itemLabel="#{sex.nosex}" itemValue="#{sex.nosex}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Sexo" for="sebenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fnbenA" value="#{benef26aBackingBean.selectedBenef26aBean.fnbenA}" required="true"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  />
+                                        <p:outputLabel value="Fecha de nacimiento" for="fnbenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="pobenA" validator="percentageMaskValidator" value="#{benef26aBackingBean.selectedBenef26aBean.pobenA}"  required="true" requiredMessage="Debe proporcionar el porcentage"  mask=""  >
+                                            <f:convertNumber type="percent" />
+                                            <p:ajax event="change" process="@this" update="@this" listener="#{benef26aBackingBean.handleChange}" />
+                                        </p:inputMask>
+                                        <p:outputLabel value="Porcentaje a otorgar" for="pobenA" />
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Nombre Completo del Beneficiario -->                  
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apbenA" value="#{benef26aBackingBean.selectedBenef26aBean.apbenA}" />
+                                        <p:outputLabel value="Apellido Paterno" for="apbenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ambenA" value="#{benef26aBackingBean.selectedBenef26aBean.ambenA}" />
+                                        <p:outputLabel value="Apellido Materno" for="ambenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nobenA" value="#{benef26aBackingBean.selectedBenef26aBean.nobenA}" />
+                                        <p:outputLabel value="Nombre(s)" for="nobenA" />
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obdocA" value="#{benef26aBackingBean.selectedBenef26aBean.obbenA }" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab  title="Direccion">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:outputLabel for="bensn_dir" value="Vive en el mismo domicilio"/>
+                                    </h:panelGroup>
+                                    <p:selectOneRadio id="bensn_dir" value="#{benef26aBackingBean.selectedBenef26aBean.vmbenA}" columns="2"  
+                                                      style="text-align: center;  white-space: nowrap;">
+                                        <f:selectItem itemLabel="Si" itemValue="si" />
+                                        <f:selectItem itemLabel="No" itemValue="no" />
+                                        <f:ajax event="change" execute="bensn_dir" listener="#{benef26aBackingBean.handleChange}"  render="beneficiarioCreateForm"/>
+                                    </p:selectOneRadio>
+                                </p:panelGrid>
+
+                                <p:panelGrid  columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{benef26aBackingBean.selectedBenef26aBean.vmbenA.equals('si')}">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cpbenA" value="#{benef26aBackingBean.selectedBenef26aBean.cpbenA}" disabled="true" />
+                                        <p:outputLabel for="cpbenA" value="Código Postal"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pabenA" value="#{benef26aBackingBean.selectedBenef26aBean.pabenA}" disabled="true" />
+                                        <p:outputLabel for="pabenA" value="País"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="esbenA" value="#{benef26aBackingBean.selectedBenef26aBean.esbenA}" disabled="true" />
+                                        <p:outputLabel for="esbenA" value="Estado"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mdbenA" value="#{benef26aBackingBean.selectedBenef26aBean.mdbenA}" disabled="true" />
+                                        <p:outputLabel for="mdbenA" value="Mun/Del"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="lobenA" value="#{benef26aBackingBean.selectedBenef26aBean.lobenA}" disabled="true" />
+                                        <p:outputLabel for="lobenA" value="Población Pariente"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cobenA" value="#{benef26aBackingBean.selectedBenef26aBean.cobenA}" disabled="true" />
+                                        <p:outputLabel for="cobenA" value="Colonia"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{benef26aBackingBean.selectedBenef26aBean.vmbenA.equals('no')}">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="codigopostalben" label="Código Postal"   
+                                                      value="#{benef26aBackingBean.selectedBenef26aBean.cpbenA}" mask="99999" maxlength="5">
+                                            <p:ajax event="keyup" listener="#{benef26aBackingBean.handleChange}" update="paisben estadoben municipioben ciudadben coloniaben" process="@this" />
+                                        </p:inputMask>
+                                        <p:outputLabel for="codigopostalben" value="Código Postal"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="paisben"  value="#{benef26aBackingBean.selectedBenef26aBean.pabenA}"  >
+                                            <f:selectItem itemLabel="Seleccione el Pais" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems  value="#{benef26aBackingBean.paises}" var="paubi" itemLabel="#{paubi}" itemValue="#{paubi}" />
+                                            <p:ajax listener="#{benef26aBackingBean.handleChange}" update="estadoben municipioben ciudadben coloniaben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="paisben" value="Pais"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="estadoben" label="Estado"  
+                                                         value="#{benef26aBackingBean.selectedBenef26aBean.esbenA}">
+                                            <f:selectItem itemLabel="Seleccione el Estado" itemValue=" " noSelectionOption="true"  />
+                                            <f:selectItems value="#{benef26aBackingBean.estados}" var="esubi" itemLabel="#{esubi}" itemValue="#{esubi}"/>
+                                            <p:ajax listener="#{benef26aBackingBean.handleChange}" update="municipioben ciudadben coloniaben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="estadoben" value="Estado"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="municipioben" label="Mun/Del" 
+                                                         value="#{benef26aBackingBean.selectedBenef26aBean.mdbenA}">
+                                            <f:selectItem itemLabel="Seleccione el Mun/Del" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{benef26aBackingBean.municipios}" var="muubi" itemLabel="#{muubi}" itemValue="#{muubi}"/>
+                                            <p:ajax listener="#{benef26aBackingBean.handleChange}" update="ciudadben coloniaben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="municipioben" value="Mun/Del"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ciudadben" label="Población, Localidad, Ciudad" 
+                                                         value="#{benef26aBackingBean.selectedBenef26aBean.lobenA}">
+                                            <f:selectItem  itemLabel="Población, Localidad, Ciudad" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{benef26aBackingBean.ciudades}" var="ciubi" itemLabel="#{ciubi}" itemValue="#{ciubi}"/>
+                                            <p:ajax listener="#{benef26aBackingBean.handleChange}" update="coloniaben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="ciudadben" value="Población, Localidad, Ciudad"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="coloniaben" label="Colonia"  
+                                                         value="#{benef26aBackingBean.selectedBenef26aBean.cobenA}" autoWidth="true" style="width: 50px;">
+                                            <f:selectItem itemLabel="Seleccione la Colonia" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{benef26aBackingBean.colonias}" var="coubi" itemLabel="#{coubi}" itemValue="#{coubi}"/>
+                                            <p:ajax listener="#{benef26aBackingBean.handleChange}" update="codigopostalben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="coloniaben" value="Colonia"/>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cabenA"  label="Calle y Número" 
+                                                     value="#{benef26aBackingBean.selectedBenef26aBean.cabenA}"  disabled="#{benef26aBackingBean.selectedBenef26aBean.vmbenA.equals('si')}">
+                                            <f:ajax event="change" execute="cabenA" />
+                                        </p:inputText>
+                                        <label>Calle y Número</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tdbenA" label="Teléfono Domicilio" 
+                                                     value="#{benef26aBackingBean.selectedBenef26aBean.tdbenA}" mask="(99)9999-9999"   disabled="#{benef26aBackingBean.selectedBenef26aBean.vmbenA.equals('si')}">
+                                            <f:ajax event="change" execute="tdbenA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono Domicilio</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tcbenA" label="Celular" 
+                                                     value="#{benef26aBackingBean.selectedBenef26aBean.tcbenA}" mask="(99)9999-9999">
+                                            <f:ajax event="change" execute="tcbenA" />
+                                        </p:inputMask>
+                                        <label>Teléfono Celular</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="email" label="Correo Electrónico" 
+                                                      value="#{benef26aBackingBean.selectedBenef26aBean.cebenA}"
+                                                      validatorMessage="El correo no tiene el formato correcto"
+                                                      required="false" class="ui-minusculas">
+                                            <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                            <f:ajax event="change" execute="email" />
+                                        </p:inputText>
+                                        <label>Correo Electrónico</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Documento">
+                                <p:panelGrid  columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{benef26aBackingBean.selectedBenef26aBean.ncbenA}" readonly="true" disabled="true"/>
+                                        <label>Nombre</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{benef26aBackingBean.selectedBenef26aBean.tpbenA}" readonly="true" disabled="true"/>
+                                        <label>Parentesco</label>
+                                    </h:panelGroup>
+                                    <p:fileUpload id="fileUploadFotografia" allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                  invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                  label="#{bundle.LblDOCBEN}" 
+                                                  uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="beneficiarioCreateForm" 
+                                                  mode="advanced" 
+                                                  rendered="#{benef26aBackingBean.selectedBenef26aBean.ptbenA.length() eq null }"
+                                                  value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}">
+                                        <p:graphicImage  class=" w3-card-4" id="up" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  style="width: 200px"   rendered="#{fileUploadBean.fileName ne null}" />
+                                        <f:attribute name="rootFolderAttr" value="#{benef26aBackingBean.rfc}/"></f:attribute>
+                                        <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                        <f:attribute name="fileTypeAttr" value="#{'DOCBEN'}"></f:attribute>
+                                        <f:attribute name="idAttr" value="#{benef26aBackingBean.selectedBenef26aBean.id.toString()}"></f:attribute>
+                                        <f:attribute name="ownBackingAttr" value="#{'benef26aBackingBean'}"></f:attribute>
+                                        <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute></p:fileUpload>
+
+
+                                    <p:lightBox  id="lightBox1" rendered="#{benef26aBackingBean.selectedBenef26aBean.ptbenA.length() gt 0 and benef26aBackingBean.selectedBenef26aBean.ptbenA ne null}"  > 
+                                        <h:outputLink  value="#{bundle.PathRelativeFull}#{benef26aBackingBean.selectedBenef26aBean.ptbenA}"  title="Documento del beneficiario: #{benef26aBackingBean.selectedBenef26aBean.ncbenA}"  > 
+                                            <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{benef26aBackingBean.selectedBenef26aBean.ptbenA}"  style="width: 200px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+
+                                </p:panelGrid>
+
+                                <p:commandButton type="submit" value="Borrar" rendered="#{benef26aBackingBean.selectedBenef26aBean.ptbenA.length() gt 0 and benef26aBackingBean.selectedBenef26aBean.ptbenA ne null and fileUploadBean.fileName eq null}"
+                                                 icon="ui-icon-delete" class="red-btn" 
+                                                 actionListener="#{benef26aBackingBean.updateBenef26aFoto}"
+                                                 update="beneficiarioEditForm">
+                                </p:commandButton>
+                            </p:tab>
+
+                        </p:tabView>
+
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{benef26aBackingBean.updateBenef26a}" value="#{bundle.Save}" update="displayBeneficiarioCreate beneficiarioListForm:beneficiarioDatalist growl" oncomplete="handleSubmit(args, 'beneficiarioCreateDialog');"/>
+                            <p:commandButton value="#{bundle.Close}" onclick="PF('beneficiarioCreateDialog').hide();"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

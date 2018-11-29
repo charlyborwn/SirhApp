@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Gestion de Usuarios"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{usuar24Backing.getListInnactiveUsuar24()}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content"> 
+            <h:form id="panelForm">
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="#{usuar24Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel id="panel" header="Listas de usuarios inactivos" collapsed="true"/>
+                <h:panelGroup id="results">
+                    <p:dataTable id="usuarioListForm" var="usuar24" value="#{usuar24Backing.usuar24List}" selectionMode="single" reflow="true" class="table-responsive"
+                                 selection="#{usuar24Backing.selectedUsuar24}" rowKey="#{usuar24.cvusu}" paginator="true" rows="30" emptyMessage="#{msg['usuar24.EmptyList']}">
+
+                        <p:ajax event="rowSelect"   update="usuarioEditButton"/>
+                        <p:ajax event="rowUnselect" update="usuarioEditButton"/>
+
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="usuarioEditButton" icon="ui-icon-pencil" value="#{bundle.Activate}" action="#{usuar24Backing.go(3)}" actionListener="#{userSessionBean.setCvusu(usuar24Backing.selectedUsuar24.cvusu)}" update="usuarioListForm"   disabled="#{empty usuar24Backing.selectedUsuar24}"/>
+                        </f:facet>
+
+                        <p:column headerText="Usuario" width="80">
+                            <h:outputText value="#{usuar24.cvusu}" />
+                        </p:column>
+
+                        <p:column headerText="Nombre" width="30%">
+                            <h:outputText value="#{usuar24.ncusu}" />
+                        </p:column>
+
+                        <p:column headerText="Complejo" >
+                            <h:outputText value="#{usuar24.seusu}" />
+                        </p:column>
+
+                        <p:column headerText="Empresa" >
+                            <h:outputText value="#{usuar24.emusu}" />
+                        </p:column>
+
+                        <p:column headerText="Departamento">
+                            <h:outputText value="#{usuar24.deusu}" />
+                        </p:column>
+
+                        <p:column headerText="Nivel de Acceso" >
+                            <h:outputText value="#{usuar24.nausu}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

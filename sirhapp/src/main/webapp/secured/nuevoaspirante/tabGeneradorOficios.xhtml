@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <p:dialog id="dialogPdf" hideEffect="slide" widgetVar="pdf" 
+                  width="100%" height="700" minHeight="700" 
+                  modal="true" closeOnEscape="true" >
+            <pe:documentViewer id="pdfFrame" 
+                               cache="false" 
+                               value="#{traba36aGeneradorOficiosBacking.output}"
+                               download="#{traba36aGeneradorOficiosBacking.reporte}_#{traba36aWizardBacking.rfc}.pdf"
+                               style="width:100%; height:100%;" />
+        </p:dialog>
+        <h:panelGroup id="generadorOficiosForm">
+            <h:panelGroup  id="results_go" class="table-responsive">
+                <p:panel header="Lista de Aspirantes para generar Oficio" id="panel" collapsed="true" />
+                <p:dataTable id="dataTableResults" value="#{traba36aGeneradorOficiosBacking.traba36aList}" var="traba36a" 
+                             selection="#{traba36aGeneradorOficiosBacking.selectedTraba36aList}"
+                             paginator="true"
+                             rowKey="#{traba36a.rftraA}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                             emptyMessage="Proporcione los datos para la generacion de documentos.">
+
+                    <p:ajax event="rowSelect"  
+                            update="buttonImprimir selectedCount" process="@this" listener="#{traba36aGeneradorOficiosBacking.handleChange}" />
+                    <p:ajax event="rowUnselect" 
+                            update="buttonImprimir selectedCount" process="@this" listener="#{traba36aGeneradorOficiosBacking.handleChange}" />
+                    <p:ajax event="rowSelectCheckbox" 
+                            update="buttonImprimir selectedCount" process="@this" listener="#{traba36aGeneradorOficiosBacking.handleChange}" />
+                    <p:ajax event="rowUnselectCheckbox"
+                            update="buttonImprimir selectedCount" process="@this" listener="#{traba36aGeneradorOficiosBacking.handleChange}" />
+                    <p:ajax event="toggleSelect" 
+                            update="buttonImprimir selectedCount" process="@this" listener="#{traba36aGeneradorOficiosBacking.handleChange}" />
+
+                    <f:facet name="{Exporters}">
+                        <h:panelGroup class="ui-float-right">
+                            <h:commandLink rendered="#{traba36aGeneradorOficiosBacking.traba36aList.size() gt 0}" >
+                                <p:graphicImage name="/images/excel.png" library="ultima-layout" width="24"/>
+                                <p:dataExporter type="xls" target="panelForm:dataTableResults" fileName="aspirantes" />
+                            </h:commandLink>
+
+                            <h:commandLink rendered="#{traba36aGeneradorOficiosBacking.traba36aList.size() gt 0}" >
+                                <p:graphicImage name="/images/pdf.png" library="ultima-layout" width="24"/>
+                                <p:dataExporter type="pdf" target="panelForm:dataTableResults" fileName="aspirantes"/>
+                            </h:commandLink>
+
+                            <h:commandLink rendered="#{traba36aGeneradorOficiosBacking.traba36aList.size() gt 0}" >
+                                <p:graphicImage name="/images/csv.png" library="ultima-layout" width="24"/>
+                                <p:dataExporter type="csv" target="panelForm:dataTableResults" fileName="aspirantes" />
+                            </h:commandLink>
+
+                        </h:panelGroup>
+                    </f:facet>
+                    <p:column selectionMode="multiple" style="width:40px;text-align:center" exportable="false"/>
+                    <p:column width="4%" headerText="Folio" >
+                        <h:outputText value="#{traba36a.fxtraA}" />
+                    </p:column>
+                    <p:column width="12%" headerText="RFC" >
+                        <h:outputText value="#{traba36a.rftraA}" />
+                    </p:column>
+                    <p:column width="30%" headerText="Nombre">
+                        <h:outputText value="#{traba36a.nctraA}" />
+                    </p:column>
+                    <p:column width="7%" headerText="F/Solicitud">
+                        <h:outputText value="#{traba36a.cctraA}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Mexico_City" /></h:outputText>
+                    </p:column>
+                    <p:column width="15%" headerText="No | Emp">
+                        <h:outputText value="#{empre04Backing.getEmpre04RequestString(traba36a.eitraA)}" />
+                    </p:column>
+                    <f:facet name="footer">
+                        <h:panelGroup >
+                            <p:commandButton id="buttonImprimir" type="submit" value="Imprimir" onclick="applyData();"
+                                             disabled="#{traba36aGeneradorOficiosBacking.imprimir}"
+                                             icon="ui-icon-print" >
+                            </p:commandButton>
+                            <pe:remoteCommand id="applyDataCommand" name="applyData" process="@this" update="panelForm:pdfFrame"
+                                              oncomplete="PF('pdf').show();setTimeout(noCopy, 1000);" 
+                                              actionListener="#{traba36aGeneradorOficiosBacking.processPdf}" > 
+                            </pe:remoteCommand>
+                        </h:panelGroup>
+                        <h:panelGroup class="ui-float-right" id="selectedCount">
+                            <label>Seleccionados: #{0+traba36aGeneradorOficiosBacking.selectedTraba36aList.size()}</label>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:dataTable>
+                <p:panel header="Lista de Aspirantes que ya tienen Oficio" id="panelOficio" collapsed="true" />
+                <p:dataTable id="dataTableResultsGen" value="#{traba36aGeneradorOficiosBacking.traba36aListGen}" var="traba36aGen" 
+                             paginator="true"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                             emptyMessage="No existen resultados que coincidan con los parametros proporcionados">
+
+
+                    <p:column  width="4%" headerText="Folio" >
+                        <h:outputText value="#{traba36aGen.fxtraA}" />
+                    </p:column>
+                    <p:column  width="12%" headerText="RFC" >
+                        <h:outputText value="#{traba36aGen.rftraA}" />
+                    </p:column>
+                    <p:column width="30%" headerText="Nombre">
+                        <h:outputText value="#{traba36aGen.nctraA}" />
+                    </p:column>
+                    <p:column  headerText="F/Solicitud">
+                        <h:outputText value="#{traba36aGen.cctraA}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Mexico_City" /></h:outputText>
+                    </p:column>
+                    <p:column width="15%" headerText="No | Emp">
+                        <h:outputText value="#{empre04Backing.getEmpre04RequestString(traba36aGen.eitraA)}" />
+                    </p:column>
+                    <p:column  headerText="Oficio Entrevista" rendered="#{traba36aGeneradorOficiosBacking.reporte eq 0}">
+                        <h:outputText value="#{traba36aGen.oetraA}" />
+                    </p:column>
+                    <p:column  headerText="Fecha Entrevista" rendered="#{traba36aGeneradorOficiosBacking.reporte eq 0}">
+                        <h:outputText value="#{traba36aGen.entraA}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Mexico_City" /></h:outputText>
+                    </p:column>
+                    <p:column  headerText="Resultado Entrevista" rendered="#{traba36aGeneradorOficiosBacking.reporte eq 0}">
+                        <h:outputText value="#{traba36aGen.retraA}" />
+                    </p:column>
+                    <p:column  headerText="Oficio Documentación" rendered="#{traba36aGeneradorOficiosBacking.reporte eq 1}">
+                        <h:outputText value="#{traba36aGen.odtraA}" />
+                    </p:column>
+                    <p:column  headerText="Oficio Contratos" rendered="#{traba36aGeneradorOficiosBacking.reporte eq 2}">
+                        <h:outputText value="#{traba36aGen.octraA}" />
+                    </p:column>
+                </p:dataTable>
+            </h:panelGroup>
+            <p:panel>
+                <div class=" card card-w-title">
+                    <h3>Proporcione los datos para la generacion de Documentos:</h3>
+                    <h:panelGroup >
+                        <p:outputLabel value="Tipo de Reporte" for="rep_go" />
+                        <p:selectOneRadio id="rep_go" value="#{traba36aGeneradorOficiosBacking.reporte}" layout="responsive" columns="4" required="true" requiredMessage="Debe elegir un Tipo de Reporte  para poder continuar" >
+                            <f:selectItem itemLabel="Oficio Entrevista" itemValue="0"  />
+                            <f:selectItem itemLabel="Oficio Documentacion" itemValue="1"  />
+                            <f:selectItem itemLabel="Oficio Contratos" itemValue="2"/>
+                            <f:selectItem itemLabel="Documentos Adicionales" itemValue="4" />
+                            <f:convertNumber for="rep_go"/>
+                            <p:ajax event="valueChange" process="@this ent_go ind_go loc_go ndo_go dataTableResults" update="generadorOficiosForm results_go dataTableResults:buttonImprimir ind_go ndo_go loc_go" listener="#{traba36aGeneradorOficiosBacking.handleChange}"  />  
+                        </p:selectOneRadio>
+                        <p:message for="rep_go" display="text"/>
+                    </h:panelGroup>
+                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-11,ui-grid-col-1" styleClass="ui-panelgrid-blank form-group ">
+                        <p:panelGrid columns="3" layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-8,ui-grid-col-3" styleClass="ui-fluid  ui-panelgrid-blank form-group ">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ndo_go" value="#{traba36aGeneradorOficiosBacking.oetraA}" 
+                                             disabled="#{(traba36aGeneradorOficiosBacking.reporte eq 3)}" readonly="true" >
+                                    <p:ajax event="change" process="@this ind_go loc_go rep_go dataTableResults" update=" dataTableResults:buttonImprimir" listener="#{traba36aGeneradorOficiosBacking.handleChange}"  />  
+                                </p:inputText>
+                                <p:outputLabel value="N/Oficio" for="ndo_go" />
+                                <p:message for="ndo_go" display="text"/>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="loc_go" label="Ubicación" value="#{traba36aGeneradorOficiosBacking.ubicacion}"
+                                             required="true"
+                                             disabled="#{(traba36aGeneradorOficiosBacking.reporte eq 3)}" >
+                                    <p:ajax event="change" process="@this ind_go ndo_go rep_go dataTableResults" update=" dataTableResults:buttonImprimir" listener="#{traba36aGeneradorOficiosBacking.handleChange}" />  
+                                </p:inputText>
+                                <p:outputLabel value="Ubicación" for="loc_go" />
+                                <p:message for="loc_go" display="text"/>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield" >
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ind_go" 
+                                            disabled="#{traba36aGeneradorOficiosBacking.reporte gt 0}"
+                                            value="#{traba36aGeneradorOficiosBacking.entraA}"
+                                            required="true" requiredMessage="La fecha es obligatoria"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true"
+                                            showOn="button" mindate="01/01/1917"   style="white-space: nowrap;">
+                                    <p:ajax event="dateSelect" process="@this loc_go ndo_go rep_go dataTableResults" update=" dataTableResults:buttonImprimir" listener="#{traba36aGeneradorOficiosBacking.handleChange}" /> 
+                                    <p:ajax event="change" process="@this loc_go ndo_go rep_go dataTableResults" update=" dataTableResults:buttonImprimir" listener="#{traba36aGeneradorOficiosBacking.handleChange}" />
+                                </p:calendar>
+                                <p:outputLabel value="Fecha de Entrevista" for="ind_go" />
+                                <p:message for="ind_go" display="text"/>
+                            </h:panelGroup>
+
+                        </p:panelGrid>
+                        <p:outputLabel/>
+                        <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-12" styleClass="ui-fluid ui-panelgrid-blank form-group ">
+                            <h:panelGroup styleClass="md-inputfield"  >
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ent_go" label="Empresa" value="#{traba36aGeneradorOficiosBacking.enterprise}" validator="selectOneMenuValidator">
+                                    <f:selectItem itemLabel="Seleccione la Empresa"  itemValue=" "  noSelectionOption="false"  />  
+                                    <f:selectItems value="#{empre04Backing.empre04List}" var="emp" itemLabel="#{''.concat(emp.cvemp).concat(' | ').concat(emp.mdemp).concat(' | ').concat(emp.noemp)}" itemValue="#{emp.cvemp}"/>
+                                    <p:ajax event="change"  process="@this rep_go generadorOficiosForm"  update="results_go panelForm:dataTableResults:selectedCount" listener="#{traba36aGeneradorOficiosBacking.handleChange}" /> 
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Empresa: No/Emp | Complejo | Nombre de la Empresa" for="ent_go" />
+                                <p:message for="ent_go" display="text"/>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:commandButton  id="processCommandButton" value=">"  
+                                          styleClass="white-button">
+                            <p:ajax process="@this ind_go loc_go ndo_go rep_go dataTableResults" update="results dataTableResults:buttonImprimir generadorOficiosForm" listener="#{traba36aGeneradorOficiosBacking.handleChange}"  /> 
+                        </p:commandButton>
+                    </p:panelGrid>
+                </div>
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank ">
+                    <p:panel header="Imprimir oficios del aspirante que actualmente esta registrando">
+                        <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" >
+                            <label>Haga clic en el boton</label>
+                        </p:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" update="growl results_go panelForm:dataTableResults:selectedCount" value="Mostrar Aspirante Actual" class="red-btn"  
+                                             actionListener="#{traba36aGeneradorOficiosBacking.retrieveTraba36aListFolio(traba36aWizardBacking.selectedTraba36aWiz.fxtraA)}">
+                                <p:ajax process="ent_go per_go" update="results_go growl"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:panel>
+                    <p:panel header="Busqueda de Aspirantes por periodos y Empresa">
+                        <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" >
+                            <p:selectOneRadio id="per_go" value="#{traba36aGeneradorOficiosBacking.period}"  
+                                              layout="responsive" columns="4" 
+                                              valueChangeListener="#{traba36aGeneradorOficiosBacking.retrieveTraba36aListPeriod}" style="text-align: center;  white-space: nowrap;">
+                                <f:selectItem itemLabel="Este año" itemValue="year" />
+                                <f:selectItem itemLabel="Este Mes" itemValue="month" />
+                                <f:selectItem itemLabel="Esta Semana" itemValue="week" />
+                                <f:selectItem itemLabel="Hoy" itemValue="day"  />
+                                <f:ajax event="change" execute="ent_go" listener="#{traba36aGeneradorOficiosBacking.handleChange}" render="results_go growl panelForm:dataTableResults:selectedCount"/>
+                            </p:selectOneRadio>
+                        </p:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" update="growl results_go panelForm:dataTableResults:selectedCount" value="Buscar" class="red-btn"  
+                                             actionListener="#{traba36aGeneradorOficiosBacking.retrieveTraba36aListPeriod}">
+                                <p:ajax process="ent_go per_go" update="results_go growl"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:panel>
+                    <p:panel header="Busqueda de Aspirantes por Rango folios y Empresa">
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sel_folioi" value="#{traba36aGeneradorOficiosBacking.start}"    />
+                                <label>Folio Inicial</label>
+                            </h:panelGroup> 
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sel_foliof" value="#{traba36aGeneradorOficiosBacking.end}"    />
+                                <label>Folio Final</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" update="results_go panelForm:dataTableResults:selectedCount growl" value="Buscar" class="red-btn"  
+                                             actionListener="#{traba36aGeneradorOficiosBacking.retrieveTraba36aListFolios}">
+                                <p:ajax process="ent_go per_go" update="results_go panelForm:dataTableResults:selectedCount growl"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:panel>
+
+                    <p:panel header="Busqueda de Aspirantes por folios separados por coma">
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                            <h:panelGroup styleClass="md-inputfield">
+
+                                <p:inputTextarea  id="sel_folios"  value="#{traba36aGeneradorOficiosBacking.folios}"  rows="1"  style="width: 100%"   pt:data-tooltip="Ingrese los numeros de folios separados por coma. Ej. 1,2" />
+
+                                <label>Lista de folios separados por coma</label>
+                            </h:panelGroup> 
+                        </p:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" update="growl results_go panelForm:dataTableResults:selectedCount" value="Buscar" class="red-btn" 
+                                             actionListener="#{traba36aGeneradorOficiosBacking.retrieveTraba36aStringFolios}">
+                                <p:ajax process="ent_go per_go" update="results_go growl"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:panel>
+
+                    <p:panel header="Busqueda de Aspirantes por Rango de fechas y Empresa">
+                        <p:panelGrid columns="2" layout="grid" styleClass=" ui-panelgrid-blank form-group" >
+                            <h:panelGroup  styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fi_go" value="#{traba36aGeneradorOficiosBacking.startDate}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true"  
+                                            showOn="button" mindate="01/01/1917"  style="white-space: nowrap;" />
+                                <label>Inicio</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="en_go" value="#{traba36aGeneradorOficiosBacking.endDate}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true"  
+                                            showOn="button" mindate="01/01/1917"   style="white-space: nowrap;"/>
+                                <label>Fin</label>
+
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" update="growl results_go panelForm:dataTableResults:selectedCount" value="Buscar" class="red-btn" 
+                                             actionListener="#{traba36aGeneradorOficiosBacking.retrieveTraba36aListFechas()}">
+                                <p:ajax process="ent_go per_go" update="results_go growl"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:panel>
+
+                    <p:panel header="Busqueda de Aspirantes por Nombre"> 
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ap_go" autocomplete="true" 
+                                             value="#{traba36aGeneradorOficiosBacking.ap}" pt:data-tooltip="Apellido Paterno del Aspirante"  />
+                                <label>Apellido Paterno:</label>
+                            </h:panelGroup>
+                            <h:panelGroup  styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="am_go" autocomplete="true" 
+                                             value="#{traba36aGeneradorOficiosBacking.am}" pt:data-tooltip="Apellido Materno del Aspirante"  />
+                                <label>Apellido Materno:</label>
+                            </h:panelGroup>
+                            <h:panelGroup  styleClass="md-inputfield">
+
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="n_go" autocomplete="true" 
+                                             value="#{traba36aGeneradorOficiosBacking.n}" pt:data-tooltip="Nombre(s) del Aspirante" />
+                                <label>Nombre(s):</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" update="growl results_go panelForm:dataTableResults:selectedCount" value="Buscar" class="red-btn" 
+                                             actionListener="#{traba36aGeneradorOficiosBacking.retrieveTraba36aListNombre}">
+                                <p:ajax process="ent_go per_go" update="results_go growl"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:panel>
+
+                    <p:panel header="Busqueda de Aspirantes por RFC"> 
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="rfc_go" autocomplete="true" 
+                                             validatorMessage="NO es un RFC Valido"
+                                             value="#{traba36aGeneradorOficiosBacking.rfc}" 
+                                             mask="aaaa999999***" maxlength="13" autoClear="false" 
+                                             slotChar=""
+                                             pt:data-tooltip="RFC del Aspirante" 
+                                             >
+                                    <f:validateLength minimum="10" ></f:validateLength>
+                                </p:inputMask>
+                                <label>RFC:</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" update="growl results_go panelForm:dataTableResults:selectedCount" value="Buscar" class="red-btn" 
+                                             actionListener="#{traba36aGeneradorOficiosBacking.retrieveTraba36aListRfc}">
+                                <p:ajax process="ent_go per_go" update="growl results_go panelForm:dataTableResults:selectedCount"/>
+                            </p:commandButton>
+                        </f:facet>
+                    </p:panel>
+                </p:panelGrid>
+            </p:panel>
+        </h:panelGroup>
+    </ui:composition>
+</html>

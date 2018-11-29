@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Ausencias, Permisos, Retardos, Incapacidades, Vacaciones, etc"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{apriv25BackingBean.prepareCreate()}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm" enctype="multipart/form-data">
+                <p:toolbar>
+                    <f:facet name="left"><ui:include src="headerApriv.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton  type="submit" value="Registrar" update="panelForm growl" id="submit" action="#{apriv25BackingBean.go(2)}" actionListener="#{apriv25BackingBean.register()}"  icon="ui-icon-person"/>
+                        <p:commandButton update="growl" action="/secured/contratos/aprivList.xhtml?faces-redirect=true" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Nuevo ausencias, permisos, retardos, incapacidades, vacaciones, etc" id="panel" collapsed="true" />
+                <p:tabView>
+                    <p:tab title="Datos del Contrato">
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-10,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup>
+                                <p:panelGrid columns="4" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" style="margin-left: -14px !important;" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ntcto" value="#{apriv25BackingBean.newApriv25.ntapr}" readonly="true" />
+                                        <label>N/Trabajador</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rfcto" value="#{apriv25BackingBean.newApriv25.rfapr}" readonly="true" />
+                                        <label>RFC/Trabajador</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" style="margin-left: -14px !important;" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apcto" value="#{apriv25BackingBean.newApriv25.nnapr}" readonly="true" />
+                                        <label>Nombre</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:lightBox rendered="#{apriv25BackingBean.newApriv25.pfapr.length() gt 0 || not apriv25BackingBean.newApriv25.pfapr eq null }"> 
+                                    <h:outputLink value="#{bundle.PathRelativeFull}#{apriv25BackingBean.newApriv25.pfapr}" title="Fotografia de #{apriv25BackingBean.newApriv25.nnapr}" rendered="#{apriv25BackingBean.newApriv25.pfapr.length() gt 0 and apriv25BackingBean.newApriv25.pfapr ne null }" >                                
+                                        <h:graphicImage class="w3-card-4 " value="#{bundle.PathRelativeShort}#{apriv25BackingBean.newApriv25.pfapr}" style="height: 70px;" />                            
+                                    </h:outputLink>
+                                </p:lightBox>                               
+                                <h:graphicImage class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout" style="height: 70px;" rendered="#{apriv25BackingBean.newApriv25.pfapr.length() eq 0 || apriv25BackingBean.newApriv25.pfapr eq null }" />                           
+                            </h:panelGroup>
+                        </p:panelGrid>                        
+                        <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-4,ui-grid-col-4,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nucto" value="#{apriv25BackingBean.newApriv25.nuapr}" readonly="true" />
+                                <label>N/Contrato</label>
+                            </h:panelGroup> 
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sscto" value="#{apriv25BackingBean.newApriv25.ssapr}" readonly="true" />
+                                <p:outputLabel value="Status del Contrato" for="sscto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="fscto" value="#{apriv25BackingBean.newApriv25.fsapr}" readonly="true" >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <p:outputLabel value="Fecha Status Contrato" for="fscto" />
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="secto" value="#{sedes53Backing.getSedes53RequestString(apriv25BackingBean.newApriv25.esapr)}" readonly="true" />
+                                <p:outputLabel value="Complejo" for="secto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvcto" value="#{apriv25BackingBean.newApriv25.ceapr}" readonly="true" />
+                                <p:outputLabel value="Clave Empresa" for="cvcto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="necto" value="#{apriv25BackingBean.newApriv25.neapr}" readonly="true" />
+                                <label>Empresa</label>
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ndcto" value="#{apriv25BackingBean.newApriv25.ndapr}" readonly="true" />
+                                <p:outputLabel value="Clave Departamento" for="ndcto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nbcto" value="#{apriv25BackingBean.newApriv25.deapr}" readonly="true" />
+                                <label>Departamento</label>
+                            </h:panelGroup>                            
+                            <p:outputLabel value=""/>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cscto" value="#{apriv25BackingBean.newApriv25.csapr}" readonly="true" />
+                                <label>Clave Sección</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nscto" value="#{apriv25BackingBean.newApriv25.seapr}" readonly="true" />
+                                <label>Nombre Sección</label>
+                            </h:panelGroup>                            
+                            <p:outputLabel value=""/>
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cccto" value="#{apriv25BackingBean.newApriv25.ccapr}" readonly="true" />
+                                <p:outputLabel value="Clave Categoría" for="cccto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cacto" value="#{apriv25BackingBean.newApriv25.caapr}" readonly="true" />
+                                <label>Categoría</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxcto" value="#{apriv25BackingBean.newApriv25.sxapr}" readonly="true" />
+                                <label>Sueldo Diario ($)</label>
+                            </h:panelGroup>                           
+                            <p:outputLabel value=""/>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tucto" value="#{apriv25BackingBean.newApriv25.ctapr}" readonly="true" />
+                                <p:outputLabel value="Clave Turno" for="tucto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ttcto" value="#{apriv25BackingBean.newApriv25.noapr}" readonly="true" />
+                                <label>Nombre Turno</label>
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tccto" value="#{apriv25BackingBean.newApriv25.tcapr}" readonly="true" />
+                                <p:outputLabel value="Clave Tipo de Contrato" for="tccto" />
+                            </h:panelGroup>                           
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nccto" value="#{apriv25BackingBean.newApriv25.coapr}" readonly="true" />
+                                <label>Tipo de Contrato</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="incto" value="#{apriv25BackingBean.newApriv25.icapr}" readonly="true" >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <p:outputLabel value="Inicio Contrato" for="incto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tecto" value="#{apriv25BackingBean.newApriv25.fcapr}" readonly="true" >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <p:outputLabel value="Termino Contrato" for="tecto" />
+                            </h:panelGroup>                        
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Ausencia: #{apriv25BackingBean.newApriv25.tiapr}">
+                        <f:facet name="actions">
+                        </f:facet>
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-6,ui-grid-col-6" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="faapr" value="#{apriv25BackingBean.newApriv25.faapr}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                            mask="true" mindate="01/01/1917" />
+                                <label>Fecha Inicio</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="haapr" value="#{apriv25BackingBean.newApriv25.haapr}" pattern="HH:mm" timeOnly="true"  />
+                                <label>Hora Inicio</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ftapr" value="#{apriv25BackingBean.newApriv25.ftapr}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                            mask="true" mindate="01/01/1917" />
+                                <label>Fecha Termino</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="htapr" value="#{apriv25BackingBean.newApriv25.htapr}" pattern="HH:mm" timeOnly="true"  />
+                                <label>Hora Termino</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="diapr" value="#{apriv25BackingBean.newApriv25.diapr}" />
+                                <label>Número de Días</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-7" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="w1apr" title="Tipo de Ausencia" value="#{apriv25BackingBean.newApriv25.w1apr}" required="true" requiredMessage="Debe seleccionar un tipo de ausencia" >
+                                    <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{apriv25BackingBean.listTapri16}" var="tap" itemLabel="#{tap.detap}" itemValue="#{tap.hmtap}"/>
+                                    <p:ajax event="change" process="@this" update="fileAusencia panelAusencia fileUploadAusencia" />
+                                </p:selectOneMenu>
+                                <p:outputLabel for="w1apr" value="Tipo de Ausencia" />
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <h:panelGroup  id="panelAusencia" >
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{apriv25BackingBean.newApriv25.w1apr.length() gt 0}">
+                                <p:panelGrid id="fileAusencia" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                                
+                                    <p:fileUpload id="fileUploadAusencia" 
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                  invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                  label="#{bundle.LblDOCEXP}"
+                                                  uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="fileAusencia"
+                                                  auto="true" required="true" requiredMessage="Debe proporcionar el archivo"
+                                                  rendered="#{apriv25BackingBean.newApriv25.p1apr.length() eq 0 || apriv25BackingBean.newApriv25.p1apr eq null}"
+                                                  value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                        <h:panelGroup rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension eq 'pdf' }">
+                                            <div id="ui-graphicimage">
+                                                <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{''.concat(fileUploadBean.webFolder).concat(fileUploadBean.fileName)}');" style="height: 140px;max-height: 140px" 
+                                                                value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" />
+                                            </div>
+                                        </h:panelGroup>
+                                        <p:lightBox id="lightBoxFileUpload1" rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension ne 'pdf' }" > 
+                                            <h:outputLink value="#{bundle.PathRelativeFull}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" title="Ausencia de #{apriv25BackingBean.newApriv25.nnapr}" > 
+                                                <h:graphicImage id="imageFileUpload1" class=" w3-card-4" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" style="height: 140px;max-height: 140px" />
+                                            </h:outputLink>
+                                        </p:lightBox>
+                                        <f:attribute name="rootFolderAttr" value="#{apriv25BackingBean.newApriv25.rfapr}/"></f:attribute>
+                                        <f:attribute name="fileTypeAttr" value="#{apriv25BackingBean.newApriv25.w1apr}"></f:attribute>
+                                        <f:attribute name="idAttr" value="#{apriv25BackingBean.newApriv25.rfapr}"></f:attribute>
+                                        <f:attribute name="ownBackingAttr" value="#{'apriv25BackingBean'}"></f:attribute>
+                                        <f:attribute name="ownVariableBackingAttr" value="#{'setP1apr'}"></f:attribute>
+                                        <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                    </p:fileUpload>                               
+                                    <h:panelGroup rendered="#{apriv25BackingBean.newApriv25.p1apr}">
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" onclick="rcPdfViewForm1();" style="height: 140px;max-height: 140px" 
+                                                            value="#{bundle.PathRelativeShort}#{apriv25BackingBean.newApriv25.p1apr}" />                                     
+                                            <p:remoteCommand id="rcPdfViewForm1" name="rcPdfViewForm1" oncomplete="PF('pdfViewDialog').show();" update="pdfViewForm" 
+                                                             actionListener="#{mediaBean.getPdf(apriv25BackingBean.newApriv25.p1apr)}"/>                                   
+                                        </div>
+                                    </h:panelGroup>
+                                    <p:lightBox rendered="#{!apriv25BackingBean.newApriv25.f1apr}"> 
+                                        <h:outputLink value="#{bundle.PathRelativeFull}#{apriv25BackingBean.newApriv25.p1apr}" title="Ausencia de #{apriv25BackingBean.newApriv25.nnapr}" rendered="#{apriv25BackingBean.newApriv25.p1apr.length() gt 0 and apriv25BackingBean.newApriv25.p1apr ne null }" > 
+                                            <div id="ui-graphicimage">
+                                                <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px;" value="#{bundle.PathRelativeShort}#{apriv25BackingBean.newApriv25.p1apr}" />
+                                            </div>
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <p:commandButton type="submit" value="Borrar" rendered="#{apriv25BackingBean.newApriv25.p1apr.length() gt 0 and apriv25BackingBean.newApriv25.p1apr ne null}"
+                                                     icon="ui-icon-delete" class="red-btn" 
+                                                     actionListener="#{apriv25BackingBean.updateApriv25File('p1apr')}"
+                                                     update="panelForm growl" >
+                                    </p:commandButton>
+                                </p:panelGrid>
+                            </p:panelGrid>
+                        </h:panelGroup>
+                    </p:tab>
+                    <p:tab title="Justificante">
+                        <f:facet name="actions">
+                        </f:facet>
+                        <p:panelGrid columns="1" layout="grid"  styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-selectonemenu" >
+                                <p:outputLabel for="juapr" value="Justificante" style=" margin-top: -20px;  color: #3F51B5;" />
+                                <p:selectOneRadio id="juapr" value="#{apriv25BackingBean.newApriv25.juapr}" columns="2"  
+                                                  style="text-align: center;  white-space: nowrap;" >
+                                    <f:selectItem itemLabel="Si" itemValue="SI" />
+                                    <f:selectItem itemLabel="No" itemValue="NO" />
+                                </p:selectOneRadio>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="djapr" value="#{apriv25BackingBean.newApriv25.djapr}" />
+                                <label>Datos Justificante</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:panelGrid id="fileJustificante" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                                
+                                <p:fileUpload id="fileUploadJustificante" 
+                                              allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                              invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                              label="#{bundle.LblDOCEXP}"
+                                              uploadLabel="#{bundle.LblUpload}"
+                                              cancelLabel="#{bundle.LblCancel}"
+                                              update="fileJustificante"
+                                              auto="true" required="true" requiredMessage="Debe proporcionar el archivo"
+                                              rendered="#{apriv25BackingBean.newApriv25.p2apr.length() eq 0 || apriv25BackingBean.newApriv25.p2apr eq null}"
+                                              value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                    <h:panelGroup rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension eq 'pdf' }">
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{''.concat(fileUploadBean.webFolder).concat(fileUploadBean.fileName)}');" style="height: 140px;max-height: 140px" 
+                                                            value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" />
+                                        </div>
+                                    </h:panelGroup>
+                                    <p:lightBox id="lightBoxFileUpload2" rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension ne 'pdf' }" > 
+                                        <h:outputLink value="#{bundle.PathRelativeFull}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" title="Justificante de #{apriv25BackingBean.newApriv25.nnapr}" > 
+                                            <h:graphicImage id="imageFileUpload2" class=" w3-card-4" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" style="height: 140px;max-height: 140px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <f:attribute name="rootFolderAttr" value="#{apriv25BackingBean.newApriv25.rfapr}/"></f:attribute>
+                                    <f:attribute name="fileTypeAttr" value="#{apriv25BackingBean.newApriv25.w2apr}"></f:attribute>
+                                    <f:attribute name="idAttr" value="#{apriv25BackingBean.newApriv25.rfapr}"></f:attribute>
+                                    <f:attribute name="ownBackingAttr" value="#{'apriv25BackingBean'}"></f:attribute>
+                                    <f:attribute name="ownVariableBackingAttr" value="#{'setP2apr'}"></f:attribute>
+                                    <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                </p:fileUpload>                               
+                                <h:panelGroup rendered="#{apriv25BackingBean.newApriv25.p2apr}">
+                                    <div id="ui-graphicimage">
+                                        <h:graphicImage class="card ui-shadow-5" onclick="rcPdfViewForm2();" style="height: 140px;max-height: 140px" 
+                                                        value="#{bundle.PathRelativeShort}#{apriv25BackingBean.newApriv25.p2apr}" />                                     
+                                        <p:remoteCommand id="rcPdfViewForm2" name="rcPdfViewForm2" oncomplete="PF('pdfViewDialog').show();" update="pdfViewForm" 
+                                                         actionListener="#{mediaBean.getPdf(apriv25BackingBean.newApriv25.p2apr)}"/>                                   
+                                    </div>
+                                </h:panelGroup>
+                                <p:lightBox rendered="#{!apriv25BackingBean.newApriv25.f2apr}"> 
+                                    <h:outputLink value="#{bundle.PathRelativeFull}#{apriv25BackingBean.newApriv25.p2apr}" title="Justificante de #{apriv25BackingBean.newApriv25.nnapr}" rendered="#{apriv25BackingBean.newApriv25.p2apr.length() gt 0 and apriv25BackingBean.newApriv25.p2apr ne null }" > 
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px;" value="#{bundle.PathRelativeShort}#{apriv25BackingBean.newApriv25.p2apr}" />
+                                        </div>
+                                    </h:outputLink>
+                                </p:lightBox>
+                                <p:commandButton type="submit" value="Borrar" rendered="#{apriv25BackingBean.newApriv25.p2apr.length() gt 0 and apriv25BackingBean.newApriv25.p2apr ne null}"
+                                                 icon="ui-icon-delete" class="red-btn" 
+                                                 actionListener="#{apriv25BackingBean.updateApriv25File('p2apr')}"
+                                                 update="panelForm growl" >
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Reanudación de actividades">
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-6,ui-grid-col-6" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-selectonemenu" >
+                                <p:outputLabel for="reapr" value="Reanudación de actividades" style=" margin-top: -20px;  color: #3F51B5;" />
+                                <p:selectOneRadio id="reapr" value="#{apriv25BackingBean.newApriv25.reapr}" columns="2"  
+                                                  style="text-align: center;  white-space: nowrap;" >
+                                    <f:selectItem itemLabel="Si" itemValue="SI" />
+                                    <f:selectItem itemLabel="No" itemValue="NO" />
+                                </p:selectOneRadio>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fpapr" value="#{apriv25BackingBean.newApriv25.fpapr}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                            mask="true" mindate="01/01/1917" />
+                                <label>Fecha Programada Reanuda APRIV</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="frapr" value="#{apriv25BackingBean.newApriv25.frapr}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                            mask="true" mindate="01/01/1917" />
+                                <label>Fecha Real de Reanudacion</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="hrapr" value="#{apriv25BackingBean.newApriv25.hrapr}" pattern="HH:mm" timeOnly="true"  />
+                                <label>Hora Real Reanudacón</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="vpapr" value="#{apriv25BackingBean.newApriv25.vpapr}" />
+                                <label>Vacaciones. Período</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:panelGrid id="fileReanudacion" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                                
+                                <p:fileUpload id="fileUploadReanudacion" 
+                                              allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                              invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                              label="#{bundle.LblDOCEXP}"
+                                              uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="fileReanudacion"
+                                              auto="true" required="true" requiredMessage="Debe proporcionar el archivo"
+                                              rendered="#{apriv25BackingBean.newApriv25.p3apr.length() eq 0 || apriv25BackingBean.newApriv25.p3apr eq null}"
+                                              value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                    <h:panelGroup rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension eq 'pdf' }">
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{''.concat(fileUploadBean.webFolder).concat(fileUploadBean.fileName)}');" style="height: 140px;max-height: 140px" 
+                                                            value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" />
+                                        </div>
+                                    </h:panelGroup>
+                                    <p:lightBox id="lightBoxFileUpload3" rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension ne 'pdf' }" > 
+                                        <h:outputLink value="#{bundle.PathRelativeFull}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" title="Reanudacion de #{apriv25BackingBean.newApriv25.nnapr}" > 
+                                            <h:graphicImage id="imageFileUpload3" class=" w3-card-4" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" style="height: 140px;max-height: 140px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <f:attribute name="rootFolderAttr" value="#{apriv25BackingBean.newApriv25.rfapr}/"></f:attribute>
+                                    <f:attribute name="fileTypeAttr" value="#{apriv25BackingBean.newApriv25.w3apr}"></f:attribute>
+                                    <f:attribute name="idAttr" value="#{apriv25BackingBean.newApriv25.rfapr}"></f:attribute>
+                                    <f:attribute name="ownBackingAttr" value="#{'apriv25BackingBean'}"></f:attribute>
+                                    <f:attribute name="ownVariableBackingAttr" value="#{'setP3apr'}"></f:attribute>
+                                    <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                </p:fileUpload>                               
+                                <h:panelGroup rendered="#{apriv25BackingBean.newApriv25.p3apr}">
+                                    <div id="ui-graphicimage">
+                                        <h:graphicImage class="card ui-shadow-5" onclick="rcPdfViewForm3();" style="height: 140px;max-height: 140px" 
+                                                        value="#{bundle.PathRelativeShort}#{apriv25BackingBean.newApriv25.p3apr}" />                                     
+                                        <p:remoteCommand id="rcPdfViewForm3" name="rcPdfViewForm3" oncomplete="PF('pdfViewDialog').show();" update="pdfViewForm" 
+                                                         actionListener="#{mediaBean.getPdf(apriv25BackingBean.newApriv25.p3apr)}"/>                                   
+                                    </div>
+                                </h:panelGroup>
+                                <p:lightBox rendered="#{!apriv25BackingBean.newApriv25.f3apr}"> 
+                                    <h:outputLink value="#{bundle.PathRelativeFull}#{apriv25BackingBean.newApriv25.p3apr}" title="Reanudacion de #{apriv25BackingBean.newApriv25.nnapr}" rendered="#{apriv25BackingBean.newApriv25.p3apr.length() gt 0 and apriv25BackingBean.newApriv25.p3apr ne null }" > 
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px;" value="#{bundle.PathRelativeShort}#{apriv25BackingBean.newApriv25.p3apr}" />
+                                        </div>
+                                    </h:outputLink>
+                                </p:lightBox>
+                                <p:commandButton type="submit" value="Borrar" rendered="#{apriv25BackingBean.newApriv25.p3apr.length() gt 0 and apriv25BackingBean.newApriv25.p3apr ne null}"
+                                                 icon="ui-icon-delete" class="red-btn" 
+                                                 actionListener="#{apriv25BackingBean.updateApriv25File('p3apr')}"
+                                                 update="panelForm growl" >
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Observaciones">
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputTextarea  rows="8" id="obdocA" value="#{apriv25BackingBean.newApriv25.obapr}" />
+                                <label>Observaciones</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

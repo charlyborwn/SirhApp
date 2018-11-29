@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Ayuda"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" >
+                <!-- Datos Generales -->
+                <p:panel header="Archivo de ayuda">
+                    <p:toolbar class="noprint">
+                        <f:facet name="right">
+                            <p:commandButton value="Generar" action="#{mediaBean.generatePrintOutput}" update="read" />
+                        </f:facet>
+                    </p:toolbar>
+                </p:panel>
+                <p:outputPanel id="read">
+                    <p:media value="#{mediaBean.media}" width="100%" height="590"  player="pdf"  />
+                </p:outputPanel>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

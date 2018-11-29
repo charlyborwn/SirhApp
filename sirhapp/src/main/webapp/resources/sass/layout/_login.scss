@@ -1,0 +1,93 @@
+.login-body {
+    background:  url("\#{resource['ultima-layout:images/login/7223168066_bcb1d8b9a4_b.png']}") top left no-repeat #f7f7f7;
+    background-size: 100% auto;
+}
+
+.g-recaptcha {
+  margin-left: 20px;transform:scale(0.74);-webkit-transform:scale(0.74);transform-origin:0 0;-webkit-transform-origin:0 0;
+}
+
+.login-panel {
+    text-align: center;
+    width: 350px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    
+    .ui-g {
+        .ui-g-12 {
+            padding: 10px 10px;
+            
+            .ui-button {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+.login-footer {
+    
+    width:100%;
+    
+    font:status-bar;
+    text-align: center;
+    vertical-align: central;
+
+    color: #FFFFFF; 
+    background-color: #d4d4d4;
+    background:black;
+
+    font-weight:bold;
+    position:fixed!important;
+    bottom:0;          /*to the bottom of the window*/
+    left:0;            /*and to the left of the window.*/
+
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";       /* IE 8 */
+    filter: alpha(opacity=70);  /* IE 5-7 */
+    -moz-opacity: 0.7;          /* Netscape */
+    -khtml-opacity: 0.7;        /* Safari 1.x */
+    opacity: 0.7;             /* Good browsers */
+    white-space: nowrap;
+    text-align:center;
+    visibility:visible;
+}
+
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { 
+    .login-body {
+        background:  url("\#{resource['ultima-layout:images/login/7223168066_bcb1d8b9a4_b.png']}") top left no-repeat #f7f7f7; 
+        background-size: 100% auto;
+    }
+   
+}
+
+@media (max-width: 1024px) {
+    .login-panel {
+        text-align: center;
+        min-height: 440px;
+        margin: 100px auto 0 auto;
+
+    }
+}
+
+@media (max-width: 640px) {
+    .login-panel {
+        text-align: center;
+        width: 300px;
+        min-height: 440px;
+
+        margin: 75px auto 0 auto;
+        
+        .ui-g {
+            .ui-g-12 {
+                padding: 10px 10px;
+                
+                .ui-button {
+                    margin-top: 10px
+                }
+            }
+        }
+    }
+}

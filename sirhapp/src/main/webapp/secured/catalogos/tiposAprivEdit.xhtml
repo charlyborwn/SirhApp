@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">>
+    <f:metadata>
+        <f:event listener="#{tapri16Backing.getTapri16Request(userSessionBean.idtap)}" type="preRenderView" rendered="#{userSessionBean.idtap gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm">
+            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+            <p:toolbar>
+                <f:facet name="left">
+                </f:facet>
+                <f:facet name="right">
+                    <p:commandButton type="submit" update="growl" value="Actualizar" action="#{tapri16Backing.go(2)}" actionListener="#{tapri16Backing.updateTapri16()}" icon="ui-icon-update">
+                    </p:commandButton> 
+                    <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" icon="ui-icon-delete" >
+                    </p:commandButton>
+                    <p:commandButton update="growl" action="#{tapri16Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                    </p:commandButton>
+                    <!--Secciones-->
+                    <section id="secAll">
+                        <!--Seccion Dialogo Eliminar-->
+                        <section id="secEliminar">
+                            <div class="ui-g">
+                                <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <p:outputLabel style="color:black;" />
+                                        <f:facet name="footer">
+                                            <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                <p:commandButton value="Cancelar" update="growl" onclick="PF('eliminar').hide();"  />
+                                                <p:commandButton type="submit" update="growl" value="Eliminar" action="#{tapri16Backing.go(2)}" actionListener="#{tapri16Backing.deleteTapri16()}"  oncomplete="PF('eliminar').hide();" class="red-btn">
+                                                    <f:setPropertyActionListener target="#{userSessionBean.idtap}"
+                                                                                 value="#{-1}" />
+                                                </p:commandButton>
+                                            </p:panelGrid>
+                                        </f:facet>  
+                                    </h:panelGrid>
+                                </p:dialog>
+                            </div>
+                        </section>
+                    </section>
+                </f:facet>
+            </p:toolbar>
+            <p:panel header="Actualizar el Tipo de Ausencia" id="panel" >
+                <h:panelGroup >
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="grtapemail" value="#{selectedTapri16.grtap}" readonly="true" style="text-transform: capitalize;" />
+                            <label>Grupo del Tipo de Asuencia</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="detap" value="#{selectedTapri16.detap}" />
+                            <label>Descripción del Tipo de Asuencia</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="hmtap" value="#{selectedTapri16.hmtap}" maxlength="6"  />
+                            <label>Homoclave del Tipo de Asuencia</label>
+                        </h:panelGroup></p:panelGrid>
+                </h:panelGroup>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

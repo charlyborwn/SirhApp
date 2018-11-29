@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Agregar Articulos"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton  type="submit" value="Agregar Registro" update="panelForm" id="submit" action="#{catin44Backing.go(2)}" actionListener="#{catin44AddBacking.register()}"  icon="ui-icon-person"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Agregar un nuevo Articulo" id="panel" >
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield" style="width: 111%;">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cecin" value="#{newCatin44.cecin}" label="Clave de Empresa" required="true"  requiredMessage="La Empresa es Requerida">
+                                <f:selectItem itemLabel="Seleccione la Empresa" itemValue=" " noSelectionOption="true"/>
+                                <f:selectItems value="#{empre04Backing.getEmpre04List()}" var="emp" itemLabel="#{''.concat(emp.cvemp).concat(' | ').concat(emp.noemp)}" itemValue="#{emp.cvemp}"/>
+                                <p:ajax event="valueChange" process="@this" update="necin" listener="#{catin44AddBacking.handleChange}" />
+                            </p:selectOneMenu>
+                            <label>Clave de Empresa</label>
+                            <p:message for="cecin" display="text"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="necin" value="#{newCatin44.necin}" readonly="true" />
+                            <label>Nombre Empresa</label>
+                            <p:message for="necin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="arcin" value="#{newCatin44.arcin}" label="Descripcion" required="true" />
+                            <p:outputLabel for="arcin" value="Descripción"/> 
+                            <p:message for="arcin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="macin" value="#{newCatin44.macin}" label="Marca" required="true"/>
+                            <p:outputLabel for="macin" value="Marca"/> 
+                            <p:message for="macin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mocin" value="#{newCatin44.mocin}" label="Modelo" required="true"/>
+                            <p:outputLabel for="mocin" value="Modelo"/> 
+                            <p:message for="mocin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cocin" value="#{newCatin44.cocin}" label="Color" required="true"/>
+                            <p:outputLabel for="cocin" value="Color"/> 
+                            <p:message for="cocin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tacin" value="#{newCatin44.tacin}" label="Talla" required="true"/>
+                            <p:outputLabel for="tacin" value="Talla"/> 
+                            <p:message for="tacin" display="text"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

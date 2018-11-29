@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Ausencias, Permisos, Retardos, Incapacidades, Vacaciones, etc"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" rendered="#{userSessionBean.contrato gt 0}">
+                <p:toolbar>
+                    <f:facet name="left"><ui:include src="headerApriv.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="/secured/contratos/contratoView.xhtml?faces-redirect=true" process="@this" value="Cancelar" icon="ui-icon-home">
+                        </p:commandButton> 
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup  id="results" class="table-responsive">
+                    <p:panel rendered="#{!contr27BackingBean.active}">
+                        <h:outputText id="informationMessage" 
+                                      value="El contrato fue eliminado previamente, la informacion no se puede mostrar." 
+                                      class="informationMessage">
+
+                        </h:outputText>
+                    </p:panel>
+                    <p:dataTable var="apriv25" value="#{apriv25BackingBean.listApriv25}" selectionMode="single" reflow="true"
+                                 selection="#{apriv25BackingBean.selectedApriv25}" rowKey="#{apriv25.idapr}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['apriv.EmptyList']}"
+                                 rendered="#{contr27BackingBean.active}">
+
+                        <p:ajax event="rowSelect"   update="aprivCreateButton aprivViewButton aprivEditButton"/>
+                        <p:ajax event="rowUnselect" update="aprivCreateButton aprivViewButton aprivEditButton"/>
+
+                        <f:facet name="header">
+                            <h:outputText value="#{userSessionBean.contratoTapriv}" />
+                        </f:facet>
+                        <p:column headerText="Tipo Ausencia">
+                            <h:outputText value="#{apriv25.tiapr}" />
+                        </p:column>
+                        <p:column headerText="Ausencia">
+                            <h:outputText value="#{apriv25BackingBean.getTapri16Detap(apriv25.tiapr,apriv25.w1apr)}" />
+                        </p:column>
+                        <p:column headerText="Fecha Inicio">
+                            <h:outputText value="#{apriv25.faapr}" >
+                                <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Fecha Termino">
+                            <h:outputText value="#{apriv25.ftapr}" >
+                                <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="aprivCreateButton" icon="ui-icon-plus" value="#{bundle.Create}" update="growl" action="/secured/contratos/aprivCreate.xhtml?faces-redirect=true" rendered="#{!userSessionBean.contratoTapriv.equals('TODOS')}" />
+                            <p:commandButton type="submit" process="@form" id="aprivViewButton" icon="ui-icon-search" value="#{bundle.View}" update="growl" action="/secured/contratos/aprivView.xhtml?faces-redirect=true" actionListener="#{apriv25BackingBean.prepareSelect()}" disabled="#{empty apriv25BackingBean.selectedApriv25}" />
+                            <p:commandButton type="submit" process="@form" id="aprivEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" update="growl" action="/secured/contratos/aprivEdit.xhtml?faces-redirect=true" actionListener="#{apriv25BackingBean.prepareSelect()}" disabled="#{empty apriv25BackingBean.selectedApriv25}" />
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

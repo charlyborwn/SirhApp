@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Datos Generales de Aspirantes"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:toolbar rendered="#{userSessionBean.aspirante.length() gt 0}">
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton action="#{traba36aBacking.go(1)}"  process="@this" value="Editar" rendered="#{not empty selectedTraba36a and traba36aBacking.active eq true}"  icon="ui-icon-update"/>
+                        <p:commandButton  onclick="PF('activar').show();" process="@this"  value="Activar"  type="button" rendered="#{traba36aBacking.active eq false}" class="red-btn" icon="ui-icon-unarchive"/>
+                        <p:commandButton action="#{userSessionBean.goBusquedaAspirantes(2)}" process="@this" value="Cancelar" icon="ui-icon-home" actionListener="#{userSessionBean.setAspirante(null)}"/>
+                        <section id="secActivar">
+                            <div class="ui-g">
+                                <p:dialog id="activar" widgetVar="activar" header="¿Deseas activar el registro?" closeOnEscape="true" modal="true"  >
+                                    <h:panelGrid columns="1" cellpadding="5">
+                                        <p:outputLabel value="" style="color:black;" />
+                                        <f:facet name="footer">
+                                            <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                <p:commandButton value="Cancelar" update="growl" onclick="PF('activar').hide();"  />
+                                                <p:commandButton type="submit" update="growl" value="Activar" action="#{traba36aBacking.go(1)}" actionListener="#{traba36aBacking.activateTraba36a()}"  oncomplete="activar.hide();" class="red-btn">
+                                                    <f:setPropertyActionListener target="#{userSessionBean.aspirante}" 
+                                                                                 value="#{selectedTraba36a.rftraA}" />
+                                                </p:commandButton>
+                                            </p:panelGrid>
+                                        </f:facet>
+                                    </h:panelGrid>
+                                    <p:ajax event="close" update="activar" />
+                                </p:dialog>
+                            </div>
+                        </section>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Datos Generales">
+                    <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-8,ui-grid-col-4" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup>
+                            <p:panelGrid columns="3" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-6" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield" >
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36a.fxtraA}" readonly="true" />
+                                    <label>Folio:</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield"  style="white-space: nowrap;">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36a.cctraA}" readonly="true"  >
+                                        <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy HH:mm" />
+                                    </p:inputText>
+                                    <label>F/Solicitud</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" layout="block">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="estraA" value="#{selectedTraba36a.estraA}"  />
+                                    <label>Especialidad Laboral</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield" >
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nctraA" value="#{selectedTraba36a.nctraA}" readonly="true"/>
+                                    <label>Nombre Completo</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-3,ui-grid-col-2,ui-grid-col-3,ui-grid-col-4" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36a.fntraA}" readonly="true"  >
+                                        <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                    </p:inputText>
+                                    <label>F/Nacimiento</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="sel_edtraA" value="#{selectedTraba36a.edtraA}" required="true" requiredMessage="El Nombre es Obligatorio"/>
+                                    <label>Edad</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" >
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36a.setraA}" readonly="true"/>
+                                    <label>Sexo</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" layout="block">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="natraA" value="#{selectedTraba36a.natraA}" />
+                                    <label>Nacionalidad</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                            <p:panelGrid columns="3" layout="grid" columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rftraA" value="#{selectedTraba36a.rftraA}" readonly="true" size="13"/>
+                                    <label>RFC</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cutraA" value="#{selectedTraba36a.cutraA}" readonly="true" size="18"/>
+                                    <label>CURP</label>
+                                </h:panelGroup>
+                                <h:panelGroup styleClass="md-inputfield" >
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ritraA" value="#{selectedTraba36a.ritraA}" readonly="true" size="11"/>
+                                    <label>IMSS</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                        </h:panelGroup>
+                        <h:panelGroup>
+                            <p:lightBox rendered="#{selectedTraba36a.patraA.length() gt 0 || not selectedTraba36a.patraA eq null }"> 
+                                <h:outputLink value="#{bundle.PathRelativeFull}#{selectedTraba36a.patraA}"  title="Fotografia de #{selectedTraba36a.nctraA}" rendered="#{selectedTraba36a.patraA.length() gt 0 and selectedTraba36a.patraA ne null }" >
+                                    <h:graphicImage class="w3-card-4 " value="#{bundle.PathRelativeShort}#{selectedTraba36a.patraA}"  style="width: 50%;"   />
+                                </h:outputLink>
+                            </p:lightBox>
+                            <p:lightBox rendered="#{selectedTraba36a.patraA.length() eq 0 || selectedTraba36a.patraA eq null }"> 
+                                <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Sin Fotografia del aspirante #{selectedTraba36a.nctraA}" rendered="#{selectedTraba36a.patraA.length() eq 0 or selectedTraba36a.patraA eq null}" > 
+                                    <h:graphicImage  class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 340px"  />
+                                </h:outputLink>
+                            </p:lightBox>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="sitraA" value="#{sedes53Backing.getSedes53RequestString(selectedTraba36a.sitraA)}" />
+                                <label>Complejo</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="eitraA" value="#{empre04Backing.getEmpre04RequestString(selectedTraba36a.eitraA)}" />
+                                <label>Empresa</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="ditraA" value="#{depar03Backing.getDepar03Request(selectedTraba36a.eitraA,selectedTraba36a.ditraA)}" />
+                                <label>Departamento</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="oetraA" value="#{selectedTraba36a.oetraA}" />
+                                <label>Numero de Oficio Entrevista</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36a.entraA}" readonly="true"  >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <label>F/Entrevista</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="retraA" value="#{selectedTraba36a.retraA}" />
+                                <label>Resultado Entrevista</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:outputLabel value=""/>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36a.extraA}" readonly="true"  >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <label>F/Exámen Médico</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="rxtraA" value="#{selectedTraba36a.rxtraA}" />
+                                <label>Resultado Exámen Médico</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="odtraA" value="#{selectedTraba36a.odtraA}" />
+                                <label>Numero de Oficio Documentación</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="octraA" value="#{selectedTraba36a.octraA}" />
+                                <label>Numero de Oficio Envio Contratación</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36a.prtraA}" readonly="true"  >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <label>F/Historica</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

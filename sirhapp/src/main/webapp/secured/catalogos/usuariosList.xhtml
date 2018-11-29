@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Gestion de Usuarios"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{usuar24Backing.getListUsuar24()}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton  update="growl" action="#{usuar24Backing.go(4)}" process="@this" value="Lista de Usuarios Inactivos"  class="red-btn" icon="ui-icon-unarchive"/>
+                        <p:commandButton update="growl" action="#{userSessionBean.goSistema(1)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel id="panel" header="Listas de usuarios" collapsed="true"/>
+                <h:panelGroup  id="results">
+                    <p:dataTable id="usuarioListForm" var="usuar24" value="#{usuar24Backing.usuar24List}" selectionMode="single" reflow="true" class="table-responsive"
+                                 selection="#{usuar24Backing.selectedUsuar24}" rowKey="#{usuar24.cvusu}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['usuar24.EmptyList']}">
+
+                        <p:ajax event="rowSelect"   update="usuarioCreateButton usuarioViewButton usuarioEditButton"/>
+                        <p:ajax event="rowUnselect" update="usuarioCreateButton usuarioViewButton usuarioEditButton"/>
+
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="usuarioCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}"  action="#{usuar24Backing.go(0)}" update="usuarioListForm"  />
+                            <p:commandButton type="submit" process="@form" id="usuarioViewButton" icon="ui-icon-search" value="#{bundle.View}" action="#{usuar24Backing.go(3)}" actionListener="#{userSessionBean.setCvusu(usuar24Backing.selectedUsuar24.cvusu)}" update="usuarioListForm" disabled="#{empty usuar24Backing.selectedUsuar24}"/>
+                            <p:commandButton type="submit" process="@form" id="usuarioEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" action="#{usuar24Backing.go(1)}" actionListener="#{userSessionBean.setCvusu(usuar24Backing.selectedUsuar24.cvusu)}" update="usuarioListForm" disabled="#{empty usuar24Backing.selectedUsuar24}"/>
+                        </f:facet>
+
+                        <p:column headerText="Usuario" width="80">
+                            <h:outputText value="#{usuar24.cvusu}" />
+                        </p:column>
+
+                        <p:column headerText="Nombre" width="30%">
+                            <h:outputText value="#{usuar24.ncusu}" />
+                        </p:column>
+
+                        <p:column headerText="Empresa en la que labora el usuario" >
+                            <h:outputText value="#{usuar24.neusu}" />
+                        </p:column>
+
+                        <p:column headerText="Complejo Permitido" >
+                            <h:outputText value="#{sedes53Backing.getSedes53RequestString(usuar24.seusu)}" />
+                        </p:column>
+
+                        <p:column headerText="Empresa Permitida" >
+                            <h:outputText value="#{empre04Backing.getEmpre04RequestString(usuar24.emusu)}" />
+                        </p:column>
+
+                        <p:column headerText="Departamento Permitido">
+                            <h:outputText value="#{depar03Backing.getDepar03Request(usuar24.emusu,usuar24.deusu)}" />
+                        </p:column>
+
+                        <p:column headerText="Nivel de Acceso" >
+                            <h:outputText value="#{niacc33Backing.getNiacc33RequestRol(usuar24.nausu)}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

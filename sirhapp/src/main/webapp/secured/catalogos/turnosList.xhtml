@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{turno22Backing.getListTurno22()}" type="preRenderView"/>
+    </f:metadata>
+    <ui:define name="content">
+        <h:form id="panelForm">
+            <p:toolbar>
+                <f:facet name="left"></f:facet>
+                <f:facet name="right">
+                    <span class="ui-separator" style="padding-right: 5px;">
+                        <span class="fa fa-ellipsis-v SoftGray" />
+                    </span>
+                    <p:commandButton update="growl" action="#{turno22Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                </f:facet>
+            </p:toolbar>
+            <h:panelGroup  id="results" class="table-responsive">
+                <p:dataTable var="turno22" value="#{turno22Backing.turno22List}" selectionMode="single" reflow="true"
+                             selection="#{turno22Backing.selectedTurno22}" rowKey="#{turno22.idtur}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['turno22.EmptyList']}">
+
+                    <f:facet name="header">
+                        <div style="position: relative; width: 100%;">
+                            <div style="width: 100%; text-align: left;">Turnos
+                                <div  style="position: absolute; width: 100%;text-align: right; top:-6px;">
+                                    <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                                        <p:commandButton action="#{turno22Backing.go(0)}"  process="@this" icon="ui-icon-plus" value="Nuevo" style="width:auto;" styleClass="blue-btn flat" />
+                                    </c:if>
+                                </div>
+                            </div>
+
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="Clave Turno/Tripulación">
+                        <h:outputText value="#{turno22.cvtur}" />
+                    </p:column>
+                    <p:column headerText="Nombre Turno/Tripulación">
+                        <h:outputText value="#{turno22.notur}" />
+                    </p:column>
+                    <p:column width="190" headerText="Acciones">
+                        <p:commandButton action="#{turno22Backing.go(3)}" actionListener="#{userSessionBean.setIdtur(turno22.idtur)}"   
+                                         style="width:auto;" styleClass="blue-btn flat" 
+                                         value="Seleccionar" process="@this">
+                        </p:commandButton>
+                        <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                            <p:commandButton action="#{turno22Backing.go(1)}"  process="@this"
+                                             style="width:auto;" styleClass="blue-btn flat" 
+                                             value="Editar">
+                                <f:setPropertyActionListener target="#{userSessionBean.idtur}" 
+                                                             value="#{turno22.idtur}" />
+                            </p:commandButton>
+                        </c:if>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

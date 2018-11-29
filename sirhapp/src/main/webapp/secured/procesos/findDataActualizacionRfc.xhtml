@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition> 
+        <p:panel id="panelAspirante"  header="Datos del Aspirante - Haga clic en el boton continuar"  rendered="#{ traba36aUpdateRfcBacking.traba36aList.size() le 2 and selectedTraba36aUpdateRfc.rftraA ne null}">
+            <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-10,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group my-panel">
+                <p:panelGrid columns="2" layout="grid"   styleClass="ui-panelgrid-blank form-group my-panel">
+
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px" >
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.fxtraA}" readonly="true" size="18"/>
+                        <label>Folio:</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.ritraA}" readonly="true" size="18"/>
+                        <label>IMSS</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.rftraA}" readonly="true" size="18"/>
+                        <label>RFC</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.cutraA}" readonly="true" size="18"/>
+                        <label>CURP</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" >
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.nctraA}" readonly="true"/>
+                        <label>Nombre Completo</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.edtraA}" readonly="true" size="18"/>
+                        <label>Edad</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.setraA}" readonly="true" size="18"/>
+                        <label>Sexo</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aUpdateRfc.cctraA}" readonly="true" size="18" >
+                            <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                        </p:inputText>
+                        <label>Fecha de Solicitud</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+
+                <p:lightBox rendered="#{selectedTraba36aUpdateRfc.patraA.length() gt 0 || not selectedTraba36aUpdateRfc.patraA eq null }"> 
+                    <h:outputLink value="#{bundle.PathRelativeFull}#{selectedTraba36aUpdateRfc.patraA}"  title="Fotografia de #{selectedTraba36aUpdateRfc.nctraA}" rendered="#{selectedTraba36aUpdateRfc.patraA.length() gt 0 and selectedTraba36aUpdateRfc.patraA ne null }" >  
+
+                        <h:graphicImage class="w3-card-4 " value="#{bundle.PathRelativeShort}#{selectedTraba36aUpdateRfc.patraA}"  style="height: 140px;max-height: 340px"  />
+
+                    </h:outputLink>
+                </p:lightBox>
+                <p:lightBox rendered="#{selectedTraba36aUpdateRfc.patraA.length() eq 0 || selectedTraba36aUpdateRfc.patraA eq null }"> 
+                    <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Sin Fotografia del aspirante #{selectedTraba36aUpdateRfc.nctraA}" rendered="#{selectedTraba36aUpdateRfc.patraA.length() eq 0 or selectedTraba36aUpdateRfc.patraA eq null}" >  
+
+                        <h:graphicImage  class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 340px"  />
+
+                    </h:outputLink>
+                </p:lightBox>
+
+            </p:panelGrid>
+            <f:facet name="footer">
+                <p:panelGrid  style="text-align: right;" columns="1" layout="grid" styleClass=" ui-panelgrid-blank form-group">
+                    <p:commandButton type="submit" 
+                                             process="@form" 
+                                             id="aspiranteViewButton2" 
+                                             icon="ui-icon-search" 
+                                             value="Continuar"  
+                                             action="/secured/procesos/actualizacionRfc.xhtml?faces-redirect=true"
+                                             actionListener="#{userSessionBean.setAspiranteActualizacionRfc(selectedTraba36aUpdateRfc.rftraA)}" 
+                                             disabled="#{traba36aUpdateRfcBacking.selectedTraba36aUpdateRfc eq null}"/>
+                </p:panelGrid>
+            </f:facet>
+        </p:panel>
+    </ui:composition>
+</html>

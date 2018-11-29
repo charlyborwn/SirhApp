@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="beneficiarioViewDlg" widgetVar="beneficiarioViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Beneficiario">
+            <h:form id="beneficiarioViewForm">
+                <p:panel header="Actualizar datos" rendered="#{traba36aWizardBacking.selectedBenef26aWiz != null}">
+                    <h:panelGroup id="displayBeneficiarioView">
+                        <p:tabView id="tabBeneficiarioView" onTabChange="" activeIndex="#{traba36aWizardBacking.benef26aTab}" style="width: 600px"  >
+                            <p:ajax event="tabChange" listener="#{traba36aWizardBacking.onTabChangeBenef26a}" />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" id="tpbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.tpbenA}" />
+                                        <label>Parentesco</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" id="sebenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.sebenA}" />
+                                        <label>Sexo</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tedocA" value="#{traba36aWizardBacking.selectedBenef26aWiz.fnbenA}" required="true"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917" disabled="true" readonly="true" />
+                                        <label>Fecha de nacimiento</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" id="pobenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.pobenA}">
+                                            <f:convertNumber type="percent" />
+                                        </p:inputText>
+                                        <label>Porcentaje a otorgar</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                                <!-- Nombre Completo del Beneficiario -->                  
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" id="apbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.apbenA}" />
+                                        <label>Apellido Paterno</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup  styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" id="ambenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.ambenA}" />
+                                        <label>Apellido Materno</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup  styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" id="nobenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.nobenA}" />
+                                        <label>Nombre(s)</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea   readonly="true" rows="3" id="obdocA" value="#{traba36aWizardBacking.selectedBenef26aWiz.obbenA }" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab  title="Direccion" >
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:outputLabel for="bensn_dir" value="Vive en el mismo domicilio"/>
+                                    </h:panelGroup>
+                                    <p:selectOneRadio disabled="true" id="bensn_dir" value="#{traba36aWizardBacking.selectedBenef26aWiz.vmbenA}" columns="2"  
+                                                      style="text-align: center;  white-space: nowrap;">
+                                        <f:selectItem itemLabel="Si" itemValue="si" />
+                                        <f:selectItem itemLabel="No" itemValue="no" />
+                                        <f:ajax event="change" execute="bensn_dir" listener="#{traba36aWizardBacking.handleChange}"  render="beneficiarioViewForm"/>
+                                    </p:selectOneRadio>
+                                </p:panelGrid>
+
+                                <p:panelGrid  columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cpbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.cpbenA}" readonly="true" />
+                                        <label>Código Postal</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="pabenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.pabenA}" readonly="true" />
+                                        <label>País</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="esbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.esbenA}" readonly="true" />
+                                        <label>Estado</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="mdbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.mdbenA}" readonly="true" />
+                                        <label>Mun/Del</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="lobenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.lobenA}" readonly="true" />
+                                        <label>Población Pariente</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cobenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.cobenA}" readonly="true" />
+                                        <label>Colonia</label>
+                                    </h:panelGroup>
+                                   <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" id="cabenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.cabenA}" />
+                                        <label>Calle y Número</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"   readonly="true" id="tdbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.tdbenA}" />
+                                        <label>Teléfono Domicilio</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"   readonly="true" id="tcbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.tcbenA}" />
+                                        <label>Teléfono Celular</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true"  id="email" value="#{traba36aWizardBacking.selectedBenef26aWiz.cebenA}"
+                                                     validatorMessage="El correo no tiene el formato correcto"
+                                                     required="false" class="ui-minusculas">
+                                            <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                        </p:inputText>
+                                        <label>Correo Electrónico</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <p:panelGrid  columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  value="#{traba36aWizardBacking.selectedBenef26aWiz.ncbenA}" readonly="true" />
+                                        <label>Nombre</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"   value="#{traba36aWizardBacking.selectedBenef26aWiz.tpbenA}" readonly="true"/>
+                                        <label>Parentesco</label>
+                                    </h:panelGroup>
+
+                                    <p:lightBox rendered="#{traba36aWizardBacking.selectedBenef26aWiz.ptbenA.length() eq 0 || traba36aWizardBacking.selectedBenef26aWiz.ptbenA eq null }"> 
+                                        <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Sin Documento del beneficiario #{traba36aWizardBacking.selectedBenef26aWiz.ncbenA}"  >  
+                                            <h:graphicImage  class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 340px"  />
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <p:lightBox  id="lightBox1" rendered="#{traba36aWizardBacking.selectedBenef26aWiz.ptbenA.length() gt 0 and traba36aWizardBacking.selectedBenef26aWiz.ptbenA ne null}"  > 
+                                        <h:outputLink  value="#{bundle.PathRelativeFull}#{traba36aWizardBacking.selectedBenef26aWiz.ptbenA}"  title="Documento del beneficiario: #{traba36aWizardBacking.selectedBenef26aWiz.ncbenA}"  > 
+                                            <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{traba36aWizardBacking.selectedBenef26aWiz.ptbenA}"  style="width: 200px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+
+                                </p:panelGrid>
+
+
+                            </p:tab>
+
+                        </p:tabView>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton value="#{bundle.Close}" onclick="beneficiarioViewDialog.hide()"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

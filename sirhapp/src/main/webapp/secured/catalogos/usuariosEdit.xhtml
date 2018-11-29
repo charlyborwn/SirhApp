@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Actualizar datos del Usuario"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{usuar24Backing.getUsuar24Request(userSessionBean.cvusu)}" type="preRenderView" rendered="#{userSessionBean.cvusu gt 0}"/>
+        </f:metadata>
+
+        <ui:define name="head">
+            <style type="text/css">
+                .ui-button {
+                    margin-right: 4px;
+                }
+
+                .form-grid td {
+                    padding: 16px 2px;
+                }
+
+                .md-inputfield .ui-selectonemenu > label {
+                    color: transparent;
+                }
+
+                .md-inputfield .ui-selectonemenu.ui-state-filled > label {
+                    color: #212121;
+                }
+            </style>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" enctype="multipart/form-data">
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton onclick="PF('restablecer').show();" value="Restablecer Password" type="button" oncomplete="applyChangeHandler();"  rendered="#{usuar24Backing.active eq true}" class="red-btn"  icon="ui-icon ui-icon-refresh" />
+                        <p:commandButton type="submit" update="panelForm" value="Actualizar" action="#{usuar24Backing.go(2)}" actionListener="#{usuar24Backing.updateUsuar24()}" icon="ui-icon-update" rendered="#{usuar24Backing.active eq true}" />
+                        <p:commandButton value="Eliminar"
+                                         process="@this"
+                                         rendered="#{usuar24Backing.active eq true}"
+                                         oncomplete="authDialogFormParams();" >
+                        </p:commandButton>
+                        <p:remoteCommand id="rcAuthDialogFormParams" name="authDialogFormParams" oncomplete="PF('callAuthDialog').show();"  update="callAuthForm" 
+                                         actionListener="#{loginBean.Params('usuar24Backing','deleteUsuar24',9,'userSessionBean','setCvusu',null,'String')}"/>
+                        <p:commandButton  onclick="PF('activar').show();" process="@this"  value="Activar"  type="button" rendered="#{usuar24Backing.active eq false}" class="red-btn" icon="ui-icon-unarchive"/>
+                        <p:commandButton update="growl" action="#{usuar24Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                        <p:dialog id="activar" widgetVar="activar" header="¿Deseas activar el usuario?" closeOnEscape="true" modal="true"  >
+                            <h:panelGrid columns="1" cellpadding="5">
+                                <p:outputLabel value="" style="color:black;" />
+                                <f:facet name="footer">
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                        <p:commandButton value="Cancelar" update="growl" onclick="PF('activar').hide();"  />
+                                        <p:commandButton type="submit" update="growl" value="Activar" action="#{usuar24Backing.go(2)}" actionListener="#{usuar24Backing.acivateUsuar24()}"  class="red-btn"/>
+                                    </p:panelGrid>
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:dialog>
+                        <p:dialog id="restablecer" widgetVar="restablecer" header="¿Deseas restablecer el password?" closeOnEscape="true" modal="true"  >
+                            <h:panelGrid columns="1" cellpadding="5">
+                                <p:outputLabel value="Nota: Se enviará el password al correo del usuario." style="color:black;" />
+                                <f:facet name="footer">
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                        <p:commandButton value="Cancelar" onclick="PF('restablecer').hide();"  />
+                                        <p:commandButton type="buttom" process="@this"  value="Restablecer" onstart="showStatus();" oncomplete="hideStatus();"  action="#{usuar24Backing.go(2)}" actionListener="#{usuar24RecuperarClaveBacking.RecuperarClave(selectedUsuar24.cousu)}"  class="red-btn"  icon="ui-icon ui-icon-refresh"/>
+                                    </p:panelGrid>
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:dialog>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel id="panel" header="Actualizar datos del Usuario">
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:focus for="email"/>
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="email" value="#{selectedUsuar24.cousu}" size="40"
+                                         tabindex="1" 
+                                         pt:placeholder="Dirección de correo electrónico"
+                                         validatorMessage="El correo no tiene el formato correcto"
+                                         required="true" requiredMessage="El correo es requerido"
+                                         class="ui-minusculas"
+                                         >
+                                <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                            <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-envelope">*</i></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="username"  value="#{selectedUsuar24.cvusu}"  size="40"
+                                         required="true" requiredMessage="Usuario requerido"
+                                         validatorMessage="El nombre de usuario no cumple la longitud minima requerida" maxlength="10" 
+                                         pt:placeholder="Usuario" 
+                                         style="text-transform: capitalize;"
+                                          readonly="true">
+                                <f:validateLength maximum="10" minimum="2" />
+                            </p:inputText>
+                            <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-user"></i></p:outputLabel>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apusu" value="#{selectedUsuar24.apusu}"  />
+                            <label>Apellido Paterno</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="amusu" value="#{selectedUsuar24.amusu}"  />
+                            <label>Apellido Materno</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nousu" value="#{selectedUsuar24.nousu}"  />
+                            <label>Nombre</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                    <h:panelGroup styleClass="md-inputfield" style="width: 111%;">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="neusu" value="#{selectedUsuar24.neusu}" label="Empresa en la que labora el usuario" required="true"  requiredMessage="La Empresa a la que pertenece el usuario">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                <f:selectItems value="#{empre04Backing.getListEmpre04All()}" var="emp" itemLabel="#{''.concat(emp.cvemp).concat(' | ').concat(emp.noemp)}" itemValue="#{emp.noemp}"/>
+                                <p:ajax event="change" process="@this" update="@form" listener="#{usuar24Backing.handleChange}" />
+                            </p:selectOneMenu>
+                            <label>Empresa en la que labora el usuario</label>
+                            <p:message for="neusu" display="text"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <h:panelGroup styleClass="md-inputfield" style="width: 111%;">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="seusu" value="#{selectedUsuar24.seusu}" label="Complejo Permitido"  required="true"  requiredMessage="La Sede asignada al Usuario es Requerida">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                <f:selectItem itemLabel="0 | TODOS" itemValue="0"/>
+                                <f:selectItems value="#{sedes53Backing.sedes53List}" var="sed" itemLabel="#{''.concat(sed.cvsed).concat(' | ').concat(sed.desed)}" itemValue="#{sed.cvsed}"/>
+                                <p:ajax event="change" process="@this" update="@form" listener="#{usuar24Backing.handleChange}" />
+                            </p:selectOneMenu>
+                            <label>Complejo Permitido</label>
+                            <p:message for="seusu" display="text"/>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield" style="width: 111%;">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="emusu" value="#{selectedUsuar24.emusu}" label="Empresa Permitida" required="true"  requiredMessage="La Empresa asignada al Usuario es Requerida">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                <f:selectItem itemLabel="0 | TODAS" itemValue="0"/>
+                                <f:selectItems value="#{empre04Backing.getEmpre04List(selectedUsuar24.seusu)}" var="emp" itemLabel="#{''.concat(emp.cvemp).concat(' | ').concat(emp.noemp)}" itemValue="#{emp.cvemp}"/>
+                                <p:ajax event="change" process="@this" update="@form" listener="#{usuar24Backing.handleChange}" />
+                            </p:selectOneMenu>
+                            <label>Empresa Permitida</label>
+                            <p:message for="emusu" display="text"/>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield" style="width: 111%;">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="deusu" value="#{selectedUsuar24.deusu}" label="Departamento Permitido" required="true"  requiredMessage="El Departamento asigando al Usuario es Requerido">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                <f:selectItem itemLabel="0 | TODOS" itemValue="00000"/>
+                                <f:selectItems value="#{depar03Backing.getDepar03List(selectedUsuar24.seusu, selectedUsuar24.emusu)}" var="dep" itemLabel="#{''.concat(dep.codep).concat(' | ').concat(dep.nodep)}" itemValue="#{dep.codep}"/>
+                                <p:ajax event="change" process="@this" update="@form" listener="#{usuar24Backing.handleChange}" />
+                            </p:selectOneMenu>
+                            <label>Departamento Permitido</label>
+                            <p:message for="deusu" display="text"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:panelGrid columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield" style="width: 111%;">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="nausu" value="#{selectedUsuar24.nausu}" label="Nivel de Acceso del Usuario" required="true"  requiredMessage="El Nivel de Acceso del Usuario es Requerido">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                <f:selectItems value="#{niacc33Backing.niacc33ListNania}" var="nia" itemLabel="#{''.concat(nia.cpnia).concat(' | ').concat(nia.npnia)}" itemValue="#{nia.cpnia}"/>
+                                <p:ajax event="change" process="@this" update="@form" listener="#{usuar24Backing.handleChange}" />
+                            </p:selectOneMenu>
+                            <label>Nivel de Acceso del Usuario</label>
+                            <p:message for="nausu" display="text"/>
+                        </h:panelGroup>
+                    </p:panelGrid> 
+                </p:panel>
+                <p:panel header="Nivel de Acceso activo y el Historico" collapsed="true"/>
+                <p:dataTable  id="dataTableResults" var="niacc33" value="#{selectedUsuar24.niacc33List}" disabledSelection="true" reflow="true" class="table-responsive"
+                              rowKey="#{niacc33.idnia}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['sanci.EmptyList']}" >
+                    <p:column headerText="Usuario">
+                        <h:outputText value="#{selectedUsuar24.cvusu}" />
+                    </p:column>
+                    <p:column headerText="Nivel Acceso">
+                        <h:outputText value="#{niacc33Backing.getNiacc33RequestRol(niacc33.nania)}" />
+                    </p:column>
+                    <p:column headerText="Fecha Ultima Atctualización">
+                        <h:outputText value="#{niacc33.fenia}" >
+                            <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Activo">
+                        <h:outputText value="#{niacc33.stnia}" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            <ui:include src="/WEB-INF/system/callAuthDialog.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>

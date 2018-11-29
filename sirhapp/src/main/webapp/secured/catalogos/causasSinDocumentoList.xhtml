@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Causas Sin Documento"></h:outputText>
+        </ui:define>
+
+
+        <f:metadata>
+            <f:event listener="#{razon02Backing.getListRazon02()}" type="preRenderView"/>
+        </f:metadata>
+        <ui:define name="content">
+            <h:form id="panelForm">
+
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:toolbar>
+                            <f:facet name="left">
+                            </f:facet>
+                            <f:facet name="right">
+                              <span class="ui-separator" style="padding-right: 5px;">
+                                    <span class="fa fa-ellipsis-v SoftGray" />
+                                </span>
+                                <p:commandButton update="growl" action="#{razon02Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                                </p:commandButton> 
+
+                            </f:facet>
+                        </p:toolbar>
+                        <p:panel id="panel" >
+                            <h:panelGroup  id="results" class="table-responsive">
+                                <p:dataTable var="razon02" value="#{razon02Backing.razon02List}" selectionMode="single" reflow="true"
+                                             selection="#{razon02Backing.selectedRazon02}" rowKey="#{razon02.idraz}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['razon02.EmptyList']}">
+
+                                    <f:facet name="header">
+                                        <div style="position: relative; width: 100%;">
+                                            <div style="width: 100%; text-align: left;">Catalogo de Causas Sin Documento
+                                                <div  style="position: absolute; width: 100%;text-align: right; top:-6px;">
+                                                    <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                                                        <p:commandButton action="#{razon02Backing.go(0)}"  process="@this" icon="ui-icon-plus" value="Nuevo" style="width:auto;" styleClass="blue-btn flat" >
+                                                        </p:commandButton>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </f:facet>
+
+                                    <p:column headerText="Descripción Razón sin Documento">
+                                        <h:outputText value="#{razon02.deraz}" />
+                                    </p:column>
+
+                                    <p:column width="190" headerText="Acciones">
+                                        <p:commandButton action="#{razon02Backing.go(3)}" actionListener="#{userSessionBean.setIdraz(razon02.idraz)}"   
+                                                         style="width:auto;" styleClass="blue-btn flat" 
+                                                         value="Seleccionar" process="@this">
+                                        </p:commandButton>
+                                        <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                                            <p:commandButton action="#{razon02Backing.go(1)}"  process="@this"
+                                                             style="width:auto;" styleClass="blue-btn flat" 
+                                                             value="Editar">
+                                                <f:setPropertyActionListener target="#{userSessionBean.idraz}" 
+                                                                             value="#{razon02.idraz}" />
+                                            </p:commandButton>
+                                        </c:if>
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGroup>
+
+                        </p:panel>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

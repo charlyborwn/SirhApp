@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Datos Documentación de Aspirantes"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{docum29aBacking.getListDocum29a(userSessionBean.aspirante)}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="documentacionListForm">
+                <p:toolbar rendered="#{userSessionBean.aspirante.length() gt 0}">
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton type="submit" process="@form" id="documentacionCreateButtonHeader" icon="ui-icon-plus"   value="#{bundle.Create}"  update=":documentacionCreateForm" oncomplete="PF('documentacionCreateDialog').show(); " actionListener="#{docum29aAddBacking.prepareCreateDocum29a}"/>
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="#{traba36aBacking.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup  class="table-responsive">
+                    <p:dataGrid id="documentacionDatalist" var="docum29a" value="#{docum29aBacking.docum29aList}" columns="3" layout="grid"
+                                rows="6" paginator="true" style="" emptyMessage="#{msg['documentaciona.EmptyList']}" >
+                        <p:panel style="text-align:center;">
+                            <f:facet name="header">
+                                <h:outputText value="#{docum29a.tddocA}" />
+                            </f:facet>
+                            <f:facet name="footer">
+                                <p:commandButton type="submit" process="@form" id="documentacionViewButton" icon="ui-icon-search" value="#{bundle.View}" actionListener="#{docum29aBacking.prepareSelectDocum29a(docum29a)}"  update="documentacionViewForm"  oncomplete="PF('documentacionViewDialog').show(); " />
+                                <p:commandButton type="submit" process="@form" id="documentacionEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" actionListener="#{docum29aBacking.prepareSelectDocum29a(docum29a)}"  update="documentacionEditForm"  oncomplete="PF('documentacionEditDialog').show(); " />
+                                <p:commandButton type="submit" process="@form" id="documentacionDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{docum29aBacking.deleteDocum29a(docum29a)}" update="documentacionDatalist,growl" />
+                            </f:facet>
+                            <h:panelGroup rendered="#{docum29a.ftdocA}">
+                                <div id="ui-graphicimage">
+                                    <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{docum29a.padocA}');"  style="height: 140px;max-height: 140px" 
+                                                    value="#{bundle.PathRelativeShort}#{docum29a.padocA}" />
+                                </div>
+                            </h:panelGroup>
+                            <p:lightBox rendered="#{!docum29a.ftdocA}">
+                                <h:outputLink value="#{bundle.PathRelativeFull}#{docum29a.padocA}"  title="#{docum29a.cadocA}" >  
+                                    <div id="ui-graphicimage">
+                                        <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px" value="#{bundle.PathRelativeShort}#{docum29a.padocA}"  />
+                                    </div>
+                                </h:outputLink>
+                            </p:lightBox>
+                            <p:lightBox rendered="#{docum29a.padocA.length() eq 0 || docum29a.padocA eq null }"> 
+                                <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Sin Documento" rendered="#{docum29a.padocA.length() eq 0 or docum29a.padocA eq null}" >  
+                                    <div id="ui-graphicimage">
+                                        <h:graphicImage class="card ui-shadow-5" name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 140px"  />
+                                    </div>
+                                </h:outputLink>
+                            </p:lightBox>
+                        </p:panel>
+                    </p:dataGrid>
+                    <pe:remoteCommand id="applyDataCommand" name="applyData" process="@this" update="pdfViewForm"
+                                      oncomplete="PF('pdfViewDialog').show();" 
+                                      actionListener="#{mediaBean.printMethodParams}" >
+                        <pe:methodSignature parameters="java.lang.String" />  
+                        <pe:methodParam name="fileName"/>  
+                    </pe:remoteCommand>
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="documentacionCreate.xhtml"/>
+            <ui:include src="documentacionEdit.xhtml"/>
+            <ui:include src="documentacionView.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>

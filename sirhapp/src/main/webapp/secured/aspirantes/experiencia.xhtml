@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Datos Experiencia de Aspirantes"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="experienciaListForm">
+                <p:toolbar rendered="#{userSessionBean.aspirante.length() gt 0}">
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="#{traba36aBacking.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup  class="table-responsive">
+                    <p:dataTable 
+                        id="experienciaDatalist" value="#{exper31aBackingBean.exper31aList}" var="exper31a" 
+                        selectionMode="single" selection="#{exper31aBackingBean.selectedExper31aBean}"
+                        paginator="true"
+                        rowKey="#{exper31a.idexpA}" 
+                        rows="10"
+                        rowsPerPageTemplate="10,20,30,40,50"
+                        emptyMessage="#{msg['experienciaa.EmptyList']}" >
+
+                        <p:ajax event="rowSelect"   update="experienciaCreateButton experienciaViewButton experienciaEditButton experienciaDeleteButton"/>
+                        <p:ajax event="rowUnselect" update="experienciaCreateButton experienciaViewButton experienciaEditButton experienciaDeleteButton"/>
+
+                        <p:column headerText="Empresa Experiencia">
+                            <h:outputText value="#{exper31a.emexpA}" />
+                        </p:column>
+                        <p:column headerText="Cargo en Experiencia">
+                            <h:outputText value="#{exper31a.ceexpA}" />
+                        </p:column>
+                        <p:column headerText="Inicio Experiencia">
+                            <h:outputText value="#{exper31a.inexpA}" >
+                                <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Término Experiencia">
+                            <h:outputText value="#{exper31a.teexpA}" >
+                                <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Causa de Separación">
+                            <h:outputText value="#{exper31a.csexpA}" />
+                        </p:column>
+                        <p:column headerText="Salario Percibido Mensual($)">
+                            <h:outputText value="#{exper31a.sxexpA}" >
+                                <f:convertNumber type="currency" locale="#{localeBean.locale}"  currencySymbol="$" />
+                            </h:outputText>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="experienciaCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}"  actionListener="#{exper31aBackingBean.prepareCreateExper31a()}" update=":experienciaCreateForm" oncomplete="PF('experienciaCreateDialog').show(); "/>
+                            <p:commandButton type="submit" process="@form" id="experienciaViewButton" icon="ui-icon-search" value="#{bundle.View}" actionListener="#{exper31aBackingBean.prepareSelectExper31a()}" update="experienciaViewForm"  oncomplete="PF('experienciaViewDialog').show(); " disabled="#{empty exper31aBackingBean.selectedExper31aBean}"/>
+                            <p:commandButton type="submit" process="@form" id="experienciaEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" actionListener="#{exper31aBackingBean.prepareSelectExper31a()}" update="experienciaEditForm"  oncomplete="PF('experienciaEditDialog').show(); " disabled="#{empty exper31aBackingBean.selectedExper31aBean}"/>
+                            <p:commandButton type="submit" process="@form" id="experienciaDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{exper31aBackingBean.deleteExper31a()}" update="experienciaDatalist,growl" disabled="#{empty exper31aBackingBean.selectedExper31aBean}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="experienciaCreate.xhtml"/>
+            <ui:include src="experienciaEdit.xhtml"/>
+            <ui:include src="experienciaView.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>

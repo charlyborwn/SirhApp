@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition> 
+        <p:panel id="Trabajador"  header="Datos del Trabajador - Haga clic en el boton continuar"  rendered="#{ contr27Backing.traba36List.size() le 2 and selectedTraba36Cto.nutra > 0}">
+            <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-10,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group my-panel">
+                <p:panelGrid columns="2" layout="grid"   styleClass="ui-panelgrid-blank form-group my-panel">
+
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px" >
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.nutra}" readonly="true" size="18"/>
+                        <label>Clave del Trabajador</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.ritra}" readonly="true" size="18"/>
+                        <label>IMSS</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.rftra}" readonly="true" size="18"/>
+                        <label>RFC</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.cutra}" readonly="true" size="18"/>
+                        <label>CURP</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" >
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.nctra}" readonly="true"/>
+                        <label>Nombre Completo</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.edtra}" readonly="true" size="18"/>
+                        <label>Edad</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.setra}" readonly="true" size="18"/>
+                        <label>Sexo</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.fitra}" readonly="true" size="18" >
+                            <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy HH:mm" />
+                        </p:inputText>
+                        <label>F/Ingreso</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.sstra}" readonly="true" size="18"/>
+                        <label>Status</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield" style="width:170px">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36Cto.fstra}" readonly="true" size="18" >
+                            <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy HH:mm" />
+                        </p:inputText>
+                        <label>F/Status</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+
+                <p:lightBox rendered="#{selectedTraba36Cto.patra.length() gt 0 || not selectedTraba36Cto.patra eq null }"> 
+                    <h:outputLink value="#{bundle.PathRelativeFull}#{selectedTraba36Cto.patra}"  title="Fotografia de #{selectedTraba36Cto.nctra}" rendered="#{selectedTraba36Cto.patra.length() gt 0 and selectedTraba36Cto.patra ne null }" >  
+
+                        <h:graphicImage class="w3-card-4 " value="#{bundle.PathRelativeShort}#{selectedTraba36Cto.patra}"  style="height: 140px;max-height: 340px"  />
+
+                    </h:outputLink>
+                </p:lightBox>
+                <p:lightBox rendered="#{selectedTraba36Cto.patra.length() eq 0 || selectedTraba36Cto.patra eq null }"> 
+                    <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Sin Fotografia del trabajador #{selectedTraba36Cto.nctra}" rendered="#{selectedTraba36Cto.patra.length() eq 0 or selectedTraba36Cto.patra eq null}" >  
+
+                        <h:graphicImage  class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 340px"  />
+
+                    </h:outputLink>
+                </p:lightBox>
+
+            </p:panelGrid>
+            <f:facet name="footer">
+                <p:panelGrid  style="text-align: right;" columns="1" layout="grid" styleClass=" ui-panelgrid-blank form-group">
+
+                    <p:commandButton type="submit" 
+                                     process="@this" 
+                                     id="trabajadorEditButton2" 
+                                     icon="ui-icon-search" 
+                                     value="Continuar"  
+                                     action="/secured/contratos/contratoTrabajador.xhtml?faces-redirect=true"
+                                     actionListener="#{userSessionBean.setContratoTrabajador(selectedTraba36Cto.nutra)}" 
+                                     disabled="#{empty contr27Backing.selectedTraba36Cto}"/>
+                </p:panelGrid>
+            </f:facet>
+        </p:panel>
+    </ui:composition>
+</html>

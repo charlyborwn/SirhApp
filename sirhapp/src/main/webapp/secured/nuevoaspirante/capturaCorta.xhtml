@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Registro de Aspirantes"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" enctype="multipart/form-data">
+                <p:toolbar>
+                    <f:facet name="right">
+                        <p:commandButton action="/secured/empty.xhtml?faces-redirect=true" process="@this" value="Salir" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel style="padding: 0px ;margin: 2px; height:45px" id="botones">
+                    <div class="sirh-nowrap">
+                       <p:commandButton type="button" style="float:left" id="back1" value="Anterior" onclick="PF('wiz').back();" icon="fa fa-chevron-left"
+                                         update="next1 save" rendered="#{traba36aWizardBacking.back}" class="red-btn" > 
+                        </p:commandButton>
+                        <p:commandButton id="save" type="submit"  style="float:right"  icon="fa fa-save" value="" actionListener="#{traba36aWizardBacking.save}" 
+                                         update="panelForm growl" class="green-btn" rendered="#{traba36aWizardBacking.save}"/>
+                        <p:commandButton type="button" style="float:right" id="next1" value="Siguiente" onclick="PF('wiz').next();" icon="fa fa-chevron-right"
+                                         update="back1 save"  rendered="#{traba36aWizardBacking.next}" class="red-btn" >
+                        </p:commandButton>
+                    </div>
+                </p:panel>
+                <p:wizard 
+                    showNavBar="false" 
+                    id="wizard" 
+                    widgetVar="wiz"
+                    flowListener="#{traba36aWizardBacking.onFlowProcessRegistro}">
+                    <!--Nuevo-->
+                    <p:tab id="buscar" title="Buscar">
+                        <ui:include src="./find.xhtml"/>
+                    </p:tab>
+                    <!--Pagina Externa-->
+                    <p:tab id="consisa" title="Consisa">
+                        <ui:include src="./tabConsisa.xhtml"/>
+                    </p:tab>
+                    <!--Nuevo-->
+                    <p:tab id="datos" title="Datos">
+                        <ui:include src="#{traba36aWizardBacking.selectedTraba36aWiz eq null ? './tabDatosNew.xhtml' : './tabDatos.xhtml'}"/>
+                    </p:tab>
+                    <!--Fotografia-->
+                    <p:tab id="fotografia" title="Foto">
+                        <ui:include src="./tabFotografia.xhtml"/>
+                    </p:tab>
+                    <!--Confirmación-->
+                    <p:tab id="confirmacion" title="Fin">
+                        <ui:include src="#{traba36aWizardBacking.currentStep.equals('confirmacion') ? './tabGeneradorOficios.xhtml' : './empty.xhtml'}"/> 
+                    </p:tab>
+                </p:wizard>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

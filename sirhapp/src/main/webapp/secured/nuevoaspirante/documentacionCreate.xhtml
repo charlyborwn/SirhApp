@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+
+        <p:dialog id="documentacionCreateDlg" widgetVar="documentacionCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Documentacion">
+            <h:form id="documentacionCreateForm">
+                <p:panel header="Agregar un nuevo Documento">
+                    <h:panelGroup   id="displayDocumentacionCreate">
+                        <p:accordionPanel style="width: 600px;">
+                            <p:tab title="Documento">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup>
+                                        <p:outputLabel value="Documento" for="tddocA" />
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tddocA" value="#{newDocum29aWiz.tddocA}" required="true" style="margin-bottom:10px;"  >
+                                            <f:selectItem itemLabel="Seleccione el tipo de documento" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tidoc18Backing.tidoc18List}" var="doc" itemLabel="#{doc.notid}" itemValue="#{doc.notid}"/>
+                                            <f:ajax event="change" execute="@this" listener="#{traba36aWizardBacking.prepareFileUpload}" render="documentacionCreateForm fileUploadFotografia"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                    <p:fileUpload id="fileUploadFotografia" allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                  invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                  onstart="showStatus();" oncomplete="hideStatus();"
+                                                  label="#{bundle.LblDOCEXP}"
+                                                  uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="documentacionCreateForm"
+                                                  auto="true" required="true" requiredMessage="Debe proporcionar el archivo"
+                                                  rendered="#{newDocum29aWiz.tddocA.length() gt 0 and traba36aWizardBacking.newDocum29aWiz.padocA.length() eq 0 || traba36aWizardBacking.newDocum29aWiz.padocA eq null}"
+                                                  value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                        <h:panelGroup rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension eq 'pdf' }">
+                                            <div id="ui-graphicimage">
+                                                <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{''.concat(fileUploadBean.webFolder).concat(fileUploadBean.fileName)}');"  style="height: 140px;max-height: 140px" 
+                                                                value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" />
+                                            </div>
+                                        </h:panelGroup>
+                                        <p:lightBox  id="lightBoxFileUpload" rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension ne 'pdf' }"  > 
+                                            <h:outputLink  value="#{bundle.PathRelativeFull}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  title="Documento: #{traba36aWizardBacking.newDocum29aWiz.tddocA}"  > 
+                                                <h:graphicImage id="imageFileUpload" class=" w3-card-4" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" style="height: 140px;max-height: 140px" />
+                                            </h:outputLink>
+                                        </p:lightBox>
+                                        <f:attribute name="rootFolderAttr" value="#{traba36aWizardBacking.rfc}/"></f:attribute>
+                                        <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                        <f:attribute name="fileTypeAttr" value="#{traba36aWizardBacking.newDocum29aWiz.w1docA}"></f:attribute>
+                                        <f:attribute name="idAttr" value="#{traba36aWizardBacking.rfc}"></f:attribute>
+                                        <f:attribute name="ownBackingAttr" value="#{'traba36aWizardBacking'}"></f:attribute>
+                                        <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                    </p:fileUpload>
+                                    <pe:remoteCommand id="applyDataCommand" name="applyData" process="@this" update="pdfViewForm"
+                                                      oncomplete="PF('pdfViewDialog').show();" 
+                                                      actionListener="#{mediaBean.printMethodParams}" >
+                                        <pe:methodSignature parameters="java.lang.String" />  
+                                        <pe:methodParam name="fileName"/>  
+                                    </pe:remoteCommand>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="indocA" value="#{newDocum29aWiz.indocA}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  />
+                                        <label>Inicio de Vigencia</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tedocA" value="#{newDocum29aWiz.tedocA}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  />
+                                        <label>Vigencia</label>
+                                    </h:panelGroup>
+                                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="dedocA" value="#{traba36aWizardBacking.newDocum29aWiz.dedocA}" style="margin-bottom:10px;" >
+                                        <f:selectItem itemLabel="Seleccione la Causa sin documento" itemValue=" " noSelectionOption="true" />
+                                        <f:selectItems value="#{razon02Backing.razon02List}" var="raz" itemLabel="#{raz.deraz}" itemValue="#{raz.deraz}"/>
+                                    </p:selectOneMenu> <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cutraA" value="#{newDocum29aWiz.cadocA}" />
+                                        <label>Características</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Observaciones">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <p:inputTextarea  rows="3" id="obdocA" value="#{newDocum29aWiz.obdocA}" />
+                                </p:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{traba36aWizardBacking.registerDocum29a()}" value="#{bundle.Save}" update="displayDocumentacionCreate,panelForm:documentacionListForm:documentacionDatalist, panelForm:documentacionListForm, growl" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('documentacionCreateDialog').hide(); handleSubmit(args,'documentacionCreateDialog');"  class="red-btn" />
+                            <p:commandButton  value="#{bundle.Cancel}" onclick="PF('documentacionCreateDialog').hide();" />
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

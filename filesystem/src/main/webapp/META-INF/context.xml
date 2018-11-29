@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/sirhapp/files">
+  <Realm appName="FileSystem-jaas" 
+         className="org.apache.catalina.realm.JAASRealm" 
+         roleClassNames="com.hrm.filesystem.security.JAASRolePrincipal" 
+         useContextClassLoader="true" 
+         userClassNames="com.hrm.filesystem.security.JAASUserPrincipal, com.hrm.filesystem.security.JAASPasswordPrincipal"/>
+</Context>

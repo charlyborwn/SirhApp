@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="panelForm">
+            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+            <p:toolbar>
+                <f:facet name="left">
+                </f:facet>
+                <f:facet name="right">
+                    <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                        <p:commandButton  type="submit" value="Agregar Registro" update="panelForm growl" id="submit" action="#{tapri16Backing.go(2)}" actionListener="#{tapri16AddBacking.register()}"  icon="ui-icon-person">
+                        </p:commandButton> 
+                    </c:if>
+                </f:facet>
+            </p:toolbar>
+            <p:panel header="Agregar el Tipo de Ausencia" id="panel" >
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="grtapemail" value="#{newTapri16.grtap}" style="text-transform: capitalize;"/>
+                        <label>Grupo del Tipo de Asuencia</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="detap" value="#{newTapri16.detap}" />
+                        <label>Descripción del Tipo de Asuencia</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="hmtap" value="#{newTapri16.hmtap}" maxlength="6" />
+                        <label>Homoclave del Tipo de Asuencia</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="familiarCreateDlg" widgetVar="familiarCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Familiares">
+            <h:form id="familiarCreateForm">
+                <p:panel header="Agregar un nuevo Familiar" >
+                    <h:panelGroup id="displayFamiliarCreate">
+                        <p:tabView id="tabFamiliarCreate"  activeIndex="#{famil32BackingBean.famil32Tab}"  style="width: 600px">
+                            <p:ajax event="tabChange" listener="#{famil32BackingBean.onTabChangeFamil32}"  process="tabFamiliarCreate" />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-selectonemenu" >
+
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="tpfam" value="#{famil32BackingBean.newFamil32Bean.tpfam}" required="true"   autoWidth="true"  >
+                                            <f:selectItem itemLabel="Seleccione el parentesco" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tipar19Backing.tipar19List}" var="par" itemLabel="#{par.notip}" itemValue="#{par.notip}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Parentesco" for="tpfam" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup  styleClass="md-selectonemenu">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="sefam" value="#{famil32BackingBean.newFamil32Bean.sefam}" required="true"    autoWidth="true" >
+                                            <f:selectItem itemLabel="Seleccione el Sexo" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{sexoo12Backing.sexoo12List}" var="sex" itemLabel="#{sex.nosex}" itemValue="#{sex.nosex}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Sexo" for="sefam" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="orfam" value="#{famil32BackingBean.newFamil32Bean.orfam}" />
+                                        <label>Orden</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apfam" value="#{famil32BackingBean.newFamil32Bean.apfam}"  required="true"   />
+                                        <p:outputLabel value="Apellido Paterno" for="apfam" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="amfam" value="#{famil32BackingBean.newFamil32Bean.amfam}"  required="true"  />
+                                         <p:outputLabel value="Apellido Materno" for="amfam" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nofam" value="#{famil32BackingBean.newFamil32Bean.nofam}"  required="true"   />
+                                        <p:outputLabel value="Nombre(s)" for="nofam" />
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-selectonemenu" >
+                                        <p:outputLabel for="vifam" value="Vive" style=" margin-top: -20px;  color: #3F51B5;" />
+                                        <p:selectOneRadio id="vifam" value="#{famil32BackingBean.newFamil32Bean.vifam}" columns="2"  
+                                                          style="text-align: center;  white-space: nowrap;">
+                                            <f:selectItem itemLabel="Si" itemValue="si" />
+                                            <f:selectItem itemLabel="No" itemValue="no" />
+                                        </p:selectOneRadio>
+
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fnfam" value="#{famil32BackingBean.newFamil32Bean.fnfam}" required="true"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  />
+                                        <p:outputLabel value="Fecha de Nacimiento" for="fnfam" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="offam" value="#{famil32BackingBean.newFamil32Bean.offam}" />
+                                        <label>Ocupación</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield " >
+                                        <p:inputTextarea  rows="3" value="#{famil32BackingBean.newFamil32Bean.obfam}" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Direccion">
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+
+                            </p:tab>
+                        </p:tabView>
+
+
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{famil32BackingBean.registerFamil32()}" value="#{bundle.Save}" update="displayFamiliarCreate,familiarListForm:familiarDatalist,growl" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('familiarCreateDialog').hide(); handleSubmit(args,'familiarCreateDialog');"  class="red-btn" />
+                            <p:commandButton  value="#{bundle.Cancel}" onclick="familiarCreateDialog.hide()" />
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:event listener="#{espec05Backing.getEspec05Request(userSessionBean.idesp)}" type="preRenderView" rendered="#{userSessionBean.idesp gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm" enctype="multipart/form-data">
+            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+            <p:toolbar>
+                <f:facet name="left"> </f:facet>
+                <f:facet name="right">
+                    <p:commandButton type="submit" update="growl" value="Actualizar" action="#{espec05Backing.go(2)}" actionListener="#{espec05Backing.updateEspec05()}" icon="ui-icon-update"/>
+                    <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" icon="ui-icon-delete" />
+                    <p:commandButton update="growl" action="#{espec05Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+
+                    <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:outputLabel style="color:black;" />
+                            <f:facet name="footer">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <p:commandButton value="Cancelar" update="growl" onclick="PF('eliminar').hide();"  />
+                                    <p:commandButton type="submit" update="growl" value="Eliminar" action="#{espec05Backing.go(2)}" actionListener="#{espec05Backing.deleteEspec05()}"  oncomplete="PF('eliminar').hide();" class="red-btn">
+                                        <f:setPropertyActionListener target="#{userSessionBean.idesp}"
+                                                                     value="#{-1}" />
+                                    </p:commandButton>
+                                </p:panelGrid>
+                            </f:facet>  
+                        </h:panelGrid>
+                    </p:dialog>
+
+                </f:facet>
+            </p:toolbar>
+
+            <p:panel header="Actualizar datos del Registro" id="panel" >
+                <h:panelGroup >
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="noesp" value="#{selectedEspec05.noesp}" />
+                            <label>Nombre de la Especialidad</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

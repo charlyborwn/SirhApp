@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Premios y prestaciones"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" rendered="#{userSessionBean.contrato gt 0}">
+                <p:toolbar>
+                    <f:facet name="left"><ui:include src="headerPrypr.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="/secured/contratos/contratoView.xhtml?faces-redirect=true" process="@this" value="Cancelar" icon="ui-icon-home">
+                        </p:commandButton> 
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup  id="results" class="table-responsive">
+                    <p:panel rendered="#{!contr27BackingBean.active}">
+                        <h:outputText id="informationMessage" 
+                                      value="El contrato fue eliminado previamente, la informacion no se puede mostrar." 
+                                      class="informationMessage">
+
+                        </h:outputText>
+                    </p:panel>
+                    <p:dataTable var="prypr34" value="#{prypr34BackingBean.listPrypr34}" selectionMode="single" reflow="true"
+                                 selection="#{prypr34BackingBean.selectedPrypr34}" rowKey="#{prypr34.idpry}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['prypr.EmptyList']}"
+                                 rendered="#{contr27BackingBean.active}">
+
+                        <p:ajax event="rowSelect"   update="pryprCreateButton pryprViewButton pryprEditButton"/>
+                        <p:ajax event="rowUnselect" update="pryprCreateButton pryprViewButton pryprEditButton"/>
+
+                        <f:facet name="header">
+                            <h:outputText value="#{userSessionBean.contratoTprypr}" />
+                        </f:facet>
+                        <p:column headerText="Tipo Premio/Prestación">
+                            <h:outputText value="#{prypr34.tppry}" />
+                        </p:column>
+                        <p:column headerText="Premio/Prestación">
+                            <h:outputText value="#{prypr34BackingBean.getTipyp20Detap(prypr34.tppry,prypr34.w1pry)}" />
+                        </p:column>
+                        <p:column headerText="Fecha Solicitud">
+                            <h:outputText value="#{prypr34.fipry}" >
+                                <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="pryprCreateButton" icon="ui-icon-plus" value="#{bundle.Create}" update="growl" action="/secured/contratos/pryprCreate.xhtml?faces-redirect=true" rendered="#{!userSessionBean.contratoTprypr.equals('TODOS')}" />
+                            <p:commandButton type="submit" process="@form" id="pryprViewButton" icon="ui-icon-search" value="#{bundle.View}" update="growl" action="/secured/contratos/pryprView.xhtml?faces-redirect=true" actionListener="#{prypr34BackingBean.prepareSelect()}" disabled="#{empty prypr34BackingBean.selectedPrypr34}" />
+                            <p:commandButton type="submit" process="@form" id="pryprEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" update="growl" action="/secured/contratos/pryprEdit.xhtml?faces-redirect=true" actionListener="#{prypr34BackingBean.prepareSelect()}" disabled="#{empty prypr34BackingBean.selectedPrypr34}" />
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

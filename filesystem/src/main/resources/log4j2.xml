@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="trace">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd} %d{HH:mm:ss.SSS} - %msg%n"/>
+        </Console>
+        <RollingFile
+            name="ApplicationLog"
+            fileName="${sys:catalina.base}/logs/sirhapp/audit.log"
+            filePattern="${sys:catalina.base}/logs/sirhapp/audit-%d{yyyy-MM-dd}-%i.log.gz"
+            append="true">
+            <PatternLayout>
+                <Pattern>[%-5level] %d{yyyy-MM-dd} %d{HH:mm:ss.SSS} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true" />
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.hrm.filesystem" level="ALL" additivity="false" >
+            <AppenderRef ref="ApplicationLog"/>
+        </Logger>
+        <Root level="ALL">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="ApplicationLog"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <p:panel header="Datos Personales" rendered="#{traba36aWizardBacking.currentStep.equals('personales')}">
+            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="codigopostal"  value="#{selectedDatos28aWiz.cpdatA}" mask="99999" maxlength="5">
+                        <p:ajax event="keyup" listener="#{traba36aWizardBacking.handleChanges}" update="pais estado municipio ciudad colonia" process="@this" />
+                    </p:inputMask>
+                    <label>Código Postal Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup class="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"     id="pais" value="#{selectedDatos28aWiz.padatA}" style="margin-bottom:10px;"  >
+                        <f:selectItem itemLabel="Seleccione el Pais" noSelectionOption="true" />
+                        <f:selectItems  value="#{traba36aWizardBacking.paises}" var="paubi" itemLabel="#{paubi}" itemValue="#{paubi}" />
+                        <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="estado municipio ciudad colonia" process="@this" />
+                    </p:selectOneMenu>
+                    <label>Pais Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup class="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="estado" value="#{selectedDatos28aWiz.esdatA}" style="margin-bottom:10px;" >
+                        <f:selectItem itemLabel="Seleccione el Estado" noSelectionOption="true"  />
+                        <f:selectItems value="#{traba36aWizardBacking.estados}" var="esubi" itemLabel="#{esubi}" itemValue="#{esubi}"/>
+                        <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="municipio ciudad colonia" process="@this" />
+                    </p:selectOneMenu>
+                    <label>Estado Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup class="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="municipio" value="#{selectedDatos28aWiz.mddatA}" style="margin-bottom:10px;" >
+                        <f:selectItem itemLabel="Seleccione el Mun/Del" noSelectionOption="true" />
+                        <f:selectItems value="#{traba36aWizardBacking.municipios}" var="muubi" itemLabel="#{muubi}" itemValue="#{muubi}"/>
+                        <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="ciudad colonia" process="@this" />
+                    </p:selectOneMenu>
+                    <label>Mun/Del Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup class="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="ciudad" value="#{selectedDatos28aWiz.lodatA}" style="margin-bottom:10px;" >
+                        <f:selectItem  itemLabel="Población, Localidad, Ciudad" noSelectionOption="true" />
+                        <f:selectItems value="#{traba36aWizardBacking.ciudades}" var="ciubi" itemLabel="#{ciubi}" itemValue="#{ciubi}"/>
+                        <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="colonia" process="@this" />
+                    </p:selectOneMenu>
+                    <label>Población, Localidad, Ciudad</label>
+                </h:panelGroup>
+
+                <h:panelGroup class="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="colonia" value="#{selectedDatos28aWiz.codatA}" style="margin-bottom:10px;" >
+                        <f:selectItem itemLabel="Seleccione la Colonia" noSelectionOption="true" />
+                        <f:selectItems value="#{traba36aWizardBacking.colonias}" var="coubi" itemLabel="#{coubi}" itemValue="#{coubi}"/>
+                        <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="codigopostal" process="@this" />
+                    </p:selectOneMenu>
+                    <label>Colonia Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cadatA" value="#{selectedDatos28aWiz.cadatA}" />
+                    <label>Calle Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="nedatA" value="#{selectedDatos28aWiz.nedatA}" />
+                    <label>Número Ext Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="nidatA" value="#{selectedDatos28aWiz.nidatA}" />
+                    <label>Número Int Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="r1datA" value="#{selectedDatos28aWiz.r1datA}" />
+                    <label>Referencia 1 Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="r2datA" value="#{selectedDatos28aWiz.r2datA}" />
+                    <label>Referencia 2 Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="thdatA" value="#{selectedDatos28aWiz.thdatA}" styleClass="ui-selectonemenu" >
+                        <f:selectItem itemLabel="Seleccione el Tipo de domicilio" itemValue=" " noSelectionOption="true"/>
+                        <f:selectItems  value="#{tdhab45Backing.tdhab45List}" var="tid" itemLabel="#{tid.dehab}" itemValue="#{tid.dehab}" />
+                    </p:selectOneMenu>
+                    <label>Tipo de domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tddatA" value="#{selectedDatos28aWiz.tddatA}" mask="(99)9999-9999" />
+                    <label>Teléfono de Domicilio</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tcdatA" value="#{selectedDatos28aWiz.tcdatA}" mask="(99)9999-9999" />
+                    <label>Teléfono Celular</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="email" value="#{selectedDatos28aWiz.cedatA}" size="40" 
+                                 validatorMessage="El correo no tiene el formato correcto"
+                                 required="false" class="ui-minusculas">
+                        <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <label>Correo Electrónico</label>
+                </h:panelGroup>
+
+                <h:panelGroup class="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"     id="pndatA" value="#{selectedDatos28aWiz.pndatA}" >
+                        <f:selectItem itemLabel="Seleccione el Pais" noSelectionOption="true" />
+                        <f:selectItems  value="#{ubica23Backing.paises}" var="paubi" itemLabel="#{paubi}" itemValue="#{paubi}" />
+                        <p:ajax event="valueChange" update="endatA" />
+                    </p:selectOneMenu>
+                    <label>País de Nacimiento</label>
+                </h:panelGroup>
+
+                <h:panelGroup class="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="endatA" value="#{selectedDatos28aWiz.endatA}">
+                        <f:selectItem itemLabel="Seleccione el Estado" noSelectionOption="true"  />
+                        <f:selectItems  value="#{ubica23Backing.getEstados(selectedDatos28aWiz.pndatA)}" var="esubi" itemLabel="#{esubi}" itemValue="#{esubi}" />
+                        <p:ajax event="valueChange" update="mndatA" />
+                    </p:selectOneMenu>
+                    <label>Estado donde nació</label>
+                </h:panelGroup>
+
+                <h:panelGroup class="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="mndatA" value="#{selectedDatos28aWiz.mndatA}" >
+                        <f:selectItem itemLabel="Seleccione el Mun/Del" noSelectionOption="true" />
+                        <f:selectItems  value="#{ubica23Backing.getMunicipios(selectedDatos28aWiz.pndatA,selectedDatos28aWiz.endatA)}" var="esubi" itemLabel="#{esubi}" itemValue="#{esubi}" />
+                        <p:ajax event="valueChange" update="lndatA" />
+                    </p:selectOneMenu>
+                    <label>Mun/Del donde nació</label>
+                </h:panelGroup>
+
+                <h:panelGroup class="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="lndatA" value="#{selectedDatos28aWiz.lndatA}">
+                        <f:selectItem  itemLabel="Población, Localidad, Ciudad" noSelectionOption="true" />
+                        <f:selectItems  value="#{ubica23Backing.getCiudades(selectedDatos28aWiz.pndatA,selectedDatos28aWiz.endatA,selectedDatos28aWiz.mndatA)}" var="acubi" itemLabel="#{acubi}" itemValue="#{acubi}" />
+                    </p:selectOneMenu>
+                    <label>Población, Localidad, Ciudad  donde nació</label>
+                </h:panelGroup>
+            </p:panelGrid>
+            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="acdatA" value="#{selectedDatos28aWiz.acdatA}" />
+                    <label>Persona para contactar en caso de accidente</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="tpdatA" value="#{selectedDatos28aWiz.tpdatA}" styleClass="ui-selectonemenu" >
+                        <f:selectItem itemLabel="Seleccione el Parentesco" itemValue=" " noSelectionOption="true"/>
+                        <f:selectItems  value="#{tipar19Backing.tipar19List}" var="tip" itemLabel="#{tip.notip}" itemValue="#{tip.notip}" />
+                    </p:selectOneMenu>
+                    <label>Parentesco</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tadatA" value="#{selectedDatos28aWiz.tadatA}" mask="(99)9999-9999" />
+                    <label>Teléfono</label>
+                </h:panelGroup>
+            </p:panelGrid>
+            <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="redatA" value="#{selectedDatos28aWiz.redatA}" />
+                    <label>Persona para recados</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                    <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="ptdatA" value="#{selectedDatos28aWiz.ptdatA}" styleClass="ui-selectonemenu" >
+                        <f:selectItem itemLabel="Seleccione el Parentesco" itemValue=" " noSelectionOption="true"/>
+                        <f:selectItems  value="#{tipar19Backing.tipar19List}" var="tip" itemLabel="#{tip.notip}" itemValue="#{tip.notip}" />
+                    </p:selectOneMenu>
+                    <label>Parentesco Persona para recados</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="trdatA" value="#{selectedDatos28aWiz.trdatA}" mask="(99)9999-9999" />
+                    <label>Teléfono para recados</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="prdatA" value="#{selectedDatos28aWiz.prdatA}" />
+                    <label>Persona que  recomienda</label>
+                </h:panelGroup>
+
+
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="f1datA" value="#{selectedDatos28aWiz.f1datA}" />
+                    <label>(1) Familiar/Conocido dentro de la empresa</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="f2datA" value="#{selectedDatos28aWiz.f2datA}" />
+                    <label>(2) Familiar/Conocido dentro de la empresa</label>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="f3datA" value="#{selectedDatos28aWiz.f3datA}" />
+                    <label>(3) Familiar/Conocido dentro de la empresa</label>
+                </h:panelGroup>
+            </p:panelGrid>
+        </p:panel>
+    </ui:composition>
+</html>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Proveedores"></h:outputText>
+        </ui:define>
+
+
+        <f:metadata>
+            <f:event listener="#{prove48Backing.getProve48Request(userSessionBean.idpro)}" type="preRenderView" rendered="#{userSessionBean.idpro gt 0}"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+
+                        <p:commandButton action="#{prove48Backing.go(1)}"  process="@this" value="Editar" rendered="#{not empty selectedProve48}"  icon="ui-icon-update"/>
+                        <p:commandButton update="growl" action="#{prove48Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            <f:setPropertyActionListener target="#{userSessionBean.idpro}" 
+                                                         value="#{null}" />
+                        </p:commandButton> 
+
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Datos del Registro"  styleClass=" ui-g-12">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rfpro" value="#{selectedProve48.rfpro}" readonly="true" />
+                            <label>RFC del Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ncpro" value="#{selectedProve48.ncpro}" readonly="true" />
+                            <label>Nombre Corto del Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nlpro" value="#{selectedProve48.nlpro}" readonly="true" />
+                            <label>Nombre Largo del Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="eppro" value="#{selectedProve48.eppro}" readonly="true" />
+                            <label>Especialidad</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="papro" value="#{selectedProve48.papro}" readonly="true" />
+                            <label>Domicilio País Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="espro" value="#{selectedProve48.espro}" readonly="true" />
+                            <label>Domicilio Estado Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mdpro" value="#{selectedProve48.mdpro}" readonly="true" />
+                            <label>Domicilio Mun/Del Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="lopro" value="#{selectedProve48.lopro}" readonly="true" />
+                            <label>Domicilio Población Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="copro" value="#{selectedProve48.copro}" readonly="true" />
+                            <label>Domicilio Colonia Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="capro" value="#{selectedProve48.capro}" readonly="true" />
+                            <label>Domicilio Calle y Número Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cppro" value="#{selectedProve48.cppro}" readonly="true" />
+                            <label>Domicilio Código Postal Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tdpro" value="#{selectedProve48.tdpro}" readonly="true" />
+                            <label>Teléfono Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pcpro" value="#{selectedProve48.pcpro}" readonly="true" />
+                            <label>Persona Contacto</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="crpro" value="#{selectedProve48.crpro}" readonly="true" />
+                            <label>Cargo Persona Contacto </label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tcpro" value="#{selectedProve48.tcpro}" readonly="true" />
+                            <label>Teléfono Celular Persona Contacto</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mapro" value="#{selectedProve48.mapro}" readonly="true" />
+                            <label>Correo Electrónico Persona Contacto</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

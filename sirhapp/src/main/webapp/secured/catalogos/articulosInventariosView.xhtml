@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{catin44Backing.getCatin44Request(userSessionBean.idcin)}" type="preRenderView" rendered="#{userSessionBean.idcin gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm">
+            <p:toolbar>
+                <f:facet name="left"></f:facet>
+                <f:facet name="right">
+                    <span class="ui-separator" style="padding-right: 5px;">
+                        <span class="fa fa-ellipsis-v SoftGray" />
+                    </span>
+                    <p:commandButton action="#{catin44Backing.go(1)}"  process="@this" value="Editar" rendered="#{not empty selectedCatin44}"  icon="ui-icon-update"/>
+                </f:facet>
+            </p:toolbar>
+            
+            <p:panel header="Datos del Registro" >
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="necin" value="#{selectedCatin44.necin}" readonly="true" />
+                        <label>Nombre Empresa</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="arcin" value="#{selectedCatin44.arcin}" readonly="true" />
+                        <label>Descripción</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="macin" value="#{selectedCatin44.macin}" readonly="true" />
+                        <label>Marca</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mocin" value="#{selectedCatin44.mocin}" readonly="true" />
+                        <label>Modelo</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cocin" value="#{selectedCatin44.cocin}" readonly="true" />
+                        <label>Color</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tacin" value="#{selectedCatin44.tacin}" readonly="true" />
+                        <label>Talla</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

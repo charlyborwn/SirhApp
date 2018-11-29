@@ -1,0 +1,22 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+
+    <h:form id="menuform"> 
+        <div class="layout-menu #{guestPreferences.menuClass}">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <pu:menu widgetVar="me">
+                        <p:menuitem id="um_principal" value="Acceder a la Aplicación" icon="&#xe88a;" outcome="/login" />
+                        <p:menuitem id="um_registra" value="Nuevo Usuario" icon="&#xE7FD;" outcome="/public/register"/>
+                        <p:menuitem id="um_contacto" value="Enviar Mensaje" icon="mail" outcome="/public/contactUs" />
+                        <p:menuitem id="um_privacidad" value="Avisos de Privacidad" icon="beenhere" outcome="/public/privacy" />
+                    </pu:menu>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

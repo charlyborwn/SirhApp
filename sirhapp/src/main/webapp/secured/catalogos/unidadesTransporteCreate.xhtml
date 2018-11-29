@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">>
+    <f:metadata>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm" enctype="multipart/form-data">
+            
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar>
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                                <p:commandButton  type="submit" value="Agregar Registro" update="panelForm growl" id="submit" action="#{unida42Backing.go(2)}" actionListener="#{unida42AddBacking.register()}"  icon="ui-icon-person">
+                                </p:commandButton> 
+                            </c:if>
+                        </f:facet>
+                    </p:toolbar>
+                    <div class=" ui-fluid ui-panel-title">
+                        <p:panel header="Agregar un nuevo Registro" id="panel" >
+                            <h:panelGroup >
+                                <!-- Datos del Registro -->
+                                <div class="card card-w-title">
+                                    <h1>Datos del Registro</h1>
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nuuni" value="#{newUnida42.nuuni}" />
+                                            <label>Número de Unidad</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ceuni" value="#{newUnida42.ceuni}" />
+                                            <label>Clave Empresa</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="neuni" value="#{newUnida42.neuni}" />
+                                            <label>Nombre Empresa</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mauni" value="#{newUnida42.mauni}" />
+                                            <label>Marca</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mouni" value="#{newUnida42.mouni}" />
+                                            <label>Modelo</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="anuni" value="#{newUnida42.anuni}" />
+                                            <label>Año</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cauni" value="#{newUnida42.cauni}" />
+                                            <label>Capacidad</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pluni" value="#{newUnida42.pluni}" />
+                                            <label>Placas</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pruni" value="#{newUnida42.pruni}" />
+                                            <label>Propietario</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tcuni" value="#{newUnida42.tcuni}" />
+                                            <label>Número Tarjeta de Circulación</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ptuni" value="#{newUnida42.ptuni}" />
+                                            <label>Path Tarjeta de Circulación</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="fuuni" value="#{newUnida42.fuuni}" />
+                                            <label>Fecha Ultimo Mantenimiento</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nsuni" value="#{newUnida42.nsuni}" />
+                                            <label>Número de Seguro</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="vsuni" value="#{newUnida42.vsuni}" />
+                                            <label>Vigencia del Seguro</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="asuni" value="#{newUnida42.asuni}" />
+                                            <label>Nombre Aseguradora</label>
+                                        </h:panelGroup>
+
+
+
+                                    </p:panelGrid>
+                                </div>
+                            </h:panelGroup>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

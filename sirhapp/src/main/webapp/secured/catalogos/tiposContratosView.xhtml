@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+
+        <f:metadata>
+            <f:event listener="#{ticon17Backing.getTicon17Request(userSessionBean.idtic)}" type="preRenderView" rendered="#{userSessionBean.idtic gt 0}"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+
+                <p:toolbar>
+                    <f:facet name="left">
+                    </f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+
+                        <p:commandButton action="#{ticon17Backing.go(1)}"  process="@this" value="Editar" rendered="#{not empty selectedTicon17}"  icon="ui-icon-update">
+                        </p:commandButton>
+
+                        <p:commandButton update="growl" action="#{ticon17Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            <f:setPropertyActionListener target="#{userSessionBean.idtic}" 
+                                                         value="#{null}" />
+                        </p:commandButton> 
+
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Tipos de contratos"  styleClass=" ui-g-12">
+
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvtic" value="#{selectedTicon17.cvtic}" readonly="true" />
+                            <label>Clave Tipo de Contrato</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="notic" value="#{selectedTicon17.notic}" readonly="true" />
+                            <label>Nombre Tipo de Contrato</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

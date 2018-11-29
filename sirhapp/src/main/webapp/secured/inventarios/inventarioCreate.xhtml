@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Movimiento del Inventario"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{inven37BackingBean.prepareCreate()}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm"  >
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton  type="submit" value="Guardar" update="panelForm" id="submit" action="#{inven37BackingBean.go(2)}" actionListener="#{inven37BackingBean.register()}"  icon="ui-icon-person"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Nuevo Movimiento del Inventarios"  id="panel" >
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <h:panelGroup styleClass="md-inputfield" style="width: 111%;">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ceinv" value="#{inven37BackingBean.newInven37.ceinv}" label="Empresa" required="true">
+                                <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                <f:selectItems value="#{empre04Backing.getEmpre04List()}" var="emp" itemLabel="#{''.concat(emp.cvemp).concat(' | ').concat(emp.noemp)}" itemValue="#{emp.cvemp}"/>
+                                <p:ajax event="change" process="@this" update="@form" listener="#{inven37BackingBean.handleChange}" />
+                            </p:selectOneMenu>
+                            <label>Empresa</label>
+                            <p:message for="ceinv" display="text"/>
+                        </h:panelGroup>
+
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="neinv" value="#{inven37BackingBean.newInven37.neinv}"  readonly="true" />
+                            <label>Empresa</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fiinv" value="#{inven37BackingBean.newInven37.fiinv}" required="true"
+                                        locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                        mask="true"  
+                                        showOn="button" mindate="01/01/1917"  />
+                            <p:outputLabel value="Fecha del Movimiento" for="fiinv" />
+                            <p:message for="fiinv" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tiinv" value="#{inven37BackingBean.newInven37.tiinv}" readonly="true" disabled="true" />
+                            <label>Movimiento</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup  styleClass="md-inputfield">
+                            <p:autoComplete onkeydown="ModifyEnterKeyPressAsTab(event);"  id="rfinv"
+                                            value="#{inven37BackingBean.newInven37.rfinv}"
+                                            completeMethod="#{inven37BackingBean.proveedores}" 
+                                            style="margin-bottom:10px;"
+                                            >
+                                <p:ajax event="change" process="@this" listener="#{inven37BackingBean.handleChange}"  update="ncinv" />
+                                <p:ajax event="itemSelect" process="@this" listener="#{inven37BackingBean.handleChange}"  update="ncinv" />
+                            </p:autoComplete>
+                            <p:outputLabel value="RFC del proveedor" for="rfinv" />
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ncinv" value="#{inven37BackingBean.newInven37.ncinv}" readonly="true" />
+                            <label>Nombre Corto Proveedor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fainv" value="#{inven37BackingBean.newInven37.fainv}" required="true"
+                                        locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                        mask="true"  
+                                        showOn="button" mindate="01/01/1917"  />
+                            <p:outputLabel value="Fecha de Adquisición" for="fainv" />
+                            <p:message for="fainv" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputNumber  onkeydown="ModifyEnterKeyPressAsTab(event);" id="puinv" value="#{inven37BackingBean.newInven37.puinv}"   />
+                            <p:outputLabel value="Precio Unitario ($)" for="puinv"/>
+                        </h:panelGroup>
+
+                        <h:panelGroup  styleClass="md-inputfield">
+                            <p:autoComplete onkeydown="ModifyEnterKeyPressAsTab(event);"  id="arinv"
+                                            value="#{inven37BackingBean.newInven37.arinv}"
+                                            completeMethod="#{inven37BackingBean.descripcionArticulos}" 
+                                            style="margin-bottom:10px;"
+
+                                            dropdown="true"   label="Descripción"
+                                            required="true" requiredMessage="Descripción Requerido" >
+                                <p:ajax event="change" process="@this" listener="#{inven37BackingBean.handleChange}"   />
+                                <p:ajax event="itemSelect" process="@this" listener="#{inven37BackingBean.handleChange}"   />
+                            </p:autoComplete>
+                            <p:outputLabel value="Descripción" for="arinv" />
+                            <p:message for="arinv" display="text"/>
+                        </h:panelGroup>
+
+                        <h:panelGroup  styleClass="md-inputfield">
+                            <p:autoComplete onkeydown="ModifyEnterKeyPressAsTab(event);"  id="mainv"
+                                            value="#{inven37BackingBean.newInven37.mainv}"
+                                            completeMethod="#{inven37BackingBean.marcaArticulos}" 
+                                            style="margin-bottom:10px;"
+
+                                            dropdown="true"  label="Marca"
+                                            required="true" requiredMessage="Marca Requerido" >
+                                <p:ajax event="change" process="@this" listener="#{inven37BackingBean.handleChange}"  />
+                                <p:ajax event="itemSelect" process="@this" listener="#{inven37BackingBean.handleChange}"   />
+                            </p:autoComplete>
+                            <p:outputLabel value="Marca" for="mainv" />
+                            <p:message for="mainv" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup  styleClass="md-inputfield">
+                            <p:autoComplete onkeydown="ModifyEnterKeyPressAsTab(event);"  id="moinv"
+                                            value="#{inven37BackingBean.newInven37.moinv}"
+                                            completeMethod="#{inven37BackingBean.modeloArticulos}" 
+                                            style="margin-bottom:10px;"
+
+                                            dropdown="true" label="Modelo"
+                                            required="true" requiredMessage="Modelo Requerido" >
+                                <p:ajax event="change" process="@this" listener="#{inven37BackingBean.handleChange}"  />
+                                <p:ajax event="itemSelect" process="@this" listener="#{inven37BackingBean.handleChange}"   />
+                            </p:autoComplete>
+                            <p:outputLabel value="Modelo" for="moinv" />
+                            <p:message for="moinv" display="text"/>
+                        </h:panelGroup>
+
+                        <h:panelGroup  styleClass="md-inputfield">
+                            <p:autoComplete onkeydown="ModifyEnterKeyPressAsTab(event);"  id="coinv"
+                                            value="#{inven37BackingBean.newInven37.coinv}"
+                                            completeMethod="#{inven37BackingBean.colorArticulos}" 
+                                            style="margin-bottom:10px;"
+                                            dropdown="true"  label="Color"
+                                            required="true" requiredMessage="Color Requerido" >
+                                <p:ajax event="change" process="@this" listener="#{inven37BackingBean.handleChange}"  />
+                                <p:ajax event="itemSelect" process="@this" listener="#{inven37BackingBean.handleChange}"   />
+                            </p:autoComplete>
+                            <p:outputLabel value="Color" for="coinv" />
+                            <p:message for="coinv" display="text"/>
+                        </h:panelGroup>
+
+
+                        <h:panelGroup  styleClass="md-inputfield">
+                            <p:autoComplete onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tainv"
+                                            value="#{inven37BackingBean.newInven37.tainv}"
+                                            completeMethod="#{inven37BackingBean.tallaArticulos}" 
+                                            style="margin-bottom:10px;"
+                                            dropdown="true"  label="Talla"
+                                            required="true" requiredMessage="Talla Requerido" >
+                                <p:ajax event="change" process="@this" listener="#{inven37BackingBean.handleChange}"  />
+                                <p:ajax event="itemSelect" process="@this" listener="#{inven37BackingBean.handleChange}"   />
+                            </p:autoComplete>
+                            <p:outputLabel value="Talla" for="tainv" />
+                            <p:message for="tainv" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cainv" 
+                                         value="#{inven37BackingBean.newInven37.cainv}" 
+                                         mask="999999999"  maxlength="9"  autoClear="false" slotChar="">
+                            </p:inputMask>
+                            <p:outputLabel value="Cantidad" for="cainv" />
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ntinv"  value="#{inven37BackingBean.newInven37.ntinv}"                  
+                                         pt:placeholder="Número de Trabajador" 
+                                         style="text-transform: capitalize;">
+                                <p:ajax event="change"  process="@this" listener="#{inven37BackingBean.handleChange}" update="nninv" />
+                                <f:validateLength maximum="10" minimum="2" />
+                            </p:inputText>
+                            <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-search"></i></p:outputLabel>
+                            <p:outputLabel class="ui-inputgroup-addon" value="Buscar&nbsp;&nbsp;&nbsp;&nbsp;" for="ntinv" />
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nninv" value="#{inven37BackingBean.newInven37.nninv}" readonly="true" />
+                            <label>Nombre del Trabajador</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

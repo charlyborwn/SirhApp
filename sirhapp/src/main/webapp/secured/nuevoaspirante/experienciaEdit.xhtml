@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="experienciaEditDlg" widgetVar="experienciaEditDialog" modal="true" resizable="false" appendTo="@(body)" header="Experiencias">
+            <h:form id="experienciaEditForm">
+                <p:panel header="Actualizar datos del Experiencia" rendered="#{traba36aWizardBacking.selectedExper31aWiz != null}">
+                    <h:panelGroup   id="displayExperienciaEdit">
+                        <p:tabView id="tabExperienciaCreate"  activeIndex="#{traba36aWizardBacking.exper31aTab}"  style="width: 600px"  >
+                            <p:ajax event="tabChange" listener="#{traba36aWizardBacking.onTabChangeExper31a}"  process="tabExperienciaCreate" />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="emexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.emexpA}" required="true"   />
+                                        <p:outputLabel value="Empresa" for="emexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ceexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.ceexpA}" required="true"   />
+                                        <p:outputLabel value="Cargo en Experiencia" for="ceexpA"/>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="inexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.inexpA}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" required="true"   />
+                                        <p:outputLabel value="Inicio" for="inexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="teexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.teexpA}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" required="true"   />
+                                        <p:outputLabel value="Término" for="teexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="csexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.csexpA}" />
+                                        <label>Causa de Separación</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.sxexpA}" required="true" requiredMessage="El salario percibido es requerido"  />
+                                        <p:outputLabel value="Salario Percibido ($)" for="sxexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="siexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.siexpA}" />
+                                        <label>SirhApp</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tdexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.tdexpA}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tcexpA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono de la Empresa</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="jiexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.jiexpA}" />
+                                        <label>Jefe Inmediato</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cjexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.cjexpA}" />
+                                        <label>Cargo Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tcexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.tcexpA}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tcexpA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono Contacto Jefe</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="email" value="#{traba36aWizardBacking.selectedExper31aWiz.maexpA}"
+                                                     validatorMessage="El correo no tiene el formato correcto"
+                                                     required="false" class="ui-minusculas">
+                                            <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                            <f:ajax event="change" execute="tcexpA" />       
+                                        </p:inputText>
+                                        <label>Correo Electrónico del Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obdocA" value="#{traba36aWizardBacking.selectedExper31aWiz.obexpA}" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Direccion Empresa" >
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="codigopostalexp"  
+                                                     value="#{traba36aWizardBacking.selectedExper31aWiz.cpexpA}" mask="99999" maxlength="5">
+                                            <p:ajax event="keyup" listener="#{traba36aWizardBacking.handleChanges}" update="paisexp estadoexp municipioexp ciudadexp coloniaexp" process="@this" />
+                                        </p:inputMask>
+                                        <label>Código Postal</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"     id="paisexp" value="#{traba36aWizardBacking.selectedExper31aWiz.paexpA}"
+
+                                                          style="margin-bottom:10px;"  >
+                                            <f:selectItem itemLabel="Seleccione el Pais" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems  value="#{traba36aWizardBacking.paisesExp}" var="paubi" itemLabel="#{paubi}" itemValue="#{paubi}" />
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="estadoexp municipioexp ciudadexp coloniaexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Pais</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="estadoexp" 
+                                                         value="#{traba36aWizardBacking.selectedExper31aWiz.esexpA}">
+                                            <f:selectItem itemLabel="Seleccione el Estado" itemValue=" " noSelectionOption="true"  />
+                                            <f:selectItems value="#{traba36aWizardBacking.estadosExp}" var="esubi" itemLabel="#{esubi}" itemValue="#{esubi}"/>
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="municipioexp ciudadexp coloniaexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Estado</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="municipioexp" 
+                                                         value="#{traba36aWizardBacking.selectedExper31aWiz.mdexpA}">
+                                            <f:selectItem itemLabel="Seleccione el Mun/Del" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{traba36aWizardBacking.municipiosExp}" var="muubi" itemLabel="#{muubi}" itemValue="#{muubi}"/>
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="ciudadexp coloniaexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Mun/Del</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="ciudadexp" 
+                                                         value="#{traba36aWizardBacking.selectedExper31aWiz.loexpA}">
+                                            <f:selectItem  itemLabel="Población, Localidad, Ciudad" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{traba36aWizardBacking.ciudadesExp}" var="ciubi" itemLabel="#{ciubi}" itemValue="#{ciubi}"/>
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="coloniaexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Población, Localidad, Ciudad</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="coloniaexp" 
+                                                         value="#{traba36aWizardBacking.selectedExper31aWiz.coexpA}" autoWidth="true" style="width: 50px;">
+                                            <f:selectItem itemLabel="Seleccione la Colonia" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{traba36aWizardBacking.coloniasExp}" var="coubi" itemLabel="#{coubi}" itemValue="#{coubi}"/>
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="codigopostalexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Colonia Domicilio</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="caexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.caexpA}" >
+                                            <f:ajax event="change" execute="caexpA" />     
+                                        </p:inputText>
+                                        <label>Calle y Número</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <p:panelGrid  columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+
+
+                                    <h:panelGroup>
+                                        <p:outputLabel value="Tipo de documento experiencia" for="tiexpA" />
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tiexpA" value="#{traba36aWizardBacking.selectedExper31aWiz.tiexpA}" required="true" style="margin-bottom:10px;"  >
+                                            <f:selectItem itemLabel="Seleccione el tipo de documento experiencia" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tidoc18Backing.tidoc18List}" var="doc" itemLabel="#{doc.notid}" itemValue="#{doc.notid}"/>
+                                            <f:ajax event="change" execute="@this" listener="#{traba36aWizardBacking.prepareFileUploadExp}" render="experienciaEditForm fileUploadFotografia"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                    <p:fileUpload id="fileUploadFotografia" allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                  invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                  onstart="showStatus();" oncomplete="hideStatus();" 
+                                                  label="#{bundle.LblDOCEXP}" 
+                                                  uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="experienciaEditForm,growl" 
+                                                  mode="advanced"
+                                                  rendered="#{traba36aWizardBacking.selectedExper31aWiz.ptexpA.length() eq 0 }"
+                                                  value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                        <p:graphicImage  class=" w3-card-4" id="up" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  style="width: 200px"   rendered="#{fileUploadBean.fileName ne null}" />
+                                        <f:attribute name="rootFolderAttr" value="#{traba36aWizardBacking.rfc}/"></f:attribute>
+                                        <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                        <f:attribute name="fileTypeAttr" value="#{traba36aWizardBacking.selectedExper31aWiz.w1expA}"></f:attribute>
+                                        <f:attribute name="idAttr" value="#{traba36aWizardBacking.rfc}"></f:attribute>
+                                        <f:attribute name="ownBackingAttr" value="#{'traba36aWizardBacking'}"></f:attribute>
+                                        <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                    </p:fileUpload>
+
+                                    <p:lightBox  id="lightBox1" rendered="#{traba36aWizardBacking.selectedExper31aWiz.ptexpA.length() gt 0 and traba36aWizardBacking.selectedExper31aWiz.ptexpA ne null}"  > 
+                                        <h:outputLink  value="#{bundle.PathRelativeFull}#{traba36aWizardBacking.selectedExper31aWiz.ptexpA}"  title="Documento de Experiencia  #{traba36aWizardBacking.selectedExper31aWiz.tiexpA}"  > 
+                                            <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{traba36aWizardBacking.selectedExper31aWiz.ptexpA}"  style="width: 200px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+
+                                </p:panelGrid>
+
+                                <p:commandButton type="submit" value="Borrar" rendered="#{traba36aWizardBacking.selectedExper31aWiz.ptexpA.length() gt 0 and traba36aWizardBacking.selectedExper31aWiz.ptexpA ne null}"
+                                                 icon="ui-icon-delete" class="red-btn" 
+                                                 actionListener="#{traba36aWizardBacking.updateExper31aFoto}"
+                                                 update="experienciaEditForm growl" >
+                                </p:commandButton>
+                            </p:tab>
+                        </p:tabView>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{traba36aWizardBacking.updateExper31a}" value="#{bundle.Save}" update="displayExperienciaEdit,panelForm:experienciaListForm:experienciaDatalist,growl" oncomplete="handleSubmit(args, 'experienciaEditDialog');"/>
+                            <p:commandButton value="#{bundle.Close}" onclick="experienciaEditDialog.hide()"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

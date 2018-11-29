@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="experienciaEditDlg" widgetVar="experienciaEditDialog" modal="true" resizable="false" appendTo="@(body)" header="Experiencias">
+            <h:form id="experienciaEditForm">
+                <p:panel header="Actualizar datos del Experiencia" rendered="#{exper31BackingBean.selectedExper31Bean != null}">
+                    <h:panelGroup   id="displayExperienciaEdit">
+                        <p:tabView id="tabExperienciaCreate"  activeIndex="#{exper31BackingBean.exper31Tab}"  style="width: 600px"  >
+                            <p:ajax event="tabChange" listener="#{exper31BackingBean.onTabChangeExper31}"  process="tabExperienciaCreate" />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="emexp" label="Empresa" value="#{exper31BackingBean.selectedExper31Bean.emexp}" required="true" requiredMessage="Empresa: El dato es requerido"  />
+                                        <p:outputLabel value="Empresa" for="emexp"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ceexp" label="Cargo" value="#{exper31BackingBean.selectedExper31Bean.ceexp}" required="true" requiredMessage="Cargo: El dato es requerido"  />
+                                        <p:outputLabel value="Cargo en Experiencia" for="ceexp"/>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="inexp" value="#{exper31BackingBean.selectedExper31Bean.inexp}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" required="true"   />
+                                        <p:outputLabel value="Inicio" for="inexp"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="teexp" value="#{exper31BackingBean.selectedExper31Bean.teexp}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" required="true"   />
+                                        <p:outputLabel value="Término" for="teexp"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="csexp" value="#{exper31BackingBean.selectedExper31Bean.csexp}" />
+                                        <label>Causa de Separación</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxexp" value="#{exper31BackingBean.selectedExper31Bean.sxexp}" required="true" requiredMessage="El salario percibido es requerido"  />
+                                        <p:outputLabel value="Salario Percibido ($)" for="sxexp"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="siexp" value="#{exper31BackingBean.selectedExper31Bean.siexp}" />
+                                        <label>SirhApp</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tdexp" value="#{exper31BackingBean.selectedExper31Bean.tdexp}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tcexp" />        
+                                        </p:inputMask>
+                                        <label>Teléfono de la Empresa</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="jiexp" value="#{exper31BackingBean.selectedExper31Bean.jiexp}" />
+                                        <label>Jefe Inmediato</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cjexp" value="#{exper31BackingBean.selectedExper31Bean.cjexp}" />
+                                        <label>Cargo Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tcexp" value="#{exper31BackingBean.selectedExper31Bean.tcexp}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tcexp" />        
+                                        </p:inputMask>
+                                        <label>Teléfono Contacto Jefe</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="email" value="#{exper31BackingBean.selectedExper31Bean.maexp}"
+                                                     validatorMessage="El correo no tiene el formato correcto"
+                                                     required="false" class="ui-minusculas">
+                                            <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                            <f:ajax event="change" execute="tcexp" />       
+                                        </p:inputText>
+                                        <label>Correo Electrónico del Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obdoc" value="#{exper31BackingBean.selectedExper31Bean.obexp}" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Direccion Empresa" >
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="codigopostalexp"  
+                                                     value="#{exper31BackingBean.selectedExper31Bean.cpexp}" mask="99999" maxlength="5">
+                                            <p:ajax event="keyup" listener="#{exper31BackingBean.handleChange}" update="paisexp estadoexp municipioexp ciudadexp coloniaexp" process="@this" />
+                                        </p:inputMask>
+                                        <label>Código Postal</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"     id="paisexp" value="#{exper31BackingBean.selectedExper31Bean.paexp}"
+
+                                                          style="margin-bottom:10px;"  >
+                                            <f:selectItem itemLabel="Seleccione el Pais" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems  value="#{exper31BackingBean.paises}" var="paubi" itemLabel="#{paubi}" itemValue="#{paubi}" />
+                                            <p:ajax listener="#{exper31BackingBean.handleChange}" update="estadoexp municipioexp ciudadexp coloniaexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Pais</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="estadoexp" 
+                                                         value="#{exper31BackingBean.selectedExper31Bean.esexp}">
+                                            <f:selectItem itemLabel="Seleccione el Estado" itemValue=" " noSelectionOption="true"  />
+                                            <f:selectItems value="#{exper31BackingBean.estados}" var="esubi" itemLabel="#{esubi}" itemValue="#{esubi}"/>
+                                            <p:ajax listener="#{exper31BackingBean.handleChange}" update="municipioexp ciudadexp coloniaexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Estado</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="municipioexp" 
+                                                         value="#{exper31BackingBean.selectedExper31Bean.mdexp}">
+                                            <f:selectItem itemLabel="Seleccione el Mun/Del" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{exper31BackingBean.municipios}" var="muubi" itemLabel="#{muubi}" itemValue="#{muubi}"/>
+                                            <p:ajax listener="#{exper31BackingBean.handleChange}" update="ciudadexp coloniaexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Mun/Del</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="ciudadexp" 
+                                                         value="#{exper31BackingBean.selectedExper31Bean.loexp}">
+                                            <f:selectItem  itemLabel="Población, Localidad, Ciudad" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{exper31BackingBean.ciudades}" var="ciubi" itemLabel="#{ciubi}" itemValue="#{ciubi}"/>
+                                            <p:ajax listener="#{exper31BackingBean.handleChange}" update="coloniaexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Población, Localidad, Ciudad</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="coloniaexp" 
+                                                         value="#{exper31BackingBean.selectedExper31Bean.coexp}" autoWidth="true" style="width: 50px;">
+                                            <f:selectItem itemLabel="Seleccione la Colonia" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{exper31BackingBean.colonias}" var="coubi" itemLabel="#{coubi}" itemValue="#{coubi}"/>
+                                            <p:ajax listener="#{exper31BackingBean.handleChange}" update="codigopostalexp" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Colonia Domicilio</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="caexp" value="#{exper31BackingBean.selectedExper31Bean.caexp}" >
+                                            <f:ajax event="change" execute="caexp" />     
+                                        </p:inputText>
+                                        <label>Calle y Número</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <p:panelGrid  columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+
+
+                                    <h:panelGroup>
+                                        <p:outputLabel value="Tipo de documento experiencia" for="tiexp" />
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tiexp" value="#{exper31BackingBean.selectedExper31Bean.tiexp}" required="true" style="margin-bottom:10px;"  >
+                                            <f:selectItem itemLabel="Seleccione el tipo de documento experiencia" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tidoc18Backing.tidoc18List}" var="doc" itemLabel="#{doc.notid}" itemValue="#{doc.notid}"/>
+                                            <f:ajax event="change" execute="@this" listener="#{exper31BackingBean.prepareFileUploadExp}" render="experienciaEditForm fileUploadFotografia"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+
+                                    <p:fileUpload id="fileUploadFotografia" allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                  invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                  label="#{bundle.LblDOCEXP}"
+                                                  uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="experienciaEditForm,growl" 
+                                                  mode="advanced"
+                                                  rendered="#{exper31BackingBean.selectedExper31Bean.ptexp eq null ||exper31BackingBean.selectedExper31Bean.ptexp.length() eq 0 }"
+                                                  value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                        <p:graphicImage  class=" w3-card-4" id="up" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  style="width: 200px"   rendered="#{fileUploadBean.fileName ne null}" />
+                                        <f:attribute name="rootFolderAttr" value="#{selectedTraba36.rftra}/"></f:attribute>
+                                        <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                        <f:attribute name="fileTypeAttr" value="#{exper31BackingBean.selectedExper31Bean.w1exp}"></f:attribute>
+                                        <f:attribute name="idAttr" value="#{selectedTraba36.rftra}"></f:attribute>
+                                        <f:attribute name="ownBackingAttr" value="#{'exper31BackingBean'}"></f:attribute>
+                                        <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                    </p:fileUpload>
+
+                                    <p:lightBox  id="lightBox1" rendered="#{exper31BackingBean.selectedExper31Bean.ptexp.length() gt 0 and exper31BackingBean.selectedExper31Bean.ptexp ne null}"  > 
+                                        <h:outputLink  value="#{bundle.PathRelativeFull}#{exper31BackingBean.selectedExper31Bean.ptexp}"  title="Documento de Experiencia  #{exper31BackingBean.selectedExper31Bean.tiexp}"  > 
+                                            <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{exper31BackingBean.selectedExper31Bean.ptexp}"  style="width: 200px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <p:commandButton type="submit" value="Borrar" rendered="#{exper31BackingBean.selectedExper31Bean.ptexp.length() gt 0 and exper31BackingBean.selectedExper31Bean.ptexp ne null}"
+                                                     icon="ui-icon-delete" class="red-btn" 
+                                                     actionListener="#{exper31BackingBean.updateExper31Foto}"
+                                                     update="experienciaEditForm growl" >
+                                    </p:commandButton>
+                                </p:panelGrid>
+                            </p:tab>
+                        </p:tabView>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{exper31BackingBean.updateExper31}" value="#{bundle.Save}" update="displayExperienciaEdit,experienciaListForm:experienciaDatalist,growl" oncomplete="handleSubmit(args, 'experienciaEditDialog');"/>
+                            <p:commandButton value="#{bundle.Close}" onclick="experienciaEditDialog.hide()"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

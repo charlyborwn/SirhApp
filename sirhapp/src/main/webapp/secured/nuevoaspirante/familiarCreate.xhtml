@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="familiarCreateDlg" widgetVar="familiarCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Familiares">
+            <h:form id="familiarCreateForm">
+                <p:panel header="Agregar un nuevo Familiar" >
+                    <h:panelGroup id="displayFamiliarCreate">
+                        <p:tabView id="tabFamiliarCreate"  activeIndex="#{traba36aWizardBacking.famil32aTab}"  style="width: 600px">
+                            <p:ajax event="tabChange" listener="#{traba36aWizardBacking.onTabChangeFamil32a}"  process="tabFamiliarCreate" />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-selectonemenu" >
+
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="tpfamA" value="#{traba36aWizardBacking.newFamil32aWiz.tpfamA}" required="true"   autoWidth="true"  >
+                                            <f:selectItem itemLabel="Seleccione el parentesco" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tipar19Backing.tipar19List}" var="par" itemLabel="#{par.notip}" itemValue="#{par.notip}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Parentesco" for="tpfamA" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup  styleClass="md-selectonemenu">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="sefamA" value="#{traba36aWizardBacking.newFamil32aWiz.sefamA}" required="true"    autoWidth="true" >
+                                            <f:selectItem itemLabel="Seleccione el Sexo" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{sexoo12Backing.sexoo12List}" var="sex" itemLabel="#{sex.nosex}" itemValue="#{sex.nosex}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Sexo" for="sefamA" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="orfamA" value="#{traba36aWizardBacking.newFamil32aWiz.orfamA}" />
+                                        <label>Orden</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apfamA" value="#{traba36aWizardBacking.newFamil32aWiz.apfamA}"  required="true"   />
+                                        <p:outputLabel value="Apellido Paterno" for="apfamA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="amfamA" value="#{traba36aWizardBacking.newFamil32aWiz.amfamA}"  required="true"  />
+                                         <p:outputLabel value="Apellido Materno" for="amfamA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nofamA" value="#{traba36aWizardBacking.newFamil32aWiz.nofamA}"  required="true"   />
+                                        <p:outputLabel value="Nombre(s)" for="nofamA" />
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-selectonemenu" >
+                                        <p:outputLabel for="vifamA" value="Vive" style=" margin-top: -20px;  color: #3F51B5;" />
+                                        <p:selectOneRadio id="vifamA" value="#{traba36aWizardBacking.newFamil32aWiz.vifamA}" columns="2"  
+                                                          style="text-align: center;  white-space: nowrap;">
+                                            <f:selectItem itemLabel="Si" itemValue="si" />
+                                            <f:selectItem itemLabel="No" itemValue="no" />
+                                        </p:selectOneRadio>
+
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fnfamA" value="#{traba36aWizardBacking.newFamil32aWiz.fnfamA}" required="true"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  />
+                                        <p:outputLabel value="Fecha de Nacimiento" for="fnfamA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="offamA" value="#{traba36aWizardBacking.newFamil32aWiz.offamA}" />
+                                        <label>Ocupación</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield " >
+                                        <p:inputTextarea  rows="3" value="#{traba36aWizardBacking.newFamil32aWiz.obfamA}" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Direccion">
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+
+                            </p:tab>
+                        </p:tabView>
+
+
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{traba36aWizardBacking.registerFamil32a()}" value="#{bundle.Save}" update="displayFamiliarCreate,panelForm:familiarListForm:familiarDatalist,growl" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('familiarCreateDialog').hide(); handleSubmit(args,'familiarCreateDialog');"  class="red-btn" />
+                            <p:commandButton  value="#{bundle.Cancel}" onclick="PF('familiarCreateDialog').hide();" />
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

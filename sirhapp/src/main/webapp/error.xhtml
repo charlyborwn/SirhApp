@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Sistema de Información de Recursos Humanos</title>
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/favicon.ico"/>
+        <link rel="icon" type="image/x-icon" href="#{request.contextPath}/favicon.ico"/>
+    </h:head>
+
+    <h:body styleClass="exception-body error-page">
+        <div class="exception-type">
+            <p:graphicImage name="images/error.svg" library="ultima-layout" />
+        </div>
+
+        <div class="card exception-panel">
+            <i class="material-icons">&#xE000;</i>
+            <h1>Oops! Ocurrio un error en el sistema.</h1>
+            <div>Porfavor contacte al soporte técnico.</div>
+            <br/>
+            <p:button outcome="/public/contactUs.xhtml" value="Contacto" styleClass="secondary"/>
+            <p:button outcome="login.xhtml" value="Inicio" styleClass="secondary"/>
+            <br/><br/>
+            <ui:include src="detail.xhtml"/>
+            <p:commandButton icon="ui-icon-search" value="#{bundle.View}" onclick="PF('detailViewDialog').show(); " />
+        </div>
+
+
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/layout-indigo.css" library="ultima-layout" />
+    </h:body>
+
+</html>

@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">>
+
+    <ui:define name="content">
+        <h:form id="panelForm" enctype="multipart/form-data">
+            <p:toolbar>
+                <f:facet name="left"></f:facet>
+                <f:facet name="right">
+                    <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                        <p:commandButton  type="submit" value="Agregar Registro" update="panelForm growl" id="submit" action="#{espec05Backing.go(2)}" actionListener="#{espec05AddBacking.register()}"  icon="ui-icon-person"
+                </c:if>
+            </f:facet>
+        </p:toolbar>
+
+        <p:panel header="Agregar un nuevo Registro" id="panel" >
+            <h:panelGroup >
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="noesp" value="#{newEspec05.noesp}" />
+                        <label>Nombre de la Especialidad</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+            </h:panelGroup>
+        </p:panel>
+    </h:form>
+</ui:define>
+</ui:composition>

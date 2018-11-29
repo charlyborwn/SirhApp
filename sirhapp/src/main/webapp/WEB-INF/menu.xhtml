@@ -1,0 +1,149 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{userProfileBean.getUsuar24Request(request.remoteUser)}" type="postAddToView" />
+    </f:metadata>
+
+    <h:form id="menuForm"> 
+        <div class="layout-menu #{guestPreferences.menuClass}">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+                        <div class="profile">
+                            <div style="padding-top:12%;"></div>
+                            <a id="profile-options" href="#">
+                                <span class="profile-name">#{userProfileBean.selectedUsuar24Request.ncusu}</span>
+                                <i class="material-icons">&#xE313;</i>
+                            </a>
+                            <span class="profile-name">#{userProfileBean.selectedUsuar24Request.neusu}</span>
+                        </div>
+                        <ul id="profile-menu" class="ultima-menu">
+                            <li role="menuitem">
+                                <h:link outcome="/public/contactUs"  class="ripplelink"><i class="material-icons">help_outline</i>
+                                    <span>Contactar a Sistemas</span></h:link>
+                            </li>
+                            <li role="menuitem">
+                                <h:link outcome="/logout.xhtml"  class="ripplelink"><i class="material-icons">&#xE8AC;</i>
+                                    <span>Salir</span></h:link>
+                            </li></ul>
+                    </ui:fragment>
+                    <pu:menu widgetVar="me">
+                        <p:menuitem id="um_principal" value="Principal" icon="&#xe88a;"  actionListener="#{userSessionBean.goSistema(1)}" process="@this" />
+                        <p:menuitem id="nuevoaspirante1" value="Registro de Aspirantes" icon="&#xe85d;" actionListener="#{userSessionBean.goSistema(8)}" process="@this"   ajax="false" rendered="#{userSessionBean.m1o1o0}" />
+                        <p:menuitem id="nuevoaspirante2" value="Afiliacion" icon="&#xE893;" actionListener="#{userSessionBean.goSistema(9)}" process="@this"   ajax="false" rendered="#{userSessionBean.m1o2o0}" />        
+                        <p:menuitem id="um_aspiranteTrabajador" value="Aspirante a Trabajador" icon="&#xE893;" actionListener="#{userSessionBean.goAspiranteTrabajador(0)}" process="@this" ajax="false" rendered="#{userSessionBean.m2o0o0}"/>
+                        <p:menuitem id="um_actualizaClaves" value="Actualiza Clave Trabajador" icon="&#xE893;" action="/secured/procesos/findActualizacionClaves.xhtml?faces-redirect=true"  process="@this" ajax="false" rendered="#{userSessionBean.m4o0o0}"/>
+                        <p:menuitem id="um_actualizaRfc" value="Actualiza RFC de Aspirantes" icon="&#xE893;"  action="/secured/procesos/findActualizacionRfc.xhtml?faces-redirect=true"  process="@this" ajax="false" rendered="#{userSessionBean.m14o0o0}"/>
+                        <p:submenu id="um_aspirantes" label="Aspirantes" icon="&#xE871;" rendered="#{userSessionBean.m5o0o0}">
+                            <p:menuitem id="aspirantes1" value="Consultas" icon="&#xE3AE;"  actionListener="#{userSessionBean.goBusquedaAspirantes(2)}" process="@this" ajax="false" rendered="#{userSessionBean.m5o1o0}"/>
+                            <c:if test="#{userSessionBean.aspirante.length() gt 0}">
+                                <p:menuitem id="aspirantes4" value="Datos Generales" icon="&#xE893;" outcome="/secured/aspirantes/datosGenerales" ajax="false" rendered="#{userSessionBean.m5o2o0}"/>
+                                <p:menuitem id="aspirantes5" value="Datos Personales" icon="&#xE893;" outcome="/secured/aspirantes/datosPersonales" ajax="false" rendered="#{userSessionBean.m5o3o0}"/>
+                                <p:menuitem id="aspirantes6" value="Datos Identidad" icon="&#xE893;" outcome="/secured/aspirantes/datosIdentidad" ajax="false" rendered="#{userSessionBean.m5o4o0}"/>
+                                <p:menuitem id="aspirantes7" value="Documentacion" icon="&#xE893;" outcome="/secured/aspirantes/documentacion" ajax="false" rendered="#{userSessionBean.m5o5o0}"/>
+                                <p:menuitem id="aspirantes8" value="Escolaridad" icon="&#xE893;" outcome="/secured/aspirantes/escolaridad" ajax="false" rendered="#{userSessionBean.m5o6o0}"/>
+                                <p:menuitem id="aspirantes9" value="Familiares" icon="&#xE893;" outcome="/secured/aspirantes/familiares" ajax="false" rendered="#{userSessionBean.m5o7o0}"/>
+                                <p:menuitem id="aspirantes10" value="Experiencia" icon="&#xE893;" outcome="/secured/aspirantes/experiencia" ajax="false" rendered="#{userSessionBean.m5o8o0}"/>
+                                <p:menuitem id="aspirantes11" value="Beneficiarios" icon="&#xE893;" outcome="/secured/aspirantes/beneficiarios" ajax="false" rendered="#{userSessionBean.m5o9o0}"/>
+                                <p:menuitem id="aspirantes12" value="Requisitos" icon="&#xE893;" outcome="/secured/aspirantes/requisitos" ajax="false" rendered="#{userSessionBean.m5o10o0}"/>
+                            </c:if>
+                        </p:submenu>
+                        <p:submenu id="um_trabajadores" label="Trabajadores" icon="&#xE871;" rendered="#{userSessionBean.m6o0o0}">
+                            <p:menuitem id="trabajadores1" value="Consultas" icon="&#xE3AE;"  actionListener="#{userSessionBean.goBusquedaTrabajadores(2)}" process="@this" ajax="false" rendered="#{userSessionBean.m6o1o0}"/>
+                            <c:if test="#{userSessionBean.trabajador gt 0}" >
+                                <p:menuitem id="trabajadores4" value="Datos Generales" icon="&#xE893;" outcome="/secured/trabajadores/datosGenerales" ajax="false" rendered="#{userSessionBean.m6o2o0}"/>
+                                <p:menuitem id="trabajadores5" value="Datos Personales" icon="&#xE893;" outcome="/secured/trabajadores/datosPersonales" ajax="false" rendered="#{userSessionBean.m6o3o0}"/>
+                                <p:menuitem id="trabajadores6" value="Datos Identidad" icon="&#xE893;" outcome="/secured/trabajadores/datosIdentidad" ajax="false" rendered="#{userSessionBean.m6o4o0}"/>
+                                <p:menuitem id="trabajadores7" value="Documentacion" icon="&#xE893;" outcome="/secured/trabajadores/documentacion" ajax="false" rendered="#{userSessionBean.m6o5o0}"/>
+                                <p:menuitem id="trabajadores8" value="Escolaridad" icon="&#xE893;" outcome="/secured/trabajadores/escolaridad" ajax="false" rendered="#{userSessionBean.m6o6o0}"/>
+                                <p:menuitem id="trabajadores9" value="Familiares" icon="&#xE893;" outcome="/secured/trabajadores/familiares" ajax="false" rendered="#{userSessionBean.m6o7o0}"/>
+                                <p:menuitem id="trabajadores10" value="Experiencia" icon="&#xE893;" outcome="/secured/trabajadores/experiencia" ajax="false" rendered="#{userSessionBean.m6o8o0}"/>
+                                <p:menuitem id="trabajadores11" value="Beneficiarios" icon="&#xE893;" outcome="/secured/trabajadores/beneficiarios" ajax="false" rendered="#{userSessionBean.m6o9o0}"/>
+                            </c:if>
+                        </p:submenu>
+
+                        <p:submenu id="um_contratos" label="Contratos" icon="&#xE871;" rendered="#{userSessionBean.m7o0o0}">
+                            <p:menuitem id="contratos1" value="Consultas" icon="&#xE3AE;"  actionListener="#{userSessionBean.goBusquedaContratos(2)}" process="@this" ajax="false" rendered="#{userSessionBean.m7o1o0}"/>
+                            <c:if test="#{userSessionBean.contrato  gt 0}">
+                                <p:menuitem id="contratos3" value="Contrato" icon="&#xE3AE;"  actionListener="#{userSessionBean.goBusquedaContratos(3)}" process="@this" ajax="false" rendered="#{userSessionBean.m7o3o0}"/>
+                                <p:submenu id="um_apriv" label="Ausencias" icon="&#xE893;" rendered="#{userSessionBean.m7o4o0 and contr27BackingBean.active}">
+                                    <p:menuitem value="Todos" icon="&#xE904;" actionListener="#{userSessionBean.goBusquedaApriv('')}" process="@this" ajax="false"/>
+                                    <c:forEach var="varTapri16" items="#{tapri16Backing.tapri16TopList}">
+                                        <p:menuitem value="#{varTapri16}" icon="&#xE904;" actionListener="#{userSessionBean.goBusquedaApriv(varTapri16.toUpperCase(localeBean.locale))}" process="@this" ajax="false" containerStyle="text-transform: capitalize;" style="text-transform: capitalize;"/>
+                                    </c:forEach>   
+                                </p:submenu>
+                                <p:submenu id="um_prypr" label="Premios/Prestaciones" icon="&#xE893;" rendered="#{userSessionBean.m7o5o0 and contr27BackingBean.active}">
+                                    <p:menuitem value="Todos" icon="&#xE904;" actionListener="#{userSessionBean.goBusquedaPrypr('')}" process="@this" ajax="false"/>
+                                    <c:forEach var="varTipyp20" items="#{tipyp20Backing.tipyp20TopList}">
+                                        <p:menuitem value="#{varTipyp20}" icon="&#xE904;" actionListener="#{userSessionBean.goBusquedaPrypr(varTipyp20.toUpperCase(localeBean.locale))}" process="@this" ajax="false" containerStyle="text-transform: capitalize;" style="text-transform: capitalize;"/>
+                                    </c:forEach>
+                                </p:submenu>
+                                <p:submenu id="uum_sanci" label="Sanciones" icon="&#xE893;" rendered="#{userSessionBean.m7o6o0 and contr27BackingBean.active}">
+                                    <p:menuitem value="Todas" icon="&#xE904;" actionListener="#{userSessionBean.goBusquedaSanci('')}" process="@this" ajax="false"/>
+                                    <c:forEach var="varTipsa47" items="#{tipsa47Backing.tipsa47TopList}">
+                                        <p:menuitem value="#{varTipsa47}" icon="&#xE904;" actionListener="#{userSessionBean.goBusquedaSanci(varTipsa47.toUpperCase(localeBean.locale))}" process="@this" ajax="false" containerStyle="text-transform: capitalize;" style="text-transform: capitalize;"/>
+                                    </c:forEach>
+                                </p:submenu>
+                            </c:if>
+                        </p:submenu>
+                        <p:submenu id="um_inventario" label="Inventarios" icon="&#xE893;" rendered="#{userSessionBean.m8o0o0}">
+                            <p:menuitem id="inventario1" value="Entradas" icon="&#xE904;" actionListener="#{userSessionBean.goBusquedaInven('ENTRADA')}"  process="@this" ajax="false" />
+                            <p:menuitem id="inventario2" value="Salidas" icon="&#xE904;" actionListener="#{userSessionBean.goBusquedaInven('SALIDA')}"  process="@this" ajax="false" />
+                            <p:menuitem id="inventario3" value="Existencias" icon="&#xE904;" actionListener="#{userSessionBean.goBusquedaInven('EXISTENCIAS')}"  process="@this" ajax="false" />
+                        </p:submenu>
+                        <p:submenu id="um_reportes" label="Reportes" icon="&#xE893;" rendered="#{userSessionBean.m9o0o0}">
+                            <p:menuitem id="reportes1" value="Kardex Aspirante" icon="&#xE3AE;" actionListener="#{userSessionBean.goKardex(0)}" process="@this"   ajax="false" rendered="#{userSessionBean.m9o1o0}" />
+                            <p:menuitem id="reportes2" value="Kardex Trabajador" icon="&#xE893;" actionListener="#{userSessionBean.goKardex(1)}" process="@this" ajax="false" rendered="#{userSessionBean.m9o2o0}" />
+                            <p:menuitem id="reportes3" value="Reportes" icon="&#xE893;" actionListener="#{userSessionBean.goReportes(0)}" process="@this" ajax="false" rendered="#{userSessionBean.m9o0o0}" />
+                        </p:submenu>
+                        <p:submenu id="um_catalogos" label="Catalogos Publicos" icon="&#xE893;" rendered="#{userSessionBean.m10o0o0}">
+                            <p:menuitem id="catalogos1" value="Especialidades" icon="&#xE904;" outcome="/secured/catalogos/especialidadesList.xhtml" ajax="false" rendered="#{userSessionBean.m10o1o0}"/>
+                            <p:menuitem id="catalogos2" value="Estados Civiles" icon="&#xE904;" outcome="/secured/catalogos/estadoCivilList.xhtml" ajax="false" rendered="#{userSessionBean.m10o2o0}"/>
+                            <p:menuitem id="catalogos3" value="Generos" icon="&#xE904;" outcome="/secured/catalogos/sexoList.xhtml" ajax="false" rendered="#{userSessionBean.m10o3o0}"/>
+                            <p:menuitem id="catalogos4" value="Nacionalidades" icon="&#xE904;" outcome="/secured/catalogos/nacionalidadesList.xhtml" ajax="false" rendered="#{userSessionBean.m10o4o0}"/>
+                            <p:menuitem id="catalogos5" value="Niveles Estudio" icon="&#xE904;" outcome="/secured/catalogos/nivelesEstudioList.xhtml" ajax="false" rendered="#{userSessionBean.m10o5o0}"/>
+                            <p:menuitem id="catalogos6" value="Proveedores" icon="&#xE904;" outcome="/secured/catalogos/proveedoresList.xhtml" ajax="false" rendered="#{userSessionBean.m10o6o0}"/>
+                            <p:menuitem id="catalogos7" value="Razones sin Documento" icon="&#xE904;" outcome="/secured/catalogos/causasSinDocumentoList.xhtml" ajax="false" rendered="#{userSessionBean.m10o7o0}"/>
+                            <p:menuitem id="catalogos8" value="Status Contratos" icon="&#xE904;" outcome="/secured/catalogos/statusContratoList.xhtml" ajax="false" rendered="#{userSessionBean.m10o8o0}"/>
+                            <p:menuitem id="catalogos9" value="Status Trabajadores" icon="&#xE904;" outcome="/secured/catalogos/statusTrabajadoresList.xhtml" ajax="false" rendered="#{userSessionBean.m10o9o0}"/>
+                            <p:menuitem id="catalogos10" value="Tipos de Ausencias" icon="&#xE904;" outcome="/secured/catalogos/tiposAprivList.xhtml" ajax="false" rendered="#{userSessionBean.m10o10o0}"/>
+                            <p:menuitem id="catalogos11" value="Tipos Casa/Habitacion" icon="&#xE904;" outcome="/secured/catalogos/tiposDomiciliosList.xhtml" ajax="false" rendered="#{userSessionBean.m10o11o0}"/>
+                            <p:menuitem id="catalogos12" value="Tipos Contratos" icon="&#xE904;" outcome="/secured/catalogos/tiposContratosList.xhtml" ajax="false" rendered="#{userSessionBean.m10o12o0}"/>
+                            <p:menuitem id="catalogos13" value="Tipos Documentos" icon="&#xE904;" outcome="/secured/catalogos/tiposDocumentosList.xhtml" ajax="false" rendered="#{userSessionBean.m10o13o0}"/>
+                            <p:menuitem id="catalogos14" value="Monedas" icon="&#xE904;" outcome="/secured/catalogos/tiposMonedasList.xhtml" ajax="false" rendered="#{userSessionBean.m10o14o0}"/>
+                            <p:menuitem id="catalogos15" value="Tipos Parientes" icon="&#xE904;" outcome="/secured/catalogos/tiposParientesList.xhtml" ajax="false" rendered="#{userSessionBean.m10o15o0}"/>
+                            <p:menuitem id="catalogos16" value="Religiones" icon="&#xE904;" outcome="/secured/catalogos/religionesList.xhtml" ajax="false" rendered="#{userSessionBean.m10o16o0}"/>
+                            <p:menuitem id="catalogos17" value="Tipos Sangre" icon="&#xE904;" outcome="/secured/catalogos/tiposSangreList.xhtml" ajax="false" rendered="#{userSessionBean.m10o17o0}"/>
+                            <p:menuitem id="catalogos18" value="Turnos/Tripulacion" icon="&#xE904;" outcome="/secured/catalogos/turnosList.xhtml" ajax="false" rendered="#{userSessionBean.m10o18o0}"/>
+                            <p:menuitem id="catalogos19" value="Ubicaciones" icon="&#xE904;" outcome="/secured/catalogos/ubicacionesList.xhtml" ajax="false"  rendered="#{userSessionBean.m10o19o0}"/>
+                        </p:submenu>
+                        <p:submenu id="um_catalogosespeciales" label="Catalogos Especiales" icon="&#xE893;"  rendered="#{userSessionBean.m11o0o0}">
+                            <p:menuitem id="catalogosespeciales1" value="Articulos Inventario" icon="&#xE904;" outcome="/secured/catalogos/articulosInventariosList.xhtml" ajax="false"  rendered="#{userSessionBean.m11o1o0}"/>
+                            <p:menuitem id="catalogosespeciales2" value="Departamentos" icon="&#xE904;" outcome="/secured/catalogos/departamentosList.xhtml" ajax="false"  rendered="#{userSessionBean.m11o2o0}"/>
+                            <p:menuitem id="catalogosespeciales3" value="Empresas/Plantas" icon="&#xE904;" outcome="/secured/catalogos/empresasList.xhtml" ajax="false"  rendered="#{userSessionBean.m11o3o0}"/>
+                            <p:menuitem id="catalogosespeciales4" value="Complejos" icon="&#xE904;" outcome="/secured/catalogos/sedesList.xhtml" ajax="false"  rendered="#{userSessionBean.m11o4o0}"/>
+                            <p:menuitem id="catalogosespeciales5" value="Premios/Prestaciones" icon="&#xE904;" outcome="/secured/catalogos/tiposPrypList.xhtml" ajax="false"  rendered="#{userSessionBean.m11o5o0}"/>
+                            <p:menuitem id="catalogosespeciales6" value="Tipos Sanciones" icon="&#xE904;" outcome="/secured/catalogos/tiposSancionesList.xhtml" ajax="false" rendered="#{userSessionBean.m11o6o0}"/>
+                        </p:submenu>
+                        <p:submenu id="um_catalogosconfidenciales" label="Catalogos Confidenciales" icon="&#xE893;" rendered="#{userSessionBean.m12o0o0}">
+                            <p:menuitem id="catalogosconfidenciales1" value="Categorias Trabajadores" icon="&#xE904;" outcome="/secured/catalogos/categoriasTrabajadoresList.xhtml" ajax="false" rendered="#{userSessionBean.m12o1o0}"/>
+                            <p:menuitem id="catalogosconfidenciales2" value="Miembros Comite" icon="&#xE904;" outcome="/secured/catalogos/miembrosComiteList.xhtml" ajax="false" rendered="#{userSessionBean.m12o2o0}"/>
+                            <p:menuitem id="catalogosconfidenciales3" value="Usuarios" icon="&#xE904;" outcome="/secured/catalogos/usuariosList.xhtml" ajax="false" rendered="#{userSessionBean.m12o3o0}"/>
+                        </p:submenu>
+                        <p:menuitem id="um_auditoria" value="Auditoria" icon="&#xE32A;" actionListener="#{userSessionBean.goSistema(7)}" process="@this"   ajax="false" rendered="#{userSessionBean.m13o0o0}" />
+                        <p:menuitem id="um_ayuda" value="Ayuda" icon="&#xE887;" actionListener="#{userSessionBean.goSistema(6)}" process="@this"   ajax="false" />
+                    </pu:menu>
+
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+</ui:composition>

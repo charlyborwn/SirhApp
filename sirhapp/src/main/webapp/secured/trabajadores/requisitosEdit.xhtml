@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Requisitos"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{traba36Backing.getTraba36Request(userSessionBean.trabajador)}" type="preRenderView" />
+            <f:event listener="#{requi54Backing.getRequi54Request(userSessionBean.trabajador)}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+
+                <p:toolbar rendered="#{not empty requi54Backing.selectedRequi54}">
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton type="submit" update="growl" value="Actualizar" action="#{requi54Backing.go(2)}" actionListener="#{requi54Backing.updateRequi54()}" rendered="#{not empty requi54Backing.selectedRequi54}" icon="ui-icon-update">
+                        </p:commandButton> 
+                        <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" rendered="#{not empty requi54Backing.selectedRequi54}" icon="ui-icon-delete" >
+                        </p:commandButton>
+                        <p:commandButton update="growl" action="#{requi54Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                        </p:commandButton>
+                        <!--Secciones-->
+                        <section id="secAll">
+                            <!--Seccion Dialogo Eliminar-->
+                            <section id="secEliminar">
+                                <div class="ui-g">
+                                    <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                                        <h:panelGrid columns="2" cellpadding="5" >
+                                            <p:outputLabel value="" style="color:black;" />
+                                            <f:facet name="footer">
+                                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                    <p:commandButton value="Cancelar" update="growl" onclick="PF('eliminar').hide();"  />
+                                                    <p:commandButton type="submit" update="growl" value="Eliminar" action="#{requi54Backing.go(2)}" actionListener="#{requi54Backing.deleteRequi54()}"  class="red-btn" process="@this">
+                                                    </p:commandButton>
+                                                </p:panelGrid>
+                                            </f:facet>  
+                                        </h:panelGrid>
+                                        <p:ajax event="close" update="eliminar" />
+                                    </p:dialog>
+                                </div>
+                            </section>
+                        </section>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Lista de requisitos" id="panel" rendered="#{userSessionBean.trabajador gt 0}" >
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="prreqsel" value="#{selectedRequi54.prreq}" readonly="true" />
+                            <label>Nombre Persona Revisa</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="fvreq" value="#{selectedRequi54.fvreq}" readonly="true" >
+                                <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                            </p:inputText>
+                            <label>Fecha de Solicitud</label>
+                        </h:panelGroup>
+                    </p:panelGrid> 
+
+
+                    <p:panelGrid columns="2" layout="grid" columnClasses="column98,column99" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <label>Acta Nacimiento</label>
+                        <p:selectOneRadio value="#{selectedRequi54.acreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+                        <label>Constancia CURP</label>
+                        <p:selectOneRadio value="#{selectedRequi54.cureq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+                        <label>Cartilla Vacunación</label>
+                        <p:selectOneRadio value="#{selectedRequi54.cvreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+                        <label>Comprobante Domicilio</label>
+                        <p:selectOneRadio value="#{selectedRequi54.cdreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+
+                        <label>Certificado Estudios</label>
+                        <p:selectOneRadio value="#{selectedRequi54.cereq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Credencial para Votar</label>
+                        <p:selectOneRadio value="#{selectedRequi54.voreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Cartilla Militar</label>
+                        <p:selectOneRadio value="#{selectedRequi54.cmreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+
+                        <label>Constancia Registro IMSS</label>
+                        <p:selectOneRadio value="#{selectedRequi54.imreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Constancia Registro SAT</label>
+                        <p:selectOneRadio value="#{selectedRequi54.sareq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Comprobante Afore</label>
+                        <p:selectOneRadio value="#{selectedRequi54.afreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Carta Recomendación</label>
+                        <p:selectOneRadio value="#{selectedRequi54.rereq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Comprobante Ingresos Ultimo Empleo</label>
+                        <p:selectOneRadio value="#{selectedRequi54.inreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Comprobante Afiliación FONACOT</label>
+                        <p:selectOneRadio value="#{selectedRequi54.foreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Comprobante INFONAVIT</label>
+                        <p:selectOneRadio value="#{selectedRequi54.cireq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Licencia de Conducir</label>
+                        <p:selectOneRadio value="#{selectedRequi54.lcreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Pasaporte Mexicano y Visa</label>
+                        <p:selectOneRadio value="#{selectedRequi54.pareq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Acta Matrimonio o Divorcio</label>
+                        <p:selectOneRadio value="#{selectedRequi54.mdreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Acta Nacimiento Hijos</label>
+                        <p:selectOneRadio value="#{selectedRequi54.hireq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Acta Nacimiento Beneficiarios</label>
+                        <p:selectOneRadio value="#{selectedRequi54.bereq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Formato de Recomendación</label>
+                        <p:selectOneRadio value="#{selectedRequi54.frreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Fotografías</label>
+                        <p:selectOneRadio value="#{selectedRequi54.ftreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Formato de Permuta</label>
+                        <p:selectOneRadio value="#{selectedRequi54.pereq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No Entrego" itemValue="0" />
+                            <f:selectItem itemLabel="Si Entrego" itemValue="1" />
+                            <f:selectItem itemLabel="Entrego Incorrecto" itemValue="2" />
+                            <f:selectItem itemLabel="No Tiene" itemValue="3" />
+                        </p:selectOneRadio>
+
+
+                        <label>Expediente Completo</label>
+                        <p:selectOneRadio value="#{selectedRequi54.ecreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                            <f:selectItem itemLabel="Si" itemValue="1" />
+
+                        </p:selectOneRadio>
+
+
+                        <label>Datos Personales</label>
+                        <p:selectOneRadio value="#{selectedRequi54.dpreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                            <f:selectItem itemLabel="Si" itemValue="1" />
+
+                        </p:selectOneRadio>
+
+
+                        <label>Concordancia Documentos</label>
+                        <p:selectOneRadio value="#{selectedRequi54.coreq}" layout="responsive" columns="4" >
+                            <f:selectItem itemLabel="No" itemValue="0" />
+                            <f:selectItem itemLabel="Si" itemValue="1" />
+
+                        </p:selectOneRadio>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

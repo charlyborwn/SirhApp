@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition >
+        <f:metadata>
+            <f:event listener="#{traba36aBacking.getTraba36aRequest(userSessionBean.aspirante)}" type="preRenderView" />
+        </f:metadata>
+        <div class="ui-content-title"><h:outputText style="font-weight: lighter" value="NOMBRE:&#160;" /><h:outputText style="font-weight: bolder" value="#{selectedTraba36a.nctraA}" /><i class="material-icons" style="color:yellow;height: 18px;font-size: 16px"></i></div>
+        <div class="ui-content-title"><h:outputText style="font-weight: lighter" value="FOLIO:&#160;" /><h:outputText style="font-weight: bolder" value="#{selectedTraba36a.fxtraA}" /><i class="material-icons" style="color:yellow;height: 18px;font-size: 16px"></i><h:outputText style="font-weight: lighter" value="RFC:&#160;" /><h:outputText style="font-weight: bolder" value="#{selectedTraba36a.rftraA}" /><i class="material-icons" style="color:yellow;height: 18px;font-size: 16px"></i><h:outputText style="font-weight:  lighter" value="CURP:&#160;" /><h:outputText style="font-weight: bolder" value="#{selectedTraba36a.cutraA.toUpperCase(localeBean.locale)}" /></div>
+    </ui:composition>
+</html>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Inventarios - #{userSessionBean.tinven}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="/secured/empty.xhtml?faces-redirect=true" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup  id="results" class="table-responsive" rendered="#{!userSessionBean.tinven.equals('EXISTENCIAS')}">
+                    <p:dataTable id="dataTableResults" var="inven37" value="#{inven37BackingBean.inven37List}" selectionMode="single" reflow="true"
+                                 selection="#{inven37BackingBean.selectedInven37}" rowKey="#{inven37.idinv}" 
+                                 paginator="true" rows="8" emptyMessage="#{msg['inven.EmptyList']}"
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}">
+
+                        <p:ajax event="rowSelect" update="inventarioViewButton inventarioEditButton "/>
+                        <p:ajax event="rowUnselect" update="inventarioViewButton inventarioEditButton "/>
+
+                        <f:facet name="header">
+                            <div style="position: relative; width: 100%;">
+                                <div style="width: 100%; text-align: left;">Lista de Inventario: <h:outputText style="font-weight: bolder" value="#{userSessionBean.tinven}" />
+                                </div>
+                            </div>
+                        </f:facet>
+                        <f:facet name="{Exporters}">
+                            <h:panelGroup class="ui-float-right">
+                                <h:commandLink rendered="#{inven37BackingBean.inven37List.size() gt 0}" >
+                                    <p:graphicImage name="/images/excel.png" library="ultima-layout" width="24"/>
+                                    <p:dataExporter type="xls" target="panelForm:dataTableResults" fileName="aspirantes" />
+                                </h:commandLink>
+
+                                <h:commandLink rendered="#{inven37BackingBean.inven37List.size() gt 0}" >
+                                    <p:graphicImage name="/images/pdf.png" library="ultima-layout" width="24"/>
+                                    <p:dataExporter type="pdf" target="panelForm:dataTableResults" fileName="aspirantes"/>
+                                </h:commandLink>
+
+                                <h:commandLink rendered="#{inven37BackingBean.inven37List.size() gt 0}" >
+                                    <p:graphicImage name="/images/csv.png" library="ultima-layout" width="24"/>
+                                    <p:dataExporter type="csv" target="panelForm:dataTableResults" fileName="aspirantes" />
+                                </h:commandLink>
+                            </h:panelGroup>
+                        </f:facet>
+
+                        <p:column headerText="Nombre Empresa">
+                            <h:outputText value="#{inven37.neinv}" />
+                        </p:column>
+                        <p:column headerText="Articulo">
+                            <h:outputText value="#{inven37.arinv}" />
+                        </p:column>
+                        <p:column headerText="Marca">
+                            <h:outputText value="#{inven37.mainv}" />
+                        </p:column>
+                        <p:column headerText="Modelo">
+                            <h:outputText value="#{inven37.moinv}" />
+                        </p:column>
+                        <p:column headerText="Color">
+                            <h:outputText value="#{inven37.coinv}" />
+                        </p:column>
+                        <p:column headerText="Talla">
+                            <h:outputText value="#{inven37.tainv}" />
+                        </p:column>
+                        <p:column headerText="Cantidad">
+                            <h:outputText value="#{inven37.cainv}" />
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@this" id="inventarioCreateButton" 
+                                             action="/secured/inventarios/inventarioNew.xhtml?faces-redirect=true"  
+                                             style="width:auto;" styleClass="blue-btn flat" 
+                                             value="Crear" >
+                                <f:setPropertyActionListener target="#{userSessionBean.inven}" 
+                                                             value="#{''}" />
+                            </p:commandButton>
+                            <p:commandButton type="submit" process="@this"  id="inventarioViewButton" 
+                                             action="/secured/inventarios/inventarioView.xhtml?faces-redirect=true" 
+                                             actionListener="#{userSessionBean.setInven(selectedInven37.idinv)}"   
+                                             style="width:auto;" styleClass="blue-btn flat" 
+                                             value="Ver"  disabled="#{empty inven37BackingBean.selectedInven37}">
+                            </p:commandButton>
+                            <p:commandButton type="submit" process="@this" id="inventarioEditButton" 
+                                             action="/secured/inventarios/inventarioEdit.xhtml?faces-redirect=true"  
+                                             style="width:auto;" styleClass="blue-btn flat" 
+                                             value="Editar"  disabled="#{empty inven37BackingBean.selectedInven37}">
+                                <f:setPropertyActionListener target="#{userSessionBean.inven}" 
+                                                             value="#{selectedInven37.idinv}" />
+                            </p:commandButton>
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+                <h:panelGroup  id="resultsInventario" class="table-responsive" rendered="#{userSessionBean.tinven.equals('EXISTENCIAS')}">
+                    <p:dataTable id="dataTableResultsInventario" var="inven37" value="#{inven37BackingBean.inven37List}" reflow="true"
+                                 paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['inven.EmptyList']}"
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}">
+
+                        <f:facet name="header">
+                            <div style="position: relative; width: 100%;">
+                                <div style="width: 100%; text-align: left;">
+                                    Lista de Inventario: <h:outputText style="font-weight: bolder" value="#{userSessionBean.tinven}" />
+                                </div>
+                            </div>
+                        </f:facet>
+                        <f:facet name="{Exporters}">
+                            <h:panelGroup class="ui-float-right">
+                                <h:commandLink rendered="#{inven37BackingBean.inven37List.size() gt 0}" >
+                                    <p:graphicImage name="/images/excel.png" library="ultima-layout" width="24"/>
+                                    <p:dataExporter type="xls" target="panelForm:dataTableResultsInventario" fileName="inventarios" />
+                                </h:commandLink>
+
+                                <h:commandLink rendered="#{inven37BackingBean.inven37List.size() gt 0}" >
+                                    <p:graphicImage name="/images/pdf.png" library="ultima-layout" width="24"/>
+                                    <p:dataExporter type="pdf" target="panelForm:dataTableResultsInventario" fileName="inventarios"/>
+                                </h:commandLink>
+
+                                <h:commandLink rendered="#{inven37BackingBean.inven37List.size() gt 0}" >
+                                    <p:graphicImage name="/images/csv.png" library="ultima-layout" width="24"/>
+                                    <p:dataExporter type="csv" target="panelForm:dataTableResultsInventario" fileName="inventarios" />
+                                </h:commandLink>
+                            </h:panelGroup>
+                        </f:facet>
+
+                        <p:column headerText="Nombre Empresa">
+                            <h:outputText value="#{inven37.neinv}" />
+                        </p:column>
+                        <p:column headerText="Articulo">
+                            <h:outputText value="#{inven37.arinv}" />
+                        </p:column>
+                        <p:column headerText="Marca">
+                            <h:outputText value="#{inven37.mainv}" />
+                        </p:column>
+                        <p:column headerText="Modelo">
+                            <h:outputText value="#{inven37.moinv}" />
+                        </p:column>
+                        <p:column headerText="Color">
+                            <h:outputText value="#{inven37.coinv}" />
+                        </p:column>
+                        <p:column headerText="Talla">
+                            <h:outputText value="#{inven37.tainv}" />
+                        </p:column>
+                        <p:column headerText="Cantidad">
+                            <h:outputText value="#{inven37.cainv-inven37BackingBean.countOutInven37(inven37)}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Escolaridad de Aspirante"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="escolaridadListForm">
+                <p:toolbar rendered="#{userSessionBean.aspirante.length() gt 0}">
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="#{traba36aBacking.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup  class="table-responsive">
+                    <p:dataTable 
+                        id="escolaridadDatalist" value="#{escol30aBackingBean.escol30aList}" var="escol30a" 
+                        selectionMode="single" selection="#{escol30aBackingBean.selectedEscol30aBean}"
+                        paginator="true"
+                        rowKey="#{escol30a.idescA}" 
+                        rows="10"
+                        rowsPerPageTemplate="10,20,30,40,50"
+                        emptyMessage="#{msg['escolaridada.EmptyList']}" >
+
+                        <p:ajax event="rowSelect"   update="escolaridadCreateButton escolaridadViewButton escolaridadEditButton escolaridadDeleteButton"/>
+                        <p:ajax event="rowUnselect" update="escolaridadCreateButton escolaridadViewButton escolaridadEditButton escolaridadDeleteButton"/>
+
+                        <p:column headerText="Tipo Nivel de Estudios">
+                            <h:outputText value="#{escol30a.tnescA}" />
+                        </p:column>
+                        <p:column headerText="Nombre Institución">
+                            <h:outputText value="#{escol30a.niescA}" />
+                        </p:column>
+                        <p:column headerText="Años cursados">
+                            <h:outputText value="#{escol30a.acescA}" />
+                        </p:column>
+                        <p:column headerText="Cursando Actualmente">
+                            <h:outputText value="#{escol30a.caescA}" />
+                        </p:column>
+
+
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="escolaridadCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}"  actionListener="#{escol30aBackingBean.prepareCreateEscol30a()}" update=":escolaridadCreateForm" oncomplete="PF('escolaridadCreateDialog').show(); "/>
+                            <p:commandButton type="submit" process="@form" id="escolaridadViewButton" icon="ui-icon-search" value="#{bundle.View}" update=":escolaridadViewForm"  oncomplete="PF('escolaridadViewDialog').show(); " disabled="#{empty escol30aBackingBean.selectedEscol30aBean}"/>
+                            <p:commandButton type="submit" process="@form" id="escolaridadEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" update=":escolaridadEditForm"  oncomplete="PF('escolaridadEditDialog').show(); " disabled="#{empty escol30aBackingBean.selectedEscol30aBean}"/>
+                            <p:commandButton type="submit" process="@form" id="escolaridadDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{escol30aBackingBean.deleteEscol30a()}" update="escolaridadDatalist,growl" disabled="#{empty escol30aBackingBean.selectedEscol30aBean}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="escolaridadCreate.xhtml"/>
+            <ui:include src="escolaridadEdit.xhtml"/>
+            <ui:include src="escolaridadView.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>

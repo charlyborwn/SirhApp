@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Edicion del contrato"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" enctype="multipart/form-data"  rendered="#{userSessionBean.aspirante ne null}">
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+                <p:toolbar>
+                    <f:facet name="left"><ui:include src="headerContrato.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton type="submit" update="growl" value="Actualizar" action="#{contr27BackingBean.go(2)}" actionListener="#{contr27BackingBean.updateContr27()}" icon="ui-icon-update"/>
+                        <p:commandButton type="submit" 
+                                         value="Eliminar"  
+                                         process="@this" oncomplete="authDialogFormParams();" >
+                        </p:commandButton>
+                        <p:remoteCommand id="rcAuthDialogFormParams" name="authDialogFormParams" oncomplete="PF('callAuthDialog').show();"  update="callAuthForm" 
+                                         actionListener="#{loginBean.Params('contr27BackingBean','deleteContr27',9)}"/>
+                        <p:commandButton update="growl" action="/secured/contratos/contratoView.xhtml?faces-redirect=true" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Edicion del contrato" id="panel" >
+                    <h:panelGroup>
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-10,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup>
+                                <p:panelGrid columns="4" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" style="margin-left: -14px !important;" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ntcto" value="#{contr27BackingBean.selectedContr27.ntcto}" readonly="true" />
+                                        <label>N/Trabajador</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rfcto" value="#{contr27BackingBean.selectedContr27.rfcto}" readonly="true" />
+                                        <label>RFC/Trabajador</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="shcto" value="#{contr27BackingBean.selectedContr27.shcto}" readonly="true" />
+                                        <label>Status</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="fhcto" value="#{contr27BackingBean.selectedContr27.fhcto}" readonly="true" >
+                                            <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                        </p:inputText>
+                                        <label>Fecha/Status</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" style="margin-left: -14px !important;" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apcto" value="#{contr27BackingBean.selectedContr27.tncto}" readonly="true" />
+                                        <label>Nombre</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:lightBox rendered="#{contr27BackingBean.selectedContr27.pfcto.length() gt 0 || not contr27BackingBean.selectedContr27.pfcto eq null }"> 
+                                    <h:outputLink value="#{bundle.PathRelativeFull}#{contr27BackingBean.selectedContr27.pfcto}" title="Fotografia de #{contr27BackingBean.selectedContr27.tncto}" rendered="#{contr27BackingBean.selectedContr27.pfcto.length() gt 0 and contr27BackingBean.selectedContr27.pfcto ne null }" >                                
+                                        <h:graphicImage class="w3-card-4 " value="#{bundle.PathRelativeShort}#{contr27BackingBean.selectedContr27.pfcto}" style="height: 70px;" />                            
+                                    </h:outputLink>
+                                </p:lightBox>                               
+                                <h:graphicImage class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout" style="height: 70px;" rendered="#{contr27BackingBean.selectedContr27.pfcto.length() eq 0 || contr27BackingBean.selectedContr27.pfcto eq null }" />                           
+                            </h:panelGroup>
+                        </p:panelGrid>                        
+                        <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-4,ui-grid-col-4,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nucto" value="#{contr27BackingBean.selectedContr27.nucto}" readonly="true" />
+                                <label>N/Contrato</label>
+                            </h:panelGroup> 
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="sscto" value="#{contr27BackingBean.selectedContr27.sscto}" required="true" >
+                                    <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{stcon14Backing.stcon14List}" var="con" itemLabel="#{con.destc}" itemValue="#{con.destc}"/>
+                                    <p:ajax event="change" process="@this" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Status del Contrato" for="sscto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fscto" value="#{contr27BackingBean.selectedContr27.fscto}" required="true"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true" 
+                                            showOn="button" mindate="01/01/1917" />
+                                <p:outputLabel value="Fecha Status Contrato" for="fscto" />
+                            </h:panelGroup>                          
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="escto" value="#{contr27BackingBean.selectedContr27.escto}" >
+                                    <f:selectItem itemLabel="Localidad" noSelectionOption="true" />
+                                    <f:selectItems value="#{contr27BackingBean.getUbica23Estados()}" var="est" itemLabel="#{''.concat(est.esubi).concat(' ').concat(est.paubi)}" itemValue="#{est.esubi}"/>
+                                </p:selectOneMenu>
+                                <label>Localidad</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="secto" value="#{contr27BackingBean.selectedContr27.secto}" styleClass="ui-selectonemenu">
+                                    <f:selectItem itemLabel="Seleccione el complejo" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{sedes53Backing.sedes53List}" var="sed" itemLabel="#{''.concat(sed.cvsed).concat(' | ').concat(sed.desed)}" itemValue="#{sed.cvsed}"/>
+                                    <p:ajax event="valueChange" process="@this" update="cvcto necto" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Complejo" for="secto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cvcto" value="#{contr27BackingBean.selectedContr27.cvcto}" styleClass="ui-selectonemenu">
+                                    <f:selectItem itemLabel="Seleccione la Empresa" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{empre04Backing.getEmpre04List(contr27BackingBean.selectedContr27.secto)}" var="emp" itemLabel="#{''.concat(emp.cvemp).concat(' | ').concat(emp.noemp)}" itemValue="#{emp.cvemp}"/>
+                                    <p:ajax event="valueChange" process="@this sccto dccto spcto dpcto" update="necto ndcto cccto growl sccto dccto spcto dpcto" listener="#{contr27BackingBean.handleChange}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Clave Empresa" for="cvcto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="necto" value="#{contr27BackingBean.selectedContr27.necto}" readonly="true"  />
+                                <label>Empresa</label>
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ndcto" value="#{contr27BackingBean.selectedContr27.ndcto}" styleClass="ui-selectonemenu">
+                                    <f:selectItem itemLabel="Seleccione el Departamento" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{depar03Backing.getDepar03List(contr27BackingBean.selectedContr27.secto,contr27BackingBean.selectedContr27.cvcto)}" var="dep" itemLabel="#{''.concat(dep.nudep).concat(' | ').concat(dep.nodep)}" itemValue="#{dep.nudep}"/>
+                                    <p:ajax event="valueChange" process="@this" update="nbcto" listener="#{contr27BackingBean.handleChange}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Clave Departamento" for="ndcto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nbcto" value="#{contr27BackingBean.selectedContr27.nbcto}" readonly="true" />
+                                <label>Departamento</label>
+                            </h:panelGroup>                            
+                            <p:outputLabel value=""/>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cscto" value="#{contr27BackingBean.selectedContr27.cscto}" />
+                                <label>Clave Sección</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nscto" value="#{contr27BackingBean.selectedContr27.nscto}" />
+                                <label>Nombre Sección</label>
+                            </h:panelGroup>                            
+                            <p:outputLabel value=""/>
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cccto" value="#{contr27BackingBean.selectedContr27.cccto}" styleClass="ui-selectonemenu">
+                                    <f:selectItem itemLabel="Seleccione la Categoría" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{contr27BackingBean.categ01List}" var="cat" itemLabel="#{''.concat(cat.cvcat).concat(' | ').concat(cat.nocat)}" itemValue="#{cat.cvcat}"/>
+                                    <p:ajax event="valueChange" process="@this" update="cacto sxcto" listener="#{contr27BackingBean.handleChange}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Clave Categoría" for="cccto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cacto" value="#{contr27BackingBean.selectedContr27.cacto}" readonly="true" />
+                                <label>Categoría</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxcto" value="#{contr27BackingBean.selectedContr27.sxcto}" readonly="true" />
+                                <label>Sueldo Diario ($)</label>
+                            </h:panelGroup>                           
+                            <p:outputLabel value=""/>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tucto" value="#{contr27BackingBean.selectedContr27.tucto}" styleClass="ui-selectonemenu">
+                                    <f:selectItem itemLabel="Seleccione el Turno" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{turno22Backing.turno22List}" var="tur" itemLabel="#{''.concat(tur.cvtur).concat(' | ').concat(tur.notur)}" itemValue="#{tur.cvtur}"/>
+                                    <p:ajax event="valueChange" process="@this" update="ttcto growl" listener="#{contr27BackingBean.handleChange}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Clave Turno" for="tucto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ttcto" value="#{contr27BackingBean.selectedContr27.ttcto}" readonly="true" />
+                                <label>Nombre Turno</label>
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tccto" value="#{contr27BackingBean.selectedContr27.tccto}" styleClass="ui-selectonemenu">
+                                    <f:selectItem itemLabel="Seleccione el Tipo de Contrato" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{ticon17Backing.ticon17List}" var="tic" itemLabel="#{''.concat(tic.cvtic).concat(' | ').concat(tic.notic)}" itemValue="#{tic.cvtic}"/>
+                                    <p:ajax event="valueChange" process="@this" update="nccto" listener="#{contr27BackingBean.handleChange}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Clave Tipo de Contrato" for="tccto" />
+                            </h:panelGroup>                           
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nccto" value="#{contr27BackingBean.selectedContr27.nccto}" />
+                                <label>Tipo de Contrato</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="incto" value="#{contr27BackingBean.selectedContr27.incto}" required="true"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true" 
+                                            showOn="button" mindate="01/01/1917" />
+                                <p:outputLabel value="Inicio Contrato" for="incto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tecto" value="#{contr27BackingBean.selectedContr27.tecto}" 
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true" 
+                                            showOn="button" mindate="01/01/1917" />
+                                <p:outputLabel value="Termino Contrato" for="tecto" />
+                            </h:panelGroup>                        
+                        </p:panelGrid>
+                        <p:panelGrid columns="4" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="sccto" value="#{contr27BackingBean.selectedContr27.sccto}" styleClass="ui-selectonemenu">
+                                    <f:selectItem itemLabel="Seleccione el Supervisor" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{contr27BackingBean.comit08ListSup}" var="com" itemLabel="#{''.concat(com.ntcom).concat(' | ').concat(com.nccom)}" itemValue="#{com.ntcom}"/>
+                                    <p:ajax event="valueChange" process="@this" update="spcto" listener="#{contr27BackingBean.handleChange}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Supervisor. Clave Cargo Comité" for="sccto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="spcto" value="#{contr27BackingBean.selectedContr27.spcto}" />
+                                <label>Supervisor. Persona Cargo Comité</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="dccto" value="#{contr27BackingBean.selectedContr27.dccto}" styleClass="ui-selectonemenu">
+                                    <f:selectItem itemLabel="Seleccione el Delegado" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{contr27BackingBean.comit08ListDel}" var="com" itemLabel="#{''.concat(com.ntcom).concat(' | ').concat(com.nccom)}" itemValue="#{com.ntcom}"/>
+                                    <p:ajax event="valueChange" process="@this" update="dpcto" listener="#{contr27BackingBean.handleChange}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Delegado. Clave Cargo Comité" for="dccto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="dpcto" value="#{contr27BackingBean.selectedContr27.dpcto}" />
+                                <label>Delegado. Persona Cargo Comité</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="4" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nlcto" value="#{contr27BackingBean.selectedContr27.nlcto}" />
+                                <label>Número de Locker</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cncto" value="#{contr27BackingBean.selectedContr27.cncto}" />
+                                <label>Número de Camión</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nrcto" value="#{contr27BackingBean.selectedContr27.nrcto}" />
+                                <label>Número Ruta de Transporte</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="recto" value="#{contr27BackingBean.selectedContr27.recto}" />
+                                <label>Ubicación Reloj Checador</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputTextarea  rows="4" id="obcto" value="#{contr27BackingBean.selectedContr27.obcto}" />
+                                <label>Observaciones</label>
+                            </h:panelGroup>
+                        </p:panelGrid>                        
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                            
+                            <p:panelGrid id="contratoFile" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                           
+                                <p:fileUpload id="fileUploadFotografia" 
+                                              allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                              invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                              label="#{bundle.LblDOCEXP}"
+                                              uploadLabel="#{bundle.LblUpload}"
+                                              cancelLabel="#{bundle.LblCancel}"
+                                              update="contratoFile"
+                                              auto="true" required="true" requiredMessage="Debe proporcionar el archivo"
+                                              rendered="#{contr27BackingBean.selectedContr27.pacto.length() eq 0 || contr27BackingBean.selectedContr27.pacto eq null}"
+                                              value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                    <h:panelGroup rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension eq 'pdf' }">
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{''.concat(fileUploadBean.webFolder).concat(fileUploadBean.fileName)}');" style="height: 140px;max-height: 140px" 
+                                                            value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" />
+                                        </div>
+                                    </h:panelGroup>
+                                    <p:lightBox id="lightBoxFileUpload" rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension ne 'pdf' }" > 
+                                        <h:outputLink value="#{bundle.PathRelativeFull}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" title="Contrato de #{contr27BackingBean.selectedContr27.tncto}" > 
+                                            <h:graphicImage id="imageFileUpload" class=" w3-card-4" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" style="height: 140px;max-height: 140px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+
+                                    <f:attribute name="rootFolderAttr" value="#{contr27BackingBean.selectedContr27.rfcto}/"></f:attribute>
+                                    <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                    <f:attribute name="fileTypeAttr" value="#{contr27BackingBean.selectedContr27.w1cto}"></f:attribute>
+                                    <f:attribute name="idAttr" value="#{contr27BackingBean.selectedContr27.rfcto}"></f:attribute>
+                                    <f:attribute name="ownBackingAttr" value="#{'contr27BackingBean'}"></f:attribute>
+                                    <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                </p:fileUpload> 
+
+                                <h:panelGroup rendered="#{contr27BackingBean.selectedContr27.ftcto}">
+                                    <div id="ui-graphicimage">
+                                        <h:graphicImage class="card ui-shadow-5" onclick="rcPdfViewForm();" style="height: 140px;max-height: 140px" 
+                                                        value="#{bundle.PathRelativeShort}#{contr27BackingBean.selectedContr27.pacto}" />                                     
+                                    </div>
+                                    <p:remoteCommand id="rcPdfViewForm" name="rcPdfViewForm" oncomplete="PF('pdfViewDialog').show();" update="pdfViewForm" 
+                                                     actionListener="#{mediaBean.getPdf(contr27BackingBean.selectedContr27.pacto)}"/> 
+                                </h:panelGroup>
+                                <p:lightBox rendered="#{!contr27BackingBean.selectedContr27.ftcto}"> 
+                                    <h:outputLink value="#{bundle.PathRelativeFull}#{contr27BackingBean.selectedContr27.pacto}" title="Contrato de #{contr27BackingBean.selectedContr27.tncto}" rendered="#{contr27BackingBean.selectedContr27.pacto.length() gt 0 and contr27BackingBean.selectedContr27.pacto ne null }" > 
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px;" value="#{bundle.PathRelativeShort}#{contr27BackingBean.selectedContr27.pacto}" />
+                                        </div>
+                                    </h:outputLink>
+                                </p:lightBox>
+
+                                <p:commandButton process="@this" value="Borrar" rendered="#{contr27BackingBean.selectedContr27.pacto.length() gt 0 and contr27BackingBean.selectedContr27.pacto ne null }"
+                                                 icon="ui-icon-delete" class="red-btn" 
+                                                 actionListener="#{contr27BackingBean.updateContr27Foto}"
+                                                 update="panelForm growl" >
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </h:panelGroup>
+                </p:panel>
+            </h:form>
+            <ui:include src="/WEB-INF/system/callAuthDialog.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>

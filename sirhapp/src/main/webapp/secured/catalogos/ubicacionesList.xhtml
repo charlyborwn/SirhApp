@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{ubica23Backing.getListUbica23()}" type="preRenderView"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm">
+            <p:toolbar>
+                <f:facet name="left"></f:facet>
+                <f:facet name="right">
+                    <span class="ui-separator" style="padding-right: 5px;">
+                        <span class="fa fa-ellipsis-v SoftGray" />
+                    </span>
+                    <p:commandButton update="growl" action="#{ubica23Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                </f:facet>
+            </p:toolbar>
+
+            <h:panelGroup  id="results" class="table-responsive">
+                <p:dataTable var="ubica23" value="#{ubica23Backing.ubica23List}" selectionMode="single" reflow="true" lazy="true"
+                             selection="#{ubica23Backing.selectedUbica23}" rowKey="#{ubica23.idubi}"  paginator="true" 
+                             rows="10" rowsPerPageTemplate="10,50,100,500"  emptyMessage="#{msg['ubica23.EmptyList']}">
+
+                    <f:facet name="header">
+                        <div style="position: relative; width: 100%;">
+                            <div style="width: 100%; text-align: left;">Direcciones y códigos postales
+                                <div  style="position: absolute; width: 100%;text-align: right; top:-6px;">
+                                    <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                                        <p:commandButton action="#{ubica23Backing.go(0)}"  process="@this" icon="ui-icon-plus" value="Nuevo" style="width:auto;" styleClass="blue-btn flat"/>
+                                    </c:if>
+                                </div>
+                            </div>
+
+                        </div>
+                    </f:facet>
+                    <p:column headerText="Pais">
+                        <h:outputText value="#{ubica23.paubi}" />
+                    </p:column>
+                    <p:column headerText="Estado Ubicación">
+                        <h:outputText value="#{ubica23.esubi}" />
+                    </p:column>
+                    <p:column headerText="Mun/Del Ubicación">
+                        <h:outputText value="#{ubica23.mdubi}" />
+                    </p:column>
+
+                    <p:column headerText="Localidad/Población Ubicación">
+                        <h:outputText value="#{ubica23.loubi}" />
+                    </p:column>
+
+                    <p:column headerText="Colonia">
+                        <h:outputText value="#{ubica23.coubi}" />
+                    </p:column>
+
+                    <p:column headerText="Código Postal Ubicación">
+                        <h:outputText value="#{ubica23.cpubi}" />
+                    </p:column>
+                    <p:column width="190" headerText="Acciones">
+                        <p:commandButton action="#{ubica23Backing.go(3)}" actionListener="#{userSessionBean.setIdubi(ubica23.idubi)}"   
+                                         style="width:auto;" styleClass="blue-btn flat" 
+                                         value="Seleccionar" process="@this">
+                        </p:commandButton>
+                        <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                            <p:commandButton action="#{ubica23Backing.go(1)}"  process="@this"
+                                             style="width:auto;" styleClass="blue-btn flat" 
+                                             value="Editar">
+                                <f:setPropertyActionListener target="#{userSessionBean.idubi}" 
+                                                             value="#{ubica23.idubi}" />
+                            </p:commandButton>
+                        </c:if>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

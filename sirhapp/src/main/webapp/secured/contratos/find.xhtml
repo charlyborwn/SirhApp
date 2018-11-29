@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Contratos"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:tooltip />
+            <h:form id="searchForm" class="form-search"> 
+                <p:panel id="panelBuscar" header="Contratos" >
+                    <p:focus id="focusnt" for="nt"/>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="nt" 
+                                         placeholder="Clave Trabajador"
+                                         value="#{contr27Backing.nt}" 
+                                         mask="999999999" maxlength="9" autoClear="false" slotChar="" 
+                                         style="text-transform: capitalize;" >
+                                <p:ajax process="nt" update="submitButton" />
+                            </p:inputMask> 
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="nucto" 
+                                         placeholder="N/Contrato"
+                                         value="#{contr27Backing.nucto}" 
+                                         mask="999999999" maxlength="9" autoClear="false" slotChar=""
+                                         style="text-transform: capitalize;" >
+                                <p:ajax process="nucto" update="submitButton"/>
+                            </p:inputMask>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="rfc"
+                                         value="#{contr27Backing.rfc}" 
+                                         mask="aaaa999999***" maxlength="13" autoClear="false" 
+                                         slotChar=""  >
+                                <p:ajax process="@this" update="submitButton" />
+                            </p:inputMask>
+                            <p:outputLabel value="RFC" for="rfc" />
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="curp"
+                                         value="#{contr27Backing.curp}" 
+                                         mask="aaaa999999aaaaaa**" maxlength="18" autoClear="false" 
+                                         slotChar=""  >
+                                <p:ajax process="@this" update="submitButton" />
+                            </p:inputMask>
+                            <p:outputLabel value="CURP" for="curp" />
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="imss" 
+                                         value="#{contr27Backing.imss}" 
+                                         mask="99999999999" maxlength="11" autoClear="false" slotChar=""  >
+                                <p:ajax process="@this" update="submitButton" />
+                            </p:inputMask>
+                            <p:outputLabel value="IMSS" for="imss" />
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ap" value="#{contr27Backing.ap}"  >
+                                <p:ajax event="blur" process="@this" update="submitButton"/>
+                            </p:inputText>
+                            <label>Apellido Paterno</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="am" value="#{contr27Backing.am}"  >
+                                <p:ajax event="blur" process="@this" update="submitButton"/>
+                            </p:inputText>
+                            <label>Apellido Materno</label>
+                            <p:outputLabel value="" for="am"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="n" value="#{contr27Backing.n}" onkeyup="if (event.keyCode === 13) {
+                                        document.getElementById('searchForm:nt').focus();
+                                    }"  >
+                                <p:ajax event="blur" process="@this" update="submitButton"/>
+                            </p:inputText>
+                            <label>Nombre(s)</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+
+                    <f:facet name="footer">
+                        <p:panelGrid columns="6" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton 
+                                onkeyup="return submitenter(this, event)"
+                                id="submitButton"
+                                type="submit"
+                                process="@this"
+                                oncomplete="applyChangeHandler();"
+                                delay="50"
+                                value="#{bundle.Find}"
+                                class="green-btn"
+                                icon="fa fa-search" update="results growl"
+                                actionListener="#{contr27Backing.retrieveTraba36ListActionListener()}"
+                                disabled="#{!(not empty contr27Backing.nt || not empty contr27Backing.nucto || not empty contr27Backing.curp || not empty contr27Backing.rfc || not empty contr27Backing.imss || not empty contr27Backing.ap || not empty contr27Backing.am || not empty contr27Backing.n)}">
+                            </p:commandButton>
+                            <p:button 
+                                onkeypress="return submitenter(this, event)"
+                                icon="ui-icon-delete"
+                                value="Limpiar"
+                                class="blue-grey-btn"
+                                outcome="#{facesContext.viewRoot.viewId}">
+                            </p:button>
+
+                        </p:panelGrid>
+                    </f:facet> 
+                </p:panel>
+                <h:panelGroup id="results">
+                    <h:panelGroup id="dataResults" rendered="#{not empty contr27Backing.nt || not empty contr27Backing.nucto || not empty contr27Backing.curp || not empty contr27Backing.rfc || not empty contr27Backing.imss || not empty contr27Backing.ap || not empty contr27Backing.am || not empty contr27Backing.n}" >
+                        <p:panel rendered="#{empty contr27Backing.traba36List}">
+                            <h:panelGroup styleClass="ui-panelgrid-blank form-group">
+                                <i><h:outputText value="#{contr27Backing.infoMessage}" escape="false" /></i>
+                            </h:panelGroup>
+                        </p:panel>
+                        <ui:include src="#{contr27Backing.selectedTraba36Cto ne null ? './findData.xhtml' : './empty.xhtml'}" />
+                        <ui:include src="#{contr27Backing.traba36List.size()>1 ? './trabajadorList.xhtml' : './empty.xhtml'}" />
+                        <p:panel header="Contratos del Trabajador" id="panelContratos" collapsed="true" rendered="#{userSessionBean.contratoTrabajador>0}" /> 
+                        <ui:include src="#{userSessionBean.contratoTrabajador>0 ? './contratoList.xhtml' : './empty.xhtml'}" />
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

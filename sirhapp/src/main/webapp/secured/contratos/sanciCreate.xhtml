@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Sanciones"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{sanci35BackingBean.prepareCreate()}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm" enctype="multipart/form-data">
+                <p:toolbar>
+                    <f:facet name="left"><ui:include src="headerSanci.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton  type="submit" value="Registrar" update="panelForm growl" id="submit" action="#{sanci35BackingBean.go(2)}" actionListener="#{sanci35BackingBean.register()}"  icon="ui-icon-person">
+                        </p:commandButton> 
+                        <p:commandButton update="growl" action="/secured/contratos/sanciList.xhtml?faces-redirect=true" process="@this" value="Cancelar" icon="ui-icon-home">
+                        </p:commandButton>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Nuevo Sanciones" id="panel" collapsed="true" />
+                <p:tabView>
+                    <p:tab title="Datos del Contrato">
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-10,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup>
+                                <p:panelGrid columns="4" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" style="margin-left: -14px !important;" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ntcto" value="#{sanci35BackingBean.newSanci35.ntsan}" readonly="true" />
+                                        <label>N/Trabajador</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rfcto" value="#{sanci35BackingBean.newSanci35.rfsan}" readonly="true" />
+                                        <label>RFC/Trabajador</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" style="margin-left: -14px !important;" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apcto" value="#{sanci35BackingBean.newSanci35.nnsan}" readonly="true" />
+                                        <label>Nombre</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:lightBox rendered="#{sanci35BackingBean.newSanci35.pfsan.length() gt 0 || not sanci35BackingBean.newSanci35.pfsan eq null }"> 
+                                    <h:outputLink value="#{bundle.PathRelativeFull}#{sanci35BackingBean.newSanci35.pfsan}" title="Fotografia de #{sanci35BackingBean.newSanci35.nnsan}" rendered="#{sanci35BackingBean.newSanci35.pfsan.length() gt 0 and sanci35BackingBean.newSanci35.pfsan ne null }" >                                
+                                        <h:graphicImage class="w3-card-4 " value="#{bundle.PathRelativeShort}#{sanci35BackingBean.newSanci35.pfsan}" style="height: 70px;" />                            
+                                    </h:outputLink>
+                                </p:lightBox>                               
+                                <h:graphicImage class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout" style="height: 70px;" rendered="#{sanci35BackingBean.newSanci35.pfsan.length() eq 0 || sanci35BackingBean.newSanci35.pfsan eq null }" />                           
+                            </h:panelGroup>
+                        </p:panelGrid>                        
+                        <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-4,ui-grid-col-4,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nucto" value="#{sanci35BackingBean.newSanci35.nusan}" readonly="true" />
+                                <label>N/Contrato</label>
+                            </h:panelGroup> 
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sscto" value="#{sanci35BackingBean.newSanci35.sssan}" readonly="true" />
+                                <p:outputLabel value="Status del Contrato" for="sscto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="fscto" value="#{sanci35BackingBean.newSanci35.fssan}" readonly="true" >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <p:outputLabel value="Fecha Status Contrato" for="fscto" />
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="secto" value="#{sanci35BackingBean.newSanci35.essan}" readonly="true" />
+                                <p:outputLabel value="Complejo" for="secto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvcto" value="#{sanci35BackingBean.newSanci35.cesan}" readonly="true" />
+                                <p:outputLabel value="Clave Empresa" for="cvcto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="necto" value="#{sanci35BackingBean.newSanci35.nesan}" readonly="true" />
+                                <label>Empresa</label>
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ndcto" value="#{sanci35BackingBean.newSanci35.ndsan}" readonly="true" />
+                                <p:outputLabel value="Clave Departamento" for="ndcto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nbcto" value="#{sanci35BackingBean.newSanci35.desan}" readonly="true" />
+                                <label>Departamento</label>
+                            </h:panelGroup>                            
+                            <p:outputLabel value=""/>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cscto" value="#{sanci35BackingBean.newSanci35.cssan}" readonly="true" />
+                                <label>Clave Sección</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nscto" value="#{sanci35BackingBean.newSanci35.sesan}" readonly="true" />
+                                <label>Nombre Sección</label>
+                            </h:panelGroup>                            
+                            <p:outputLabel value=""/>
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cccto" value="#{sanci35BackingBean.newSanci35.ccsan}" readonly="true" />
+                                <p:outputLabel value="Clave Categoría" for="cccto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cacto" value="#{sanci35BackingBean.newSanci35.casan}" readonly="true" />
+                                <label>Categoría</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxcto" value="#{sanci35BackingBean.newSanci35.sxsan}" readonly="true" />
+                                <label>Sueldo Diario ($)</label>
+                            </h:panelGroup>                           
+                            <p:outputLabel value=""/>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tucto" value="#{sanci35BackingBean.newSanci35.ctsan}" readonly="true" />
+                                <p:outputLabel value="Clave Turno" for="tucto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ttcto" value="#{sanci35BackingBean.newSanci35.nosan}" readonly="true" />
+                                <label>Nombre Turno</label>
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tccto" value="#{sanci35BackingBean.newSanci35.tcsan}" readonly="true" />
+                                <p:outputLabel value="Clave Tipo de Contrato" for="tccto" />
+                            </h:panelGroup>                           
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nccto" value="#{sanci35BackingBean.newSanci35.cosan}" readonly="true" />
+                                <label>Tipo de Contrato</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="incto" value="#{sanci35BackingBean.newSanci35.icsan}" readonly="true" >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <p:outputLabel value="Inicio Contrato" for="incto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tecto" value="#{sanci35BackingBean.newSanci35.fcsan}" readonly="true" >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <p:outputLabel value="Termino Contrato" for="tecto" />
+                            </h:panelGroup>                        
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Sanciones: #{sanci35BackingBean.newSanci35.cusan}">
+                        <f:facet name="actions">
+                        </f:facet>
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputTextarea  rows="8" id="dhsan" value="#{sanci35BackingBean.newSanci35.dhsan}" />
+                                <label>Descripción de los hechos</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-7" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="w1san" title="Tipo de Sanciones" value="#{sanci35BackingBean.newSanci35.w1san}" required="true" requiredMessage="Debe seleccionar un tipo de ausencia" >
+                                    <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{sanci35BackingBean.listTipsa47}" var="tip" itemLabel="#{tip.nopsa}" itemValue="#{tip.hmpsa}"/>
+                                    <p:ajax event="change" process="@this" update="sgsan fileSanciones panelSanciones fileUploadSanciones" listener="#{sanci35BackingBean.handleChange}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel for="w1san" value="Tipo de Sanciones" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sgsan" value="#{sanci35BackingBean.newSanci35.sgsan}" readonly="true" />
+                                <label>Sancion generada</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-6,ui-grid-col-6" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fhsan" value="#{sanci35BackingBean.newSanci35.fhsan}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                            mask="true" mindate="01/01/1917" />
+                                <label>Fecha de los Hechos</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="hrsan" value="#{sanci35BackingBean.newSanci35.hhsan}" pattern="HH:mm" timeOnly="true"  />
+                                <label>Hora de los Hechos</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="disan" value="#{sanci35BackingBean.newSanci35.disan}" />
+                                <label>Días de Sanción</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fisan" value="#{sanci35BackingBean.newSanci35.fisan}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                            mask="true" mindate="01/01/1917" />
+                                <label>Fecha Inicio de la sancion</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ftsan" value="#{sanci35BackingBean.newSanci35.ftsan}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                            mask="true" mindate="01/01/1917" />
+                                <label>Fecha Termino de la sancion</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cvsan" title="Comite que autoriza" value="#{sanci35BackingBean.newSanci35.cvsan}" >
+                                    <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{sanci35BackingBean.listComit08}" var="com" itemLabel="#{com.cvcom.concat(' | ').concat(com.nccom).concat(' | ').concat(com.npcom)}" itemValue="#{com.cvcom}"/>
+                                    <p:ajax event="change" process="@this" update="npsan" listener="#{sanci35BackingBean.handleChange}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel for="cvsan" value="Comite que autoriza" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="npsan" value="#{sanci35BackingBean.newSanci35.npsan}" />
+                                <label>Nombre persona comite que autoriza</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+                        <h:panelGroup  id="panelSanciones" >
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <p:panelGrid id="fileSanciones" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                                
+                                    <p:fileUpload id="fileUploadSanciones" 
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                  invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                  label="#{bundle.LblDOCEXP}"
+                                                  uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="fileSanciones"
+                                                  auto="true" required="true" requiredMessage="Debe proporcionar el archivo"
+                                                  rendered="#{sanci35BackingBean.newSanci35.ptsan.length() eq 0 || sanci35BackingBean.newSanci35.ptsan eq null}"
+                                                  value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                        <h:panelGroup rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension eq 'pdf' }">
+                                            <div id="ui-graphicimage">
+                                                <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{''.concat(fileUploadBean.webFolder).concat(fileUploadBean.fileName)}');" style="height: 140px;max-height: 140px" 
+                                                                value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" />
+                                            </div>
+                                        </h:panelGroup>
+                                        <p:lightBox id="lightBoxFileUpload1" rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension ne 'pdf' }" > 
+                                            <h:outputLink value="#{bundle.PathRelativeFull}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" title="Sanciones de #{sanci35BackingBean.newSanci35.nnsan}" > 
+                                                <h:graphicImage id="imageFileUpload1" class=" w3-card-4" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" style="height: 140px;max-height: 140px" />
+                                            </h:outputLink>
+                                        </p:lightBox>
+                                        <f:attribute name="rootFolderAttr" value="#{sanci35BackingBean.newSanci35.rfsan}/"></f:attribute>
+                                        <f:attribute name="fileTypeAttr" value="#{sanci35BackingBean.newSanci35.w1san}"></f:attribute>
+                                        <f:attribute name="idAttr" value="#{sanci35BackingBean.newSanci35.rfsan}"></f:attribute>
+                                        <f:attribute name="ownBackingAttr" value="#{'sanci35BackingBean'}"></f:attribute>
+                                        <f:attribute name="ownVariableBackingAttr" value="#{'setP1apr'}"></f:attribute>
+                                        <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                    </p:fileUpload>                               
+                                    <h:panelGroup rendered="#{sanci35BackingBean.newSanci35.ptsan}">
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" onclick="rcPdfViewForm1();" style="height: 140px;max-height: 140px" 
+                                                            value="#{bundle.PathRelativeShort}#{sanci35BackingBean.newSanci35.ptsan}" />                                     
+                                            <p:remoteCommand id="rcPdfViewForm1" name="rcPdfViewForm1" oncomplete="PF('pdfViewDialog').show();" update="pdfViewForm" 
+                                                             actionListener="#{mediaBean.getPdf(sanci35BackingBean.newSanci35.ptsan)}"/>                                   
+                                        </div>
+                                    </h:panelGroup>
+                                    <p:lightBox rendered="#{!sanci35BackingBean.newSanci35.f1san}"> 
+                                        <h:outputLink value="#{bundle.PathRelativeFull}#{sanci35BackingBean.newSanci35.ptsan}" title="Sanciones de #{sanci35BackingBean.newSanci35.nnsan}" rendered="#{sanci35BackingBean.newSanci35.ptsan.length() gt 0 and sanci35BackingBean.newSanci35.ptsan ne null }" > 
+                                            <div id="ui-graphicimage">
+                                                <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px;" value="#{bundle.PathRelativeShort}#{sanci35BackingBean.newSanci35.ptsan}" />
+                                            </div>
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <p:commandButton type="submit" value="Borrar" rendered="#{sanci35BackingBean.newSanci35.ptsan.length() gt 0 and sanci35BackingBean.newSanci35.ptsan ne null}"
+                                                     icon="ui-icon-delete" class="red-btn" 
+                                                     actionListener="#{sanci35BackingBean.updateSanci35File('ptsan')}"
+                                                     update="panelForm growl" >
+                                    </p:commandButton>
+                                </p:panelGrid>
+                            </p:panelGrid>
+                        </h:panelGroup>
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

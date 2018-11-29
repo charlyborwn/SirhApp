@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+        <h:form id="documentacionListForm">
+            <h:panelGroup rendered="#{traba36aWizardBacking.currentStep.equals('documentacion')}">
+
+                <p:panel header="Lista de Documentos" id="panel" collapsed="true" >
+                    <f:facet name="actions">
+                        <p:commandButton type="submit" process="@form" id="documentacionCreateButtonHeader" icon="ui-icon-plus"   value="#{bundle.Create}"  actionListener="#{traba36aWizardBacking.prepareCreateDocum29a()}" update=":documentacionCreateForm" oncomplete="PF('documentacionCreateDialog').show(); "/>
+                    </f:facet>
+                </p:panel>
+                <p:dataGrid id="documentacionDatalist" var="docum29a" value="#{traba36aWizardBacking.docum29aList}" columns="3" layout="grid"
+                            rows="6" paginator="true" style=""  emptyMessage="#{msg['documentaciona.EmptyList']}" styleClass="ui-mayusculas">
+                    <p:panel style="text-align:center;">
+                        <f:facet name="header">
+                            <h:outputText value="#{docum29a.tddocA}" />
+                        </f:facet>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="documentacionViewButton" icon="ui-icon-search" value="#{bundle.View}" actionListener="#{traba36aWizardBacking.prepareSelectDocum29a(docum29a)}"  update="documentacionViewForm"  oncomplete="PF('documentacionViewDialog').show(); " />
+                            <p:commandButton type="submit" process="@form" id="documentacionEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" actionListener="#{traba36aWizardBacking.prepareSelectDocum29a(docum29a)}"  update="documentacionEditForm"  oncomplete="PF('documentacionEditDialog').show(); " />
+                            <p:commandButton type="submit" process="@form" id="documentacionDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{traba36aWizardBacking.deleteDocum29a(docum29a)}" update="documentacionDatalist,growl" />
+                        </f:facet>
+                        <h:panelGroup rendered="#{docum29a.ftdocA}">
+                            <div id="ui-graphicimage">
+                                <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{docum29a.padocA}');"  style="height: 140px;max-height: 140px" 
+                                                value="#{bundle.PathRelativeShort}#{docum29a.padocA}" />
+                            </div>
+                        </h:panelGroup>
+                        <p:lightBox rendered="#{!docum29a.ftdocA}">
+                            <h:outputLink value="#{bundle.PathRelativeFull}#{docum29a.padocA}"  title="#{docum29a.cadocA}" >  
+                                <div id="ui-graphicimage">
+                                    <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px" value="#{bundle.PathRelativeShort}#{docum29a.padocA}"  />
+                                </div>
+                            </h:outputLink>
+                        </p:lightBox>
+                        <p:lightBox rendered="#{docum29a.padocA.length() eq 0 || docum29a.padocA eq null }"> 
+                            <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Sin Documento" rendered="#{docum29a.padocA.length() eq 0 or docum29a.padocA eq null}" >  
+                                <div id="ui-graphicimage">
+                                    <h:graphicImage class="card ui-shadow-5" name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 140px"  />
+                                </div>
+                            </h:outputLink>
+                        </p:lightBox>
+                    </p:panel>
+                </p:dataGrid>
+                <pe:remoteCommand id="applyDataCommand" name="applyData" process="@this" update="pdfViewForm"
+                                  oncomplete="PF('pdfViewDialog').show();" 
+                                  actionListener="#{mediaBean.printMethodParams}" >
+                    <pe:methodSignature parameters="java.lang.String" />  
+                    <pe:methodParam name="fileName"/>  
+                </pe:remoteCommand>
+            </h:panelGroup>
+        </h:form>
+    </ui:composition>
+</html>

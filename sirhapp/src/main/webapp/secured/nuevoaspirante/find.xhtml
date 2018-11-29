@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:panel id="panelBuscar" header="Buscar Aspirante para iniciar">
+            <p:panelGrid columns="3" layout="grid" styleClass=" ui-panelgrid-blank form-group">
+                <h:panelGroup styleClass="ui-inputgroup">   
+                    <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="rfcSearch" 
+                                 placeholder="RFC"
+                                 autocomplete="false" 
+                                 required="true" 
+                                 requiredMessage="El RFC es requerido"
+                                 validatorMessage="El RFC no es Valido"
+                                 value="#{traba36aWizardBacking.rfcSearch}" 
+                                 mask="aaaa999999***" maxlength="13" autoClear="false" slotChar="">
+                        <f:validateLength minimum="10" ></f:validateLength>
+                        <f:ajax event="blur"
+                                execute="rfcSearch" 
+                                render="results growl submit"
+                                listener="#{traba36aWizardBacking.handleChange}"
+                                />
+                        <p:ajax event="change" update="submit"  process="rfcSearch ap am n" />
+                    </p:inputMask>
+                    <p:commandButton  value=">"  styleClass="white-button" />
+                </h:panelGroup>
+                
+            </p:panelGrid>
+            <p:panelGrid id="pgNc" columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ap" value="#{traba36aWizardBacking.ap}" autocomplete="true" transient="true" required="false" 
+                                 requiredMessage="Apellido Paterno es requerido"
+                                 >      
+                    </p:inputText>
+                    <p:outputLabel value="Apellido Paterno" for="ap"/>
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="am"  value="#{traba36aWizardBacking.am}" autocomplete="true" transient="true" required="false" 
+                                 requiredMessage="Apellido Materno es requerido" 
+                                 >        
+                    </p:inputText>
+                    <p:outputLabel value="Apellido Materno" for="am"/>
+                </h:panelGroup>
+                <h:panelGroup styleClass="ui-inputgroup">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="n"  value="#{traba36aWizardBacking.n}" autocomplete="true" transient="true" required="false" 
+                                      requiredMessage="Nombre(s) es requerido"
+                                      >                    
+                        </p:inputText>
+                        <p:outputLabel value="Nombre(s)" for="n"/>
+
+                    </h:panelGroup>
+                    <p:commandButton  value=">"  
+                                      styleClass="white-button" 
+                                      update="results growl"
+                                      actionListener="#{traba36aWizardBacking.retrieveTraba36aListTraba36List()}">
+                        <p:ajax process="rfcSearch ap am n" /> 
+                    </p:commandButton>
+                </h:panelGroup>
+            </p:panelGrid>
+
+            <f:facet name="footer" >
+                <p:panelGrid columns="6" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                    <p:commandButton 
+                        process="@this"
+                        tabindex="5"
+                        id="submit"
+                        value="Buscar"
+                        class="green-btn"
+                        icon="fa fa-search"
+                        update="results growl"
+                        actionListener="#{traba36aWizardBacking.retrieveTraba36aListTraba36List()}"
+                        disabled="#{traba36aWizardBacking.rfcSearch eq null}">
+                        <p:ajax  process="rfcSearch ap am n" />  
+                    </p:commandButton>
+                    <p:button 
+                        onkeypress="return submitenter(this, event)"
+                        icon="ui-icon-delete"
+                        value="Limpiar"
+                        class="blue-grey-btn"
+                        outcome="#{facesContext.viewRoot.viewId}">
+                    </p:button >
+                </p:panelGrid>
+            </f:facet> 
+        </p:panel>
+
+        <h:panelGroup id="results" >
+            <h:panelGroup id="dataResults" rendered="#{not empty traba36aWizardBacking.rfcSearch}">
+                <p:panel rendered="#{empty traba36aWizardBacking.traba36aList and  empty traba36aWizardBacking.traba36List}">
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                        <p:commandButton style="float:right"  value="Iniciar Captura" onclick="PF('wiz').next();"
+                                         styleClass="ui-wizard-nav-next" process="@this"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <ui:include src="#{traba36aWizardBacking.selectedTraba36aWiz ne null ? './findData.xhtml' : './empty.xhtml'}"/>
+
+                <h:panelGroup  rendered="#{not empty traba36aWizardBacking.traba36aList and  traba36aWizardBacking.traba36aList.size()>1}">
+
+                    <p:panel rendered="#{traba36aWizardBacking.infoMessageAsp ne null}">
+                        <h:outputText id="informationMessageAsp" 
+                                      value="#{traba36aWizardBacking.infoMessageAsp} - Haga clic en el boton continuar" 
+                                      class="ui-content-title"/>
+                    </p:panel>
+
+                    <p:dataTable 
+                        id="aspirantesDatalist" 
+                        value="#{traba36aWizardBacking.traba36aList}" 
+                        var="traba36a" 
+                        selectionMode="single" 
+                        selection="#{traba36aWizardBacking.selectedTraba36aWiz}"
+                        rendered="#{not empty traba36aWizardBacking.traba36aList}"
+                        paginator="true"
+                        rowKey="#{traba36a.idtraA}" 
+                        rows="10"
+                        rowsPerPageTemplate="10,20,30,40,50"
+                        emptyMessage="#{msg['aspirantes.EmptyList']}">
+
+                        <p:ajax event="rowSelect"   update=" aspiranteViewButton "/>
+                        <p:ajax event="rowUnselect" update=" aspiranteViewButton "/>
+
+                        <p:column headerText="RFC" style="width:30px;">
+                            <h:outputText value="#{traba36a.rftraA}" />
+                        </p:column>
+                        <p:column headerText="CURP" style="width:20px;">
+                            <h:outputText value="#{traba36a.cutraA}" />
+                        </p:column>
+                        <p:column headerText="IMSS" style="width:20px;">
+                            <h:outputText value="#{traba36a.ritraA}" />
+                        </p:column>
+                        <p:column headerText="Nombre" style="width:40px;">
+                            <h:outputText value="#{traba36a.nctraA}" />
+                        </p:column>
+
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" 
+                                             process="@form" 
+                                             id="aspiranteViewButton" 
+                                             icon="ui-icon-search" 
+                                             value="Continuar"  
+                                             actionListener="#{traba36aWizardBacking.getTraba36aRequest(traba36a.rftraA)}"  
+                                             onclick="PF('wiz').next();" 
+                                             disabled="#{traba36aWizardBacking.selectedTraba36aWiz eq null}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+                <p:panel rendered="#{not empty traba36aWizardBacking.traba36List and empty traba36aWizardBacking.traba36aList}" >
+                    <h:outputText id="informationMessageList" 
+                                  value="No se puede continuar porque el Aspirante que intenta registrar. Ya es un trabajador"
+                                  class="ui-content-title"/>
+                </p:panel>
+                <h:panelGroup rendered="#{not empty traba36aWizardBacking.traba36List}">
+                    <p:panel rendered="#{traba36aWizardBacking.infoMessageTra ne null}">
+                        <h:outputText id="informationMessageTra" 
+                                      value="#{traba36aWizardBacking.infoMessageTra} - Haga clic en el boton Ver Kardex"
+                                      class="ui-content-title"/>
+                    </p:panel>
+
+                    <p:dataTable 
+                        id="trabajadoresDatalist" 
+                        value="#{traba36aWizardBacking.traba36List}" 
+                        var="traba36" 
+                        selectionMode="single" 
+                        selection="#{traba36aWizardBacking.selectedTraba36Wiz}"
+                        rendered="#{not empty traba36aWizardBacking.traba36List}"
+                        paginator="true"
+                        rowKey="#{traba36.idtra}" 
+                        rows="10"
+                        rowsPerPageTemplate="10,20,30,40,50"
+                        emptyMessage="#{msg['aspirantes.EmptyList']}">
+
+                        <p:ajax event="rowSelect"   update="trabajadorKardexButton   "/>
+                        <p:ajax event="rowUnselect" update="trabajadorKardexButton   "/>
+
+                        <p:column headerText="NO" style="width:5px;">
+                            <h:outputText value="#{traba36.nutra}" />
+                        </p:column>
+
+                        <p:column headerText="RFC"  style="width:5px;">
+                            <h:outputText value="#{traba36.rftra}"/>
+                        </p:column>
+                        <p:column headerText="CURP" style="width:20px;">
+                            <h:outputText value="#{traba36.cutra}" />
+                        </p:column>
+                        <p:column headerText="IMSS" style="width:20px;">
+                            <h:outputText value="#{traba36.ritra}" />
+                        </p:column>
+                        <p:column headerText="Nombre" style="width:40px;" >
+                            <h:outputText value="#{traba36.nctra}" />
+                        </p:column>
+
+                        <f:facet name="footer">
+                            <p:commandButton  id="trabajadorKardexButton"
+                                              value="#{bundle.Kardex}" 
+                                              action="#{userSessionBean.goKardex(3)}"
+                                              process="@this" disabled="#{empty traba36aWizardBacking.selectedTraba36Wiz}">
+                                <f:setPropertyActionListener target="#{userSessionBean.trabajadorKardex}" value="#{selectedTraba36Wiz.nutra}" />
+                            </p:commandButton>
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
+    </ui:composition>
+</html>

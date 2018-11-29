@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="escolaridadViewDlg" widgetVar="escolaridadViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Escolaridad">
+            <h:form id="escolaridadViewForm">
+                <p:panel header="Datos del Escolaridad" rendered="#{escol30BackingBean.selectedEscol30Bean != null}">
+                    <h:panelGroup   id="displayEscolaridadView" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <p:tabView id="tabEscolaridadView"  activeIndex="#{escol30BackingBean.escol30Tab}" style="width: 400px;"  >
+                            <p:ajax event="tabChange" listener="#{escol30BackingBean.onTabChangeEscol30}"  process="tabEscolaridadView" />
+                            <p:tab title="Datos">
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield"  >
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tnesc" value="#{escol30BackingBean.selectedEscol30Bean.tnesc}" readonly="true"/>
+                                        <label>Escolaridad</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="niesc" value="#{escol30BackingBean.selectedEscol30Bean.niesc}" readonly="true" />
+                                        <label>Nombre Institución</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield" layout="block">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="esesc" value="#{escol30BackingBean.selectedEscol30Bean.esesc}" readonly="true" />
+                                        <label>Especialidad</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield" >
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ceesc" value="#{escol30BackingBean.selectedEscol30Bean.ceesc}" readonly="true" />
+                                        <label>Certificado</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="acesc" value="#{escol30BackingBean.selectedEscol30Bean.acesc}" readonly="true" />
+                                        <p:slider for="acesc" minValue="1" maxValue="10" step=".5" disabled="true">
+                                            <p:ajax event="slideEnd"  process="@this" />
+                                        </p:slider>
+                                        <p:outputLabel for="acesc" value="Años cursados"/>
+                                    </h:panelGroup>
+                                    <!-- Observaciones -->
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obesc" value="#{escol30BackingBean.selectedEscol30Bean.obesc}" readonly="true" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+                            </p:tab>
+                            <p:tab title="Cursa Actualmente">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup>
+                                        <p:selectOneRadio id="caesc" value="#{escol30BackingBean.selectedEscol30Bean.caesc}" 
+                                                          columns="2"  
+                                                          style="text-align: center;  white-space: nowrap;" disabled="true">
+                                            <f:selectItem itemLabel="Si" itemValue="si" />
+                                            <f:selectItem itemLabel="No" itemValue="no" />
+                                            <f:ajax event="change" execute="caesc" listener="#{escol30BackingBean.handleChange}"  render="escol30IH escolaridadViewForm"/>
+                                        </p:selectOneRadio>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield" rendered="#{escol30BackingBean.selectedEscol30Bean.caesc.equals('si')}">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="hcesc" value="#{escol30BackingBean.selectedEscol30Bean.hcesc}" readonly="true" />
+                                        <label>Horarios que cursa actualmente</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <p:fileUpload id="fileUploadFotografia" allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                              invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                              onstart="showStatus();" oncomplete="hideStatus();" 
+                                              label="#{bundle.LblDOCESC}" 
+                                              uploadLabel="#{bundle.LblUpload}"
+                                              cancelLabel="#{bundle.LblCancel}"
+                                              update="escolaridadEditForm,growl" 
+                                              mode="advanced"
+                                              rendered="#{escol30BackingBean.selectedEscol30Bean.paesc.length() eq null }"
+                                              value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                    <p:graphicImage  class=" w3-card-4" id="up" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  style="width: 200px"   rendered="#{fileUploadBean.fileName ne null}" />
+                                    <f:attribute name="rootFolderAttr" value="#{selectedTraba36.rftra}/"></f:attribute>
+                                    <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                    <f:attribute name="fileTypeAttr" value="#{'DOCESC'}"></f:attribute>
+                                    <f:attribute name="idAttr" value="#{selectedTraba36.rftra}"></f:attribute>
+                                    <f:attribute name="ownBackingAttr" value="#{'escol30BackingBean'}"></f:attribute>
+                                    <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                </p:fileUpload>
+
+
+                                <p:lightBox rendered="#{escol30BackingBean.selectedEscol30Bean.paesc.length() eq 0 || escol30BackingBean.selectedEscol30Bean.paesc eq null }"> 
+                                    <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Documento de escolaridad #{escol30BackingBean.selectedEscol30Bean.tnesc}"  >  
+                                        <h:graphicImage  class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout"  style="height: 140px;max-height: 340px"  />
+                                    </h:outputLink>
+                                </p:lightBox>
+
+                                <p:lightBox  id="lightBox1" rendered="#{escol30BackingBean.selectedEscol30Bean.paesc.length() gt 0 and escol30BackingBean.selectedEscol30Bean.paesc ne null}"  > 
+                                    <h:outputLink  value="#{bundle.PathRelativeFull}#{escol30BackingBean.selectedEscol30Bean.paesc}"  title="Documento de escolaridad #{escol30BackingBean.selectedEscol30Bean.tnesc}"  > 
+                                        <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{escol30BackingBean.selectedEscol30Bean.paesc}"  style="width: 200px" />
+                                    </h:outputLink>
+                                </p:lightBox>
+
+                            </p:tab>
+                        </p:tabView>
+
+                    </h:panelGroup>
+
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton value="#{bundle.Close}" onclick="escolaridadViewDialog.hide()"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

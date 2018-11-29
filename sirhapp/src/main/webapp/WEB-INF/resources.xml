@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <Resource id="SirhApp-mail" type="javax.mail.Session" factory-name="create">
+        mail.transport.protocol=smtp
+        mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory
+        mail.smtp.socketFactory.fallback=false
+        mail.smtp.host=smtp.gmail.com
+        mail.smtp.port=465
+        mail.smtp.auth=true
+        mail.smtp.user=charlyborwn@gmail.com
+        mail.from=charlyborwn@gmail.com
+        password=Infinito4321
+    </Resource>
+    <Resource id="jdbc/SirhAppDS" type="javax.sql.DataSource" >
+        dataSourceCreator = tomcat
+        jtaManaged        = true
+        factory           = org.apache.tomcat.jdbc.pool.DataSourceFactory
+        factory-name      = create
+        driverClassName   = com.mysql.cj.jdbc.Driver
+        url               = jdbc:mysql://backendbd:3306/sirh?autoReconnect=true&amp;serverTimezone=Mexico/General&amp;useSSL=false
+        username          = sirh
+        password          = KunduN32*
+        initialSize       = 5
+        maxActive         = 100
+        maxIdle           = 10
+        minIdle           = 5
+        maxWait           = 30000
+        validationQuery   = SELECT 1
+        testOnBorrow      = true
+        testOnReturn      = true
+        testWhileIdle     = true
+        removeAbandoned   = true
+        removeAbandonedTimeout              = 233
+        timeBetweenEvictionRunsMillis       = 1800000
+        numTestsPerEvictionRun              = 2
+        minEvictableIdleTimeMillis          = 1800000
+        accessToUnderlyingConnectionAllowed = false
+        timeBetweenEvictionRunsMillis       = 34000
+        validationInterval                  = 34
+        validationQuery                     = SELECT 1
+    </Resource>
+</resources>

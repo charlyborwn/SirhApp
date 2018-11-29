@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">>
+    <f:metadata>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm" enctype="multipart/form-data">
+            
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar>
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                                <p:commandButton  type="submit" value="Agregar Registro" update="panelForm growl" id="submit" action="#{ticon17Backing.go(2)}" actionListener="#{ticon17AddBacking.register()}"  icon="ui-icon-person">
+                                </p:commandButton> 
+                            </c:if>
+                        </f:facet>
+                    </p:toolbar>
+                    <div class=" ui-fluid ui-panel-title">
+                        <p:panel header="Agregar un nuevo Registro" id="panel" >
+                            <h:panelGroup >
+                                <!-- Datos del Registro -->
+                                <div class="card card-w-title">
+                                    <h1>Datos del Registro</h1>
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvtic" value="#{newTicon17.cvtic}" />
+                                            <label>Clave Tipo de Contrato</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="notic" value="#{newTicon17.notic}" />
+                                            <label>Nombre Tipo de Contrato</label>
+                                        </h:panelGroup>
+
+
+                                    </p:panelGrid>
+                                </div>
+                            </h:panelGroup>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

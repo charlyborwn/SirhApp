@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Proveedores"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{prove48Backing.getProve48Request(userSessionBean.idpro)}" type="preRenderView" rendered="#{userSessionBean.idpro gt 0}"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm" enctype="multipart/form-data">
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton type="submit" update="growl" value="Actualizar" action="#{prove48Backing.go(2)}" actionListener="#{prove48Backing.updateProve48()}" icon="ui-icon-update"/>
+                        <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" icon="ui-icon-delete" />
+                        <p:commandButton update="growl" action="#{prove48Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                        <!--Secciones-->
+                        <section id="secAll">
+                            <!--Seccion Dialogo Eliminar-->
+                            <section id="secEliminar">
+                                <div class="ui-g">
+                                    <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <p:outputLabel style="color:black;" />
+                                            <f:facet name="footer">
+                                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                    <p:commandButton value="Cancelar" update="growl" onclick="PF('eliminar').hide();"  />
+                                                    <p:commandButton type="submit" update="growl" value="Eliminar" action="#{prove48Backing.go(2)}" actionListener="#{prove48Backing.deleteProve48()}"  oncomplete="PF('eliminar').hide();" class="red-btn">
+                                                        <f:setPropertyActionListener target="#{userSessionBean.idpro}"
+                                                                                     value="#{-1}" />
+                                                    </p:commandButton>
+                                                </p:panelGrid>
+                                            </f:facet>  
+                                        </h:panelGrid>
+                                    </p:dialog>
+                                </div>
+                            </section>
+                        </section>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Actualizar datos del Registro" id="panel" >
+                    <h:panelGroup >
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="rfcSearch" 
+                                         placeholder="RFC"
+                                         autocomplete="false" 
+                                         required="true" 
+                                         requiredMessage="El RFC es requerido"
+                                         validatorMessage="El RFC no es Valido"
+                                         value="#{selectedProve48.rfpro}" 
+                                         mask="aaaa999999***" maxlength="13" autoClear="false" slotChar="">
+                                <f:validateLength minimum="10" ></f:validateLength>
+                                <f:ajax event="blur"
+                                        execute="rfcSearch" 
+                                        render="results growl"
+                                        listener="#{traba36aWizardBacking.handleChange}"
+                                        />
+                                <p:ajax event="change"  />
+                            </p:inputMask>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ncpro" value="#{selectedProve48.ncpro}" />
+                                <label>Nombre Corto del Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nlpro" value="#{selectedProve48.nlpro}" />
+                                <label>Nombre Largo del Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="eppro" value="#{selectedProve48.eppro}" />
+                                <label>Especialidad</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="papro" value="#{selectedProve48.papro}" />
+                                <label>Domicilio País Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="espro" value="#{selectedProve48.espro}" />
+                                <label>Domicilio Estado Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mdpro" value="#{selectedProve48.mdpro}" />
+                                <label>Domicilio Mun/Del Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="lopro" value="#{selectedProve48.lopro}" />
+                                <label>Domicilio Población Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="copro" value="#{selectedProve48.copro}" />
+                                <label>Domicilio Colonia Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="capro" value="#{selectedProve48.capro}" />
+                                <label>Domicilio Calle y Número Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cppro" value="#{selectedProve48.cppro}" />
+                                <label>Domicilio Código Postal Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tdpro" value="#{selectedProve48.tdpro}" />
+                                <label>Teléfono Proveedor</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pcpro" value="#{selectedProve48.pcpro}" />
+                                <label>Persona Contacto</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="crpro" value="#{selectedProve48.crpro}" />
+                                <label>Cargo Persona Contacto </label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tcpro" value="#{selectedProve48.tcpro}" />
+                                <label>Teléfono Celular Persona Contacto</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="ui-inputgroup">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="email" value="#{selectedProve48.mapro}" size="40"
+                                             pt:placeholder="Dirección de correo electrónico"
+                                             validatorMessage="El correo no tiene el formato correcto"
+                                             class="ui-minusculas"
+                                             >
+                                    <f:validateRegex
+                                        pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                </p:inputText>
+                                <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-envelope"></i></p:outputLabel>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                    </h:panelGroup>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

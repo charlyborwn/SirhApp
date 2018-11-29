@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <f:metadata>
+        <f:event listener="#{ubica23Backing.getUbica23Request(userSessionBean.idubi)}" type="preRenderView" rendered="#{userSessionBean.idubi gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm" >
+            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+            <p:toolbar>
+                <f:facet name="left"> </f:facet>
+                <f:facet name="right">
+                    <p:commandButton type="submit" update="growl" value="Actualizar" action="#{ubica23Backing.go(2)}" actionListener="#{ubica23Backing.updateUbica23()}" icon="ui-icon-update"/>
+                    <p:commandButton value="Eliminar" 
+                                     process="@this" oncomplete="confDialogFormParams();" >
+                    </p:commandButton>
+                    <p:remoteCommand id="rcConfDialogFormParams" name="confDialogFormParams" oncomplete="PF('callConfDialog').show();"  update="callConfForm" 
+                                     actionListener="#{loginBean.Params('ubica23Backing','deleteUbica23',2)}"/>
+                    <p:commandButton update="growl" action="#{ubica23Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                </f:facet>
+            </p:toolbar>
+            <p:panel header="Actualizar datos del Registro" id="panel" >
+                <h:panelGroup >
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="paubi" value="#{selectedUbica23.paubi}" />
+                            <label>Pais</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="esubi" value="#{selectedUbica23.esubi}" />
+                            <label>Estado Ubicación</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mdubi" value="#{selectedUbica23.mdubi}" />
+                            <label>Mun/Del Ubicación</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="loubi" value="#{selectedUbica23.loubi}" />
+                            <label>Localidad Ciudad</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="coubi" value="#{selectedUbica23.coubi}" />
+                            <label>Colonia</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cpubi" value="#{selectedUbica23.cpubi}" />
+                            <label>Código Postal Ubicación</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </p:panel>
+        </h:form>
+        <ui:include src="/WEB-INF/system/callConfDialog.xhtml"/>
+    </ui:define>
+</ui:composition>

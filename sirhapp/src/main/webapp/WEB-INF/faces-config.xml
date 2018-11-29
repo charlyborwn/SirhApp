@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"
+    version="2.3">
+    <name>sirhapp</name>
+    
+    <validator>  
+        <validator-id>selectOneMenuValidator</validator-id>  
+        <validator-class>com.hrm.sirhapp.SelectOneMenuValidator</validator-class>  
+    </validator> 
+   
+    <component>
+        <component-type>org.primefaces.component.UltimaMenu</component-type>
+        <component-class>org.primefaces.ultima.component.menu.UltimaMenu</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.UltimaMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.ultima.component.menu.UltimaMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    
+    <lifecycle>
+        <phase-listener>
+            com.hrm.sirhapp.application.MultiPageMessagesSupport
+        </phase-listener>
+    </lifecycle>
+    
+    <factory>
+        <exception-handler-factory>
+            com.hrm.sirhapp.application.exceptionhandler.CustomExceptionHandlerFactory
+        </exception-handler-factory>
+    </factory>
+    
+    <application>
+        <el-resolver>
+            org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver
+        </el-resolver>
+    </application>
+    
+    <application>
+        <action-listener>
+            org.primefaces.application.DialogActionListener
+        </action-listener>
+        <navigation-handler>
+            org.primefaces.application.DialogNavigationHandler
+        </navigation-handler>
+        <view-handler>
+            org.primefaces.application.DialogViewHandler
+        </view-handler>
+    </application>
+    
+    <application>
+        <navigation-handler>
+            org.primefaces.mobile.application.MobileNavigationHandler
+        </navigation-handler>
+    </application>
+    
+    <managed-bean>
+        <description>Current date and time</description>
+        <managed-bean-name>now</managed-bean-name>
+        <managed-bean-class>java.util.Date</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>localeBean</managed-bean-name>
+        <managed-bean-class>com.hrm.sirhapp.LocaleBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>localeConverter</managed-bean-name>
+        <managed-bean-class>com.hrm.sirhapp.LocaleConverter</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    <application>
+        <locale-config>
+            <default-locale>es_MX</default-locale>
+            <supported-locale>en_US</supported-locale>
+            <supported-locale>es_MX</supported-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>messages</base-name>
+            <var>msg</var>
+        </resource-bundle> 
+        <message-bundle>ValidationMessages</message-bundle>
+        <resource-bundle>
+            <base-name>Bundle</base-name>
+            <var>bundle</var>
+        </resource-bundle>
+    </application>
+    
+    <managed-bean>
+        <managed-bean-name>requestBean</managed-bean-name>
+        <managed-bean-class>com.hrm.sirhapp.RequestBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>param1</property-name>
+            <value>#{param.param1}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>param2</property-name>
+            <value>#{param.param2}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>param3</property-name>
+            <value>#{param.param3}</value>
+        </managed-property>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>traba36aAddBacking</managed-bean-name>
+        <managed-bean-class>com.hrm.sirhapp.Traba36aAddBacking</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>ap</property-name>
+            <value>#{ap}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>am</property-name>
+            <value>#{am}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>n</property-name>
+            <value>#{n}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>rfc</property-name>
+            <value>#{rfc}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>curp</property-name>
+            <value>#{curp}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>imss</property-name>
+            <value>#{imss}</value>
+        </managed-property>
+    </managed-bean>
+
+</faces-config>

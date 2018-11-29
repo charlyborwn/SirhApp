@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="sendEmailDlg" widgetVar="sendEmailDialog" header="Enviar correo electronico" closeOnEscape="true" modal="true" resizable="false">
+            <h:form id="sendEmailForm">
+
+                <p:panelGrid id="sendEmailPanel" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                    <h:panelGroup styleClass="md-inputfield" >
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="name"  value="#{mailServiceBean.subject}"
+                                     requiredMessage="El nombre es requerido" style="width: 100%"/>
+                        <label>Nombre</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="email" value="#{mailServiceBean.toAddress}" size="40"
+                                     requiredMessage="El correo es requerido"
+                                     validatorMessage="El correo no tiene el formato correcto"
+                                     required="true"
+                                     class="ui-minusculas">
+                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>
+                        <label>Enviar correo para:</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputTextarea  id="multiline" value="#{mailServiceBean.text}"  required="true" requiredMessage="Escriba su mensaje" style="width: 100%"/>
+                        <label>Mensaje</label>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid columns="2" layout="grid" style="text-align: center;" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton  oncomplete="if (args &amp;&amp; !args.validationFailed) PF('sendEmailDialog').hide()"
+                                              update="growl  sendEmailPanel" 
+                                              type="submit"   
+                                              id="submit" 
+                                              value="Enviar" 
+                                              actionListener="#{mailServiceBean.sendEmailWithAttachments('')}" 
+                                              icon="ui-icon-send"  >
+                                <f:setPropertyActionListener target="#{mailServiceBean.text}" 
+                                                             value="#{null}" />
+                                <f:setPropertyActionListener target="#{mailServiceBean.toAddress}" 
+                                                             value="#{null}" />
+                                <f:setPropertyActionListener target="#{mailServiceBean.subject}" 
+                                                             value="#{null}" />
+                                <p:resetInput target="sendEmailForm" />
+                            </p:commandButton> 
+                            <p:commandButton    update="sendEmailForm"  
+                                                type="reset" id="reset" 
+                                                process="@this"  value="Limpiar" 
+                                                icon="ui-icon-clear-all" rendered="#{mailServiceBean.toAddress.length() eq 0}"  >
+                            </p:commandButton> 
+                            <p:commandButton    update="sendEmailForm"  
+                                                type="submit" id="rst" 
+                                                process="@this"  value="Limpiar" 
+                                                icon="ui-icon-clear-all" rendered="#{mailServiceBean.toAddress.length() gt 0}"  >
+                                <f:setPropertyActionListener target="#{mailServiceBean.text}" 
+                                                             value="#{null}" />
+                                <f:setPropertyActionListener target="#{mailServiceBean.toAddress}" 
+                                                             value="#{null}" />
+                                <f:setPropertyActionListener target="#{mailServiceBean.subject}" 
+                                                             value="#{null}" />
+                                <p:resetInput target="sendEmailForm" />
+                            </p:commandButton> 
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

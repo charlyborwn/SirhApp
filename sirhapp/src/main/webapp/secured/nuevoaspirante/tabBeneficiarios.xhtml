@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+        <h:form id="beneficiarioListForm">
+            <h:panelGroup rendered="#{traba36aWizardBacking.currentStep.equals('beneficiarios')}">
+                <p:panel header="Lista de Beneficiarios" id="panel" collapsed="true" />
+                <p:dataTable 
+                    id="beneficiarioDatalist" value="#{traba36aWizardBacking.benef26aList}" var="benef26a" 
+                    selectionMode="single" selection="#{traba36aWizardBacking.selectedBenef26aWiz}"
+                    paginator="true"
+                    rowKey="#{benef26a.id}" 
+                    rows="10"
+                    rowsPerPageTemplate="10,20,30,40,50"
+                    emptyMessage="#{msg['beneficiariosa.EmptyList']}">
+
+                    <p:ajax event="rowSelect"   update="beneficiarioCreateButton beneficiarioViewButton beneficiarioEditButton beneficiarioDeleteButton"/>
+                    <p:ajax event="rowUnselect" update="beneficiarioCreateButton beneficiarioViewButton beneficiarioEditButton beneficiarioDeleteButton"/>
+
+                    <p:column headerText="Tipo de beneficiario">
+                        <h:outputText value="#{benef26a.tpbenA}" />
+                    </p:column>
+                    <p:column headerText="Nombre" >
+                        <h:outputText value="#{benef26a.ncbenA}" />
+                    </p:column>
+
+                    <p:column headerText="%" >
+                        <h:outputText value="#{benef26a.pobenA}" >
+                        <f:convertNumber type="percent" />
+                        </h:outputText>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" process="@form" id="beneficiarioCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}"  actionListener="#{traba36aWizardBacking.prepareCreateBenef26a()}" update="beneficiarioDatalist beneficiarioCreateForm" oncomplete="PF('beneficiarioCreateDialog').show(); " disabled="#{traba36aWizardBacking.getPercentage(traba36aWizardBacking.rfc) le 0}"/>
+                        <p:commandButton type="submit" process="@form" id="beneficiarioViewButton" icon="ui-icon-search" value="#{bundle.View}" actionListener="#{traba36aWizardBacking.prepareSelectBenef26a()}" update="beneficiarioDatalist beneficiarioViewForm beneficiarioCreateButton"  oncomplete="PF('beneficiarioViewDialog').show(); " disabled="#{empty traba36aWizardBacking.selectedBenef26aWiz}"/>
+                        <p:commandButton type="submit" process="@form" id="beneficiarioEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" actionListener="#{traba36aWizardBacking.prepareSelectBenef26a()}" update="beneficiarioDatalist beneficiarioEditForm beneficiarioCreateButton"  oncomplete="PF('beneficiarioEditDialog').show(); " disabled="#{empty traba36aWizardBacking.selectedBenef26aWiz}"/>
+                        <p:commandButton type="submit" process="@form" id="beneficiarioDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{traba36aWizardBacking.deleteBenef26a()}" update="beneficiarioDatalist beneficiarioCreateButton,growl" disabled="#{empty traba36aWizardBacking.selectedBenef26aWiz}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:panelGroup>
+        </h:form>
+    </ui:composition>
+</html>

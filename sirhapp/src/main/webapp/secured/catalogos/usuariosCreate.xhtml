@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Registro de Usuarios"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" enctype="multipart/form-data">
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton id="submit" type="submit" value="Agregar Registro" onstart="showStatus();" oncomplete="hideStatus();applyChangeHandler();" update="panelForm growl" action="#{usuar24Backing.go(2)}" actionListener="#{usuar24AddBacking.register()}"  icon="ui-icon-person"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel id="panel" header="Agregar un nuevo Registro">
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:focus for="email"/>
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="email" value="#{newUsuar24.cousu}" size="40"
+                                         pt:placeholder="Dirección de correo electrónico"
+                                         validatorMessage="El correo no tiene el formato correcto"
+                                         required="true" requiredMessage="El correo es requerido"
+                                         class="ui-minusculas"
+                                         >
+                                <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                            <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-envelope">*</i></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="username"  value="#{newUsuar24.cvusu}"  size="40"
+                                         required="true" requiredMessage="Usuario requerido"
+                                         validatorMessage="El nombre de usuario no cumple la longitud minima requerida" maxlength="10" 
+                                         tabindex="1"  pt:placeholder="Usuario" 
+                                         style="text-transform: capitalize;"
+                                         >
+                                <f:validateLength maximum="10" minimum="2" />
+                            </p:inputText>
+                            <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-user">*</i></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:password  id="pausu-password"   value="#{newUsuar24.pausu}"  size="40"
+                                         required="true" requiredMessage="El password es requerido" 
+                                         validatorMessage="El password no cumple la longitud minima requerida" 
+                                         maxlength="10" pt:placeholder="Password" style="text-transform: capitalize;" 
+                                         >
+                                <f:validateLength maximum="10" minimum="2" />
+                            </p:password>
+                            <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-lock">*</i></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:password  id="pausu-password2"   value="#{newUsuar24.password2}"  size="40"
+                                         required="true" requiredMessage="El password es requerido" 
+                                         validatorMessage="La confirmación del password no cumple la longitud minima requerida" 
+                                         maxlength="10" pt:placeholder="Confirmar Password" style="text-transform: capitalize;" 
+                                         >
+                                <f:validateLength maximum="10" minimum="2" />
+                            </p:password>
+                            <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-lock">*</i></p:outputLabel>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apusu" value="#{newUsuar24.apusu}" 
+                                         />
+                            <label>Apellido Paterno</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="amusu" value="#{newUsuar24.amusu}" 
+                                         />
+                            <label>Apellido Materno</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nousu" value="#{newUsuar24.nousu}" 
+                                         />
+                            <label>Nombre(s)</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

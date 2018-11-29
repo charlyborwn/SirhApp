@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{espec05Backing.getEspec05Request(userSessionBean.idesp)}" type="preRenderView" rendered="#{userSessionBean.idesp gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm">
+            <p:toolbar>
+                <f:facet name="left"></f:facet>
+                <f:facet name="right">
+                    <span class="ui-separator" style="padding-right: 5px;">
+                        <span class="fa fa-ellipsis-v SoftGray" />
+                    </span>
+                    <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                        <p:commandButton action="#{espec05Backing.go(1)}"  process="@this" value="Editar" rendered="#{not empty selectedEspec05}"  icon="ui-icon-update"/>
+                    </c:if>
+                    <p:commandButton update="growl" action="#{espec05Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                        <f:setPropertyActionListener target="#{userSessionBean.idesp}" 
+                                                     value="#{null}" />
+                    </p:commandButton> 
+                </f:facet>
+            </p:toolbar>
+            <p:panel header="Datos del Registro"  styleClass=" ui-g-12">
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="noesp" value="#{selectedEspec05.noesp}" readonly="true" />
+                        <label>Nombre de la Especialidad</label>
+                    </h:panelGroup></p:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

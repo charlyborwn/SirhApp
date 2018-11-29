@@ -1,0 +1,192 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">>
+    <f:metadata>
+        <f:event listener="#{chofe40Backing.getChofe40Request(userSessionBean.idcho)}" type="preRenderView" rendered="#{userSessionBean.idcho gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm" enctype="multipart/form-data">
+            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+            
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar>
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton type="submit" update="growl" value="Actualizar" action="#{chofe40Backing.go(2)}" actionListener="#{chofe40Backing.updateChofe40()}" icon="ui-icon-update">
+                            </p:commandButton> 
+                            <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" icon="ui-icon-delete" >
+                            </p:commandButton>
+                            <p:commandButton update="growl" action="#{chofe40Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            </p:commandButton>
+                            <!--Secciones-->
+                            <section id="secAll">
+                                <!--Seccion Dialogo Eliminar-->
+                                <section id="secEliminar">
+                                    <div class="ui-g">
+                                        <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                                            <h:panelGrid columns="2" cellpadding="5">
+                                                <p:outputLabel style="color:black;" />
+                                                <f:facet name="footer">
+                                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                        <p:commandButton value="Cancelar" update="growl" onclick="PF('eliminar').hide();"  />
+                                                        <p:commandButton type="submit" update="growl" value="Eliminar" action="#{chofe40Backing.go(2)}" actionListener="#{chofe40Backing.deleteChofe40()}"  oncomplete="PF('eliminar').hide();" class="red-btn">
+                                                            <f:setPropertyActionListener target="#{userSessionBean.idcho}"
+                                                                                         value="#{-1}" />
+                                                        </p:commandButton>
+                                                    </p:panelGrid>
+                                                </f:facet>  
+                                            </h:panelGrid>
+                                        </p:dialog>
+                                    </div>
+                                </section>
+                            </section>
+                        </f:facet>
+                    </p:toolbar>
+                    <div class=" ui-fluid ui-panel-title">
+                        <p:panel header="Actualizar datos del Registro" id="panel" >
+                            <h:panelGroup >
+                                <!-- Datos del Registro -->
+                                <div class="card card-w-title">
+                                    <h1>Datos del Registro</h1>
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rfcho" value="#{selectedChofe40.rfcho}" />
+                                            <label>RFC del Chofer</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cucho" value="#{selectedChofe40.cucho}" />
+                                            <label>CURP del Chofer</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apcho" value="#{selectedChofe40.apcho}" />
+                                            <label>Apellido Paterno</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="amcho" value="#{selectedChofe40.amcho}" />
+                                            <label>Apellido Materno</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nocho" value="#{selectedChofe40.nocho}" />
+                                            <label>Nombre(s)</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pccho" value="#{selectedChofe40.pccho}" />
+                                            <label>Path Fotografía Chofer</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="secho" value="#{selectedChofe40.secho}" />
+                                            <label>Sexo </label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="fncho" value="#{selectedChofe40.fncho}" />
+                                            <label>Nacimiento Fecha</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="richo" value="#{selectedChofe40.richo}" />
+                                            <label>Registro Imss</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="uicho" value="#{selectedChofe40.uicho}" />
+                                            <label>Unidad Médica Imss</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="gmcho" value="#{selectedChofe40.gmcho}" />
+                                            <label>Grado Máximo de Estudios</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="eccho" value="#{selectedChofe40.eccho}" />
+                                            <label>Estado Civil</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nlcho" value="#{selectedChofe40.nlcho}" />
+                                            <label>Número de Licencia de Manejo</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="vlcho" value="#{selectedChofe40.vlcho}" />
+                                            <label>Vigencia Licencia de Manejo</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="elcho" value="#{selectedChofe40.elcho}" />
+                                            <label>Lugar Expedición Licencia Manejo</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pfcho" value="#{selectedChofe40.pfcho}" />
+                                            <label>Path Licencia de Manejo</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="excho" value="#{selectedChofe40.excho}" />
+                                            <label>Exámen Antidpoing</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="fxcho" value="#{selectedChofe40.fxcho}" />
+                                            <label>Fecha Exámen Antidoping</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pacho" value="#{selectedChofe40.pacho}" />
+                                            <label>Domicilio País</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="escho" value="#{selectedChofe40.escho}" />
+                                            <label>Domicilio Estado</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mdcho" value="#{selectedChofe40.mdcho}" />
+                                            <label>Domicilio Mun/Del</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="locho" value="#{selectedChofe40.locho}" />
+                                            <label>Domicilio Población</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cocho" value="#{selectedChofe40.cocho}" />
+                                            <label>Domicilio Colonia</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cacho" value="#{selectedChofe40.cacho}" />
+                                            <label>Domicilio Calle</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="necho" value="#{selectedChofe40.necho}" />
+                                            <label>Domicilio Número Ext</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nicho" value="#{selectedChofe40.nicho}" />
+                                            <label>Domicilio Número Int</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cpcho" value="#{selectedChofe40.cpcho}" />
+                                            <label>Domicilio Código Postal</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tdcho" value="#{selectedChofe40.tdcho}" />
+                                            <label>Teléfono Domicilio</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tccho" value="#{selectedChofe40.tccho}" />
+                                            <label>Teléfono Celular</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cecho" value="#{selectedChofe40.cecho}" />
+                                            <label>Correo Electrónico</label>
+                                        </h:panelGroup>
+
+
+
+                                    </p:panelGrid>
+                                </div>
+                            </h:panelGroup>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

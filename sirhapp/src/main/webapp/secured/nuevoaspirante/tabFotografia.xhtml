@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+
+        <p:panel id="panelFotografia" header="Fotografia" rendered="#{traba36aWizardBacking.currentStep.equals('fotografia')}">
+
+            <p:panelGrid  columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+
+                <h:panelGroup styleClass="md-inputfield">
+                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{selectedTraba36aWiz.rftraA}" readonly="true" disabled="true"/>
+                    <label>RFC del Aspirante</label>
+                </h:panelGroup>
+
+                <p:fileUpload id="fileUploadFotografia" allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                              invalidFileMessage="Este tipo de archivo no se puede cargar"
+                              onstart="showStatus();" oncomplete="hideStatus();" 
+                              label="#{bundle.LblFOTO}" 
+                              uploadLabel="#{bundle.LblUpload}"
+                              cancelLabel="#{bundle.LblCancel}"
+                              update="panelFotografia growl" 
+                              mode="advanced"
+                              rendered="#{selectedTraba36aWiz.patraA.length() eq 0 and  selectedTraba36aWiz.patraA ne null}"
+                              value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                    <p:graphicImage  class=" w3-card-4" id="up" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  style="width: 100%"   rendered="#{fileUploadBean.fileName ne null}" />
+                    <f:attribute name="rootFolderAttr" value="#{traba36aWizardBacking.rfc}/"></f:attribute>
+                    <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                    <f:attribute name="fileTypeAttr" value="#{'FOTO'}"></f:attribute>
+                    <f:attribute name="idAttr" value="#{traba36aWizardBacking.rfc}"></f:attribute>
+                    <f:attribute name="ownBackingAttr" value="#{'traba36aWizardBacking'}"></f:attribute>
+                    <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                </p:fileUpload>
+
+                <p:lightBox  id="lightBox1" rendered="#{selectedTraba36aWiz.patraA.length() gt 0 and selectedTraba36aWiz.patraA ne null}" > 
+                    <h:outputLink  value="#{bundle.PathRelativeFull}#{selectedTraba36aWiz.patraA}"  title="Fotografia de #{selectedTraba36aWiz.nctraA}" > 
+                        <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{selectedTraba36aWiz.patraA}"  style="width: 100%" />
+                    </h:outputLink>
+                </p:lightBox>
+
+            </p:panelGrid>
+
+            <f:facet name="footer">
+                <p:commandButton type="submit" value="Borrar" rendered="#{selectedTraba36aWiz.patraA.length() gt 0 and selectedTraba36aWiz.patraA ne null and fileUploadBean.fileName eq null}"
+                                 icon="ui-icon-delete" class="red-btn" 
+                                 actionListener="#{traba36aWizardBacking.updateTraba36aFoto()}" 
+                                 update="panelFotografia growl" >
+                </p:commandButton>
+            </f:facet>
+        </p:panel>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Lista de Articulos del Inventario"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{catin44Backing.getCatin44Request(userSessionBean.idcin)}" type="preRenderView" rendered="#{userSessionBean.idcin gt 0}"/>
+        </f:metadata>
+
+        <ui:define name="head">
+            <style type="text/css">
+                .ui-button {
+                    margin-right: 4px;
+                }
+
+                .form-grid td {
+                    padding: 16px 2px;
+                }
+
+                .md-inputfield .ui-selectonemenu > label {
+                    color: transparent;
+                }
+
+                .md-inputfield .ui-selectonemenu.ui-state-filled > label {
+                    color: #212121;
+                }
+            </style>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" enctype="multipart/form-data">
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton type="submit" value="Actualizar" update="panelForm" action="#{catin44Backing.go(2)}" actionListener="#{catin44Backing.updateCatin44()}" icon="ui-icon-update"/>
+                        <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" icon="ui-icon-delete" />
+                        <p:commandButton update="growl" action="#{catin44Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                        <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel style="color:black;" />
+                                <f:facet name="footer">
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                        <p:commandButton value="Cancelar" onclick="PF('eliminar').hide();"  />
+                                        <p:commandButton type="submit" value="Eliminar" action="#{catin44Backing.go(2)}" actionListener="#{catin44Backing.deleteCatin44()}"  oncomplete="PF('eliminar').hide();" class="red-btn">
+                                            <f:setPropertyActionListener target="#{userSessionBean.idcin}"
+                                                                         value="#{-1}" />
+                                        </p:commandButton>
+                                    </p:panelGrid>
+                                </f:facet>  
+                            </h:panelGrid>
+                        </p:dialog>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Lista de Articulos del Inventario" id="panel" >
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield" style="width: 111%;">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cecin" value="#{selectedCatin44.cecin}" label="Clave de Empresa" required="true"  requiredMessage="La Empresa es Requerida">
+                                <f:selectItem itemLabel="Seleccione la Empresa" itemValue=" " noSelectionOption="true"/>
+                                <f:selectItems value="#{empre04Backing.getEmpre04List()}" var="emp" itemLabel="#{''.concat(emp.cvemp).concat(' | ').concat(emp.noemp)}" itemValue="#{emp.cvemp}"/>
+                                <p:ajax event="valueChange" process="@this" update="necin" listener="#{catin44Backing.handleChange}" />
+                            </p:selectOneMenu>
+                            <p:outputLabel for="cecin" value="Clave de Empresa"/>
+                            <p:message for="cecin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="necin" value="#{selectedCatin44.necin}"  readonly="true"/>
+                            <label>Empresa</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="arcin" value="#{selectedCatin44.arcin}" required="true" />
+                            <p:outputLabel for="arcin" value="Descripción"/> 
+                            <p:message for="arcin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="macin" value="#{selectedCatin44.macin}" required="true" />
+                            <p:outputLabel for="macin" value="Marca"/> 
+                            <p:message for="macin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mocin" value="#{selectedCatin44.mocin}" required="true" />
+                            <p:outputLabel for="mocin" value="Modelo"/> 
+                            <p:message for="mocin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cocin" value="#{selectedCatin44.cocin}" required="true" />
+                            <p:outputLabel for="cocin" value="Color"/> 
+                            <p:message for="cocin" display="text"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tacin" value="#{selectedCatin44.tacin}" required="true" />
+                            <p:outputLabel for="tacin" value="Talla"/> 
+                            <p:message for="tacin" display="text"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

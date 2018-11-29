@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{estud10Backing.getListEstud10()}" type="preRenderView"/>
+    </f:metadata>
+    <ui:define name="content">
+        <h:form id="panelForm">
+            
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar>
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <span class="ui-separator" style="padding-right: 5px;">
+                                <span class="fa fa-ellipsis-v SoftGray" />
+                            </span>
+                            <p:commandButton update="growl" action="#{estud10Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            </p:commandButton> 
+
+                        </f:facet>
+                    </p:toolbar>
+                    <p:panel id="panel" >
+                        <h:panelGroup  id="results" class="table-responsive">
+                            <p:dataTable var="estud10" value="#{estud10Backing.estud10List}" selectionMode="single" reflow="true"
+                                         selection="#{estud10Backing.selectedEstud10}" rowKey="#{estud10.idest}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['estud10.EmptyList']}">
+
+                                <f:facet name="header">
+                                    <div style="position: relative; width: 100%;">
+                                        <div style="width: 100%; text-align: left;">Catalogo de Niveles de Estudio
+                                            <div  style="position: absolute; width: 100%;text-align: right; top:-6px;">
+                                                <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                                                    <p:commandButton action="#{estud10Backing.go(0)}"  process="@this" icon="ui-icon-plus" value="Nuevo" style="width:auto;" styleClass="blue-btn flat" >
+                                                    </p:commandButton>
+                                                </c:if>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </f:facet>
+
+                                <p:column headerText="Nivel de Estudios">
+                                    <h:outputText value="#{estud10.niest}" />
+                                </p:column>
+
+
+                                <p:column width="190" headerText="Acciones">
+                                    <p:commandButton action="#{estud10Backing.go(3)}" actionListener="#{userSessionBean.setIdest(estud10.idest)}"   
+                                                     style="width:auto;" styleClass="blue-btn flat" 
+                                                     value="Seleccionar" process="@this">
+                                    </p:commandButton>
+                                    <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                                        <p:commandButton action="#{estud10Backing.go(1)}"  process="@this"
+                                                         style="width:auto;" styleClass="blue-btn flat" 
+                                                         value="Editar">
+                                            <f:setPropertyActionListener target="#{userSessionBean.idest}" 
+                                                                         value="#{estud10.idest}" />
+                                        </p:commandButton>
+                                    </c:if>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

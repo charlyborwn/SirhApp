@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Generador de Reportes"></h:outputText>
+        </ui:define>
+
+        <p:dialog id="dialogPdf" hideEffect="slide" widgetVar="pdf" 
+                  width="100%" height="700" minHeight="700" 
+                  modal="true" closeOnEscape="true" >
+            <pe:documentViewer id="pdfFrame" 
+                               cache="false" 
+                               value="#{reportesBackingBean.output}"
+                               download="#{reportesBackingBean.report}.pdf"
+                               style="width:100%; height:100%;" />
+        </p:dialog>
+
+        <ui:define name="content">
+            <h:form id="panelForm" >
+                <p:panel header="Generador de Reportes" styleClass="ui-panelgrid-blank form-group">
+
+                    <p:panelGrid columns="1" layout="grid"  styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield"  >
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="rep_go" label="Reporte" value="#{reportesBackingBean.report}" validator="selectOneMenuValidator">
+                                <f:selectItem itemLabel="Seleccione el Reporte"  itemValue=" "  noSelectionOption="false"  /> 
+                                <f:selectItem itemLabel="Concentrado de Contrataciones"  itemValue="Concentrado de Contrataciones"/>
+                                <f:selectItem itemLabel="Reporte de Asistencias y Puntualidad"  itemValue="Reporte de Asistencias y Puntualidad"/>
+                                <f:selectItem itemLabel="Reporte de Contratados"  itemValue="Reporte de Contratados"/>
+                                <p:ajax event="change"  process="@this"  listener="#{reportesBackingBean.handleChange}" /> 
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Reporte" for="rep_go" />
+                            <p:message display="text" for="rep_go"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);" id="cen_go" label="Complejo"  value="#{reportesBackingBean.center}" validator="selectOneMenuValidator">
+                                <f:selectItem itemLabel="Seleccione el Complejo" itemValue=" " noSelectionOption="true"/>
+                                <f:selectItem itemLabel="0 | TODOS" itemValue="0"/>
+                                <f:selectItems value="#{sedes53Backing.sedes53List}" var="sed" itemLabel="#{''.concat(sed.cvsed).concat(' | ').concat(sed.desed)}" itemValue="#{sed.cvsed}"/>
+                                <p:ajax event="valueChange" update="ent_go dep_go" listener="#{reportesBackingBean.handleChange}" />
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Complejo" for="cen_go" />
+                            <p:message display="text" for="cen_go"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield"  >
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ent_go" label="Empresa" value="#{reportesBackingBean.enterprise}" validator="selectOneMenuValidator">
+                                <f:selectItem itemLabel="Seleccione la Empresa"  itemValue=" "  noSelectionOption="false"  />  
+                                <f:selectItem itemLabel="0 | TODAS" itemValue="0"/>
+                                <f:selectItems value="#{empre04Backing.getEmpre04List(reportesBackingBean.center)}" var="emp" itemLabel="#{''.concat(emp.cvemp).concat(' | ').concat(emp.mdemp).concat(' | ').concat(emp.noemp)}" itemValue="#{emp.cvemp}"/>
+                                <p:ajax event="change"  process="@this"  update="dep_go" listener="#{reportesBackingBean.handleChange}" /> 
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Empresa: No/Emp | Complejo | Nombre de la Empresa" for="ent_go" />
+                            <p:message display="text" for="ent_go"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);" id="dep_go" label="Departamento" value="#{reportesBackingBean.department}" validator="selectOneMenuValidator">
+                                <f:selectItem itemLabel="Seleccione el Departamento" itemValue=" " noSelectionOption="false"/>
+                                <f:selectItem itemLabel="0 | TODOS" itemValue="00000"/>
+                                <f:selectItems value="#{depar03Backing.getDepar03List(reportesBackingBean.center,reportesBackingBean.enterprise)}" var="dep" itemLabel="#{''.concat(dep.nudep).concat(' | ').concat(dep.nodep)}" itemValue="#{dep.nudep}"/>
+                                <p:ajax event="change" process="@this"  listener="#{reportesBackingBean.handleChange}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Departamento" for="dep_go" />
+                            <p:message display="text" for="ent_go"/>
+                        </h:panelGroup>
+
+                        
+                        <p:selectOneRadio id="per_go" value="#{reportesBackingBean.period}" label="Periodo"   required="true" 
+                                          layout="responsive" columns="7" style="text-align: center;  white-space: nowrap;">
+                            <f:selectItem itemLabel="Especificar año" itemValue="espa" />
+                            <f:selectItem itemLabel="Especificar mes" itemValue="espm" />
+                            <f:selectItem itemLabel="Especificar año y mes" itemValue="esam" />
+                            <f:selectItem itemLabel="Este año" itemValue="year" />
+                            <f:selectItem itemLabel="Este Mes" itemValue="month" />
+                            <f:selectItem itemLabel="Esta Semana" itemValue="week" />
+                            <f:selectItem itemLabel="Hoy" itemValue="day"  />
+                            <p:ajax event="change" process="@this" update="paam per_go_msg @this"  listener="#{reportesBackingBean.handleChange}"/>
+
+                        </p:selectOneRadio>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:message id="per_go_msg" display="text" for="per_go" />
+                        </h:panelGroup>
+                        
+                        <p:panelGrid id="paam" columns="2" layout="grid" columnClasses="ui-grid-col-3,ui-grid-col-3"  styleClass="ui-panelgrid-blank form-group">
+
+                            <h:panelGroup styleClass="md-inputfield" rendered="#{reportesBackingBean.period.equals('espa') or reportesBackingBean.period.equals('esam')}"  >
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="yea_go" label="Año" value="#{reportesBackingBean.year}" validator="selectOneMenuValidatorInt">
+                                    <f:selectItem itemLabel="Seleccione el Año"  itemValue="-1"  noSelectionOption="false"  />  
+                                    <f:selectItems value="#{reportesBackingBean.yearList}" var="year" itemLabel="#{year}" itemValue="#{year}"/>
+                                    <p:ajax event="change"  process="@this"  listener="#{reportesBackingBean.handleChange}" /> 
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Año" for="yea_go" />
+                                <p:message display="text" for="yea_go" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield" rendered="#{reportesBackingBean.period.equals('espm') or reportesBackingBean.period.equals('esam')}" >
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="mon_go" label="Mes" value="#{reportesBackingBean.month}" validator="selectOneMenuValidator">
+                                    <f:selectItem itemLabel="Seleccione el Mes"  itemValue=" "  noSelectionOption="true"  />  
+                                    <f:selectItems value="#{meses07Backing.meses07List}" var="mes" itemLabel="#{mes.nomes}" itemValue="#{mes.ormes}"/>
+                                    <p:ajax event="change"  process="@this"  listener="#{reportesBackingBean.handleChange}" /> 
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Mes" for="mon_go" />
+                                <p:message display="text" for="mon_go" />
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+
+
+                    </p:panelGrid>
+
+                    <p:toolbar class="noprint">
+                        <f:facet name="right">
+                            <p:commandButton value="Generar" action="#{mediaBean.printPDF(reportesBackingBean.html)}" update="panelForm" />
+                        </f:facet>
+                    </p:toolbar>
+                </p:panel>
+                <p:outputPanel id="read" >
+                    <p:media value="#{mediaBean.streamedContent}" width="100%" height="590"  player="pdf"  cache="false" />
+                </p:outputPanel>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

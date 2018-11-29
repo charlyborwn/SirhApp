@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="beneficiarioCreateDlg" widgetVar="beneficiarioCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Beneficiario">
+            <h:form id="beneficiarioCreateForm">
+                <p:panel header="Agregar" rendered="#{traba36aWizardBacking.newBenef26aWiz != null}">
+                    <h:panelGroup id="displayBeneficiarioCreate">
+                        <p:tabView id="tabBeneficiarioCreate"  activeIndex="#{traba36aWizardBacking.benef26aTab}"  style="width: 600px"   >
+                            <p:ajax event="tabChange" listener="#{traba36aWizardBacking.onTabChangeBenef26a}"  process="tabBeneficiarioCreate"  update="@form"  />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup>
+                                        <p:outputLabel value="Parentesco" for="tpbenA" />
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="tpbenA" value="#{traba36aWizardBacking.newBenef26aWiz.tpbenA}" required="true" style="margin-bottom:10px;"  >
+                                            <f:selectItem itemLabel="Seleccione el parentesco" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tipar19Backing.tipar19List}" var="ben" itemLabel="#{ben.notip}" itemValue="#{ben.notip}"/>
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <p:outputLabel value="Sexo" for="sebenA" />
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="sebenA" value="#{traba36aWizardBacking.newBenef26aWiz.sebenA}" required="true"  style="margin-bottom:10px;" >
+                                            <f:selectItem itemLabel="Seleccione el Sexo" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{sexoo12Backing.sexoo12List}" var="sex" itemLabel="#{sex.nosex}" itemValue="#{sex.nosex}"/>
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"   id="fnbenA" value="#{traba36aWizardBacking.newBenef26aWiz.fnbenA}" required="true"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  >
+                                            <p:ajax event="dateSelect" process="@this" />
+                                        </p:calendar>
+                                        <p:outputLabel value="Fecha de nacimiento" for="fnbenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"    id="pobenA" validator="percentageMaskValidator" value="#{traba36aWizardBacking.newBenef26aWiz.pobenA}"  required="true" requiredMessage="Debe proporcionar el porcentage"  mask=""  >
+                                            <f:convertNumber type="percent" />
+                                            <p:ajax event="change" process="@this" update="@this" listener="#{traba36aWizardBacking.handleChange}" />
+                                        </p:inputMask>
+                                        <p:outputLabel value="Porcentaje a otorgar" for="pobenA" />
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                                <!-- Nombre Completo del Beneficiario -->                  
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="apbenA" value="#{traba36aWizardBacking.newBenef26aWiz.apbenA}" >
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputText>
+                                        <p:outputLabel value="Apellido Paterno" for="apbenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ambenA" value="#{traba36aWizardBacking.newBenef26aWiz.ambenA}" >
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputText>
+                                        <p:outputLabel value="Apellido Materno" for="ambenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="nobenA" value="#{traba36aWizardBacking.newBenef26aWiz.nobenA}" >
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputText>
+                                        <p:outputLabel value="Nombre(s)" for="nobenA" />
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obbenA" value="#{traba36aWizardBacking.newBenef26aWiz.obbenA }" >
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputTextarea>
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab  title="Direccion" >
+
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                            </p:tab>
+
+                        </p:tabView>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{traba36aWizardBacking.registerBenef26a()}" value="#{bundle.Save}" update="displayBeneficiarioCreate,panelForm:beneficiarioListForm:beneficiarioDatalist, growl" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('beneficiarioCreateDialog').hide(); handleSubmit(args,'beneficiarioCreateDialog');"  class="red-btn" />
+                            <p:commandButton type="button"  value="#{bundle.Cancel}" onclick="PF('beneficiarioCreateDialog').hide();" />
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+                <p:panel header="Actualizar datos" rendered="#{traba36aWizardBacking.selectedBenef26aWiz != null and traba36aWizardBacking.add eq false}">
+                    <h:panelGroup id="displayBeneficiarioEdit">
+                        <p:tabView id="tabBeneficiarioEdit" onTabChange="" activeIndex="#{traba36aWizardBacking.benef26aTab}" prependId="false"  style="width: 600px"  >
+                            <p:ajax event="tabChange" listener="#{traba36aWizardBacking.onTabChangeBenef26a}"/>
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup>
+                                        <p:outputLabel value="Parentesco" for="tpbenA" />
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tpbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.tpbenA}" required="true" style="margin-bottom:10px;" >
+                                            <f:selectItem itemLabel="Seleccione el parentesco" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tipar19Backing.tipar19List}" var="ben" itemLabel="#{ben.notip}" itemValue="#{ben.notip}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup>
+                                        <p:outputLabel value="Sexo" for="sebenA" />
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="sebenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.sebenA}" required="true"  style="margin-bottom:10px;" >
+                                            <f:selectItem itemLabel="Seleccione el Sexo" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{sexoo12Backing.sexoo12List}" var="sex" itemLabel="#{sex.nosex}" itemValue="#{sex.nosex}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"   id="fnbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.fnbenA}" required="true"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  />
+                                        <p:outputLabel value="Fecha de nacimiento" for="fnbenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="pobenA" validator="percentageMaskValidator" value="#{traba36aWizardBacking.selectedBenef26aWiz.pobenA}"  required="true" requiredMessage="Debe proporcionar el porcentage"  mask=""  >
+                                            <f:convertNumber type="percent" />
+                                            <p:ajax event="change" process="@this" update="@this" listener="#{traba36aWizardBacking.handleChange}" />
+                                        </p:inputMask>
+                                        <p:outputLabel value="Porcentaje a otorgar" for="pobenA" />
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                                <!-- Nombre Completo del Beneficiario -->                  
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="apbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.apbenA}" />
+                                        <p:outputLabel value="Apellido Paterno" for="apbenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ambenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.ambenA}" />
+                                        <p:outputLabel value="Apellido Materno" for="ambenA" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="nobenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.nobenA}" />
+                                        <p:outputLabel value="Nombre(s)" for="nobenA" />
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obdocA" value="#{traba36aWizardBacking.selectedBenef26aWiz.obbenA }" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab  title="Direccion" >
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:outputLabel for="bensn_dir" value="Vive en el mismo domicilio"/>
+                                    </h:panelGroup>
+                                    <p:selectOneRadio id="bensn_dir" value="#{traba36aWizardBacking.selectedBenef26aWiz.vmbenA}" columns="2"  
+                                                      style="text-align: center;  white-space: nowrap;">
+                                        <f:selectItem itemLabel="Si" itemValue="si" />
+                                        <f:selectItem itemLabel="No" itemValue="no" />
+                                        <f:ajax event="change" execute="bensn_dir" listener="#{traba36aWizardBacking.handleChange}"  render="beneficiarioCreateForm"/>
+                                    </p:selectOneRadio>
+                                </p:panelGrid>
+
+                                <p:panelGrid  columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{traba36aWizardBacking.selectedBenef26aWiz.vmbenA.equals('si')}">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cpbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.cpbenA}" disabled="true" />
+                                        <label>Código Postal</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="pabenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.pabenA}" disabled="true" />
+                                        <label>País</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="esbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.esbenA}" disabled="true" />
+                                        <label>Estado</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="mdbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.mdbenA}" disabled="true" />
+                                        <label>Mun/Del</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="lobenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.lobenA}" disabled="true" />
+                                        <label>Población Pariente</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cobenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.cobenA}" disabled="true" />
+                                        <label>Colonia</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{traba36aWizardBacking.selectedBenef26aWiz.vmbenA.equals('no')}">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"    id="codigopostalben"  
+                                                     value="#{traba36aWizardBacking.selectedBenef26aWiz.cpbenA}" mask="99999" maxlength="5">
+                                            <p:ajax event="keyup" listener="#{traba36aWizardBacking.handleChanges}" update="paisben estadoben municipioben ciudadben coloniaben" process="@this" />
+                                        </p:inputMask>
+                                        <label>Código Postal</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"      id="paisben" value="#{traba36aWizardBacking.selectedBenef26aWiz.pabenA}"
+
+                                                          style="margin-bottom:10px;"  >
+                                            <f:selectItem itemLabel="Seleccione el Pais" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems  value="#{traba36aWizardBacking.paisesBen}" var="paubi" itemLabel="#{paubi}" itemValue="#{paubi}" />
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="estadoben municipioben ciudadben coloniaben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Pais</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="estadoben" 
+                                                         value="#{traba36aWizardBacking.selectedBenef26aWiz.esbenA}">
+                                            <f:selectItem itemLabel="Seleccione el Estado" itemValue=" " noSelectionOption="true"  />
+                                            <f:selectItems value="#{traba36aWizardBacking.estadosBen}" var="esubi" itemLabel="#{esubi}" itemValue="#{esubi}"/>
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="municipioben ciudadben coloniaben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Estado</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="municipioben" 
+                                                         value="#{traba36aWizardBacking.selectedBenef26aWiz.mdbenA}">
+                                            <f:selectItem itemLabel="Seleccione el Mun/Del" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{traba36aWizardBacking.municipiosBen}" var="muubi" itemLabel="#{muubi}" itemValue="#{muubi}"/>
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="ciudadben coloniaben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Mun/Del</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="ciudadben" 
+                                                         value="#{traba36aWizardBacking.selectedBenef26aWiz.lobenA}">
+                                            <f:selectItem  itemLabel="Población, Localidad, Ciudad" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{traba36aWizardBacking.ciudadesBen}" var="ciubi" itemLabel="#{ciubi}" itemValue="#{ciubi}"/>
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="coloniaben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Población, Localidad, Ciudad</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="coloniaben" 
+                                                         value="#{traba36aWizardBacking.selectedBenef26aWiz.cobenA}" autoWidth="true" style="width: 50px;">
+                                            <f:selectItem itemLabel="Seleccione la Colonia" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{traba36aWizardBacking.coloniasBen}" var="coubi" itemLabel="#{coubi}" itemValue="#{coubi}"/>
+                                            <p:ajax listener="#{traba36aWizardBacking.handleChanges}" update="codigopostalben" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Colonia Domicilio</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cabenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.cabenA}"  disabled="#{traba36aWizardBacking.selectedBenef26aWiz.vmbenA.equals('si')}">
+                                            <f:ajax event="change" execute="cabenA" />
+                                        </p:inputText>
+                                        <label>Calle y Número</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"    id="tdbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.tdbenA}" mask="(99)9999-9999"   disabled="#{traba36aWizardBacking.selectedBenef26aWiz.vmbenA.equals('si')}">
+                                            <f:ajax event="change" execute="tdbenA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono Domicilio</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"    id="tcbenA" value="#{traba36aWizardBacking.selectedBenef26aWiz.tcbenA}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tcbenA" />
+                                        </p:inputMask>
+                                        <label>Teléfono Celular</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"   id="email" value="#{traba36aWizardBacking.selectedBenef26aWiz.cebenA}"
+                                                     validatorMessage="El correo no tiene el formato correcto"
+                                                     required="false" class="ui-minusculas">
+                                            <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                            <f:ajax event="change" execute="email" />
+                                        </p:inputText>
+                                        <label>Correo Electrónico</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <p:panelGrid  columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  value="#{traba36aWizardBacking.selectedBenef26aWiz.ncbenA}" readonly="true" disabled="true"/>
+                                        <label>Nombre</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  value="#{traba36aWizardBacking.selectedBenef26aWiz.tpbenA}" readonly="true" disabled="true"/>
+                                        <label>Parentesco</label>
+                                    </h:panelGroup>
+
+                                    <p:fileUpload id="fileUploadFotografia" allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                  invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                  onstart="showStatus();" oncomplete="hideStatus();" 
+                                                  label="#{bundle.LblDOCBEN}" 
+                                                  uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="beneficiarioCreateForm,growl" 
+                                                  mode="advanced" 
+                                                  rendered="#{traba36aWizardBacking.selectedBenef26aWiz.ptbenA.length() eq null }"
+                                                  value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                        <p:graphicImage  class=" w3-card-4" id="up" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  style="width: 200px"   rendered="#{fileUploadBean.fileName ne null}" />
+                                        <f:attribute name="rootFolderAttr" value="#{traba36aWizardBacking.rfc}/"></f:attribute>
+                                        <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                        <f:attribute name="fileTypeAttr" value="#{'DOCBEN'}"></f:attribute>
+                                        <f:attribute name="idAttr" value="#{traba36aWizardBacking.selectedBenef26aWiz.id.toString()}"></f:attribute>
+                                        <f:attribute name="ownBackingAttr" value="#{'traba36aWizardBacking'}"></f:attribute>
+                                        <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute></p:fileUpload>
+
+
+                                    <p:lightBox  id="lightBox1" rendered="#{traba36aWizardBacking.selectedBenef26aWiz.ptbenA.length() gt 0 and traba36aWizardBacking.selectedBenef26aWiz.ptbenA ne null}"  > 
+                                        <h:outputLink  value="#{bundle.PathRelativeFull}#{traba36aWizardBacking.selectedBenef26aWiz.ptbenA}"  title="Documento del beneficiario: #{traba36aWizardBacking.selectedBenef26aWiz.ncbenA}"  > 
+                                            <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{traba36aWizardBacking.selectedBenef26aWiz.ptbenA}"  style="width: 200px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+
+                                </p:panelGrid>
+
+                                <p:commandButton type="submit" value="Borrar" rendered="#{traba36aWizardBacking.selectedBenef26aWiz.ptbenA.length() gt 0 and traba36aWizardBacking.selectedBenef26aWiz.ptbenA ne null and fileUploadBean.fileName eq null}"
+                                                 icon="ui-icon-delete" class="red-btn" 
+                                                 actionListener="#{traba36aWizardBacking.updateBenef26aFoto}"
+                                                 update="beneficiarioEditForm growl" >
+                                </p:commandButton>
+                            </p:tab>
+
+                        </p:tabView>
+
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{traba36aWizardBacking.updateBenef26a}" value="#{bundle.Save}" update="displayBeneficiarioCreate,panelForm:beneficiarioListForm:beneficiarioDatalist,growl" oncomplete="handleSubmit(args, 'beneficiarioCreateDialog');"/>
+                            <p:commandButton value="#{bundle.Close}" onclick="PF('beneficiarioCreateDialog').hide();"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

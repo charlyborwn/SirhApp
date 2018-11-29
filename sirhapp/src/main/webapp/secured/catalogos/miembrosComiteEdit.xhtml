@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">>
+    <f:metadata>
+        <f:event listener="#{comit08Backing.getComit08Request(userSessionBean.idcom)}" type="preRenderView" rendered="#{userSessionBean.idcom gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm" enctype="multipart/form-data">
+            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+            
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar>
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton type="submit" update="growl" value="Actualizar" action="#{comit08Backing.go(2)}" actionListener="#{comit08Backing.updateComit08()}" icon="ui-icon-update">
+                            </p:commandButton> 
+                            <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" icon="ui-icon-delete" >
+                            </p:commandButton>
+                            <p:commandButton update="growl" action="#{comit08Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            </p:commandButton>
+                            <!--Secciones-->
+                            <section id="secAll">
+                                <!--Seccion Dialogo Eliminar-->
+                                <section id="secEliminar">
+                                    <div class="ui-g">
+                                        <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                                            <h:panelGrid columns="2" cellpadding="5">
+                                                <p:outputLabel style="color:black;" />
+                                                <f:facet name="footer">
+                                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                        <p:commandButton value="Cancelar" update="growl" onclick="PF('eliminar').hide();"  />
+                                                        <p:commandButton type="submit" update="growl" value="Eliminar" action="#{comit08Backing.go(2)}" actionListener="#{comit08Backing.deleteComit08()}"  oncomplete="PF('eliminar').hide();" class="red-btn">
+                                                            <f:setPropertyActionListener target="#{userSessionBean.idcom}"
+                                                                                         value="#{-1}" />
+                                                        </p:commandButton>
+                                                    </p:panelGrid>
+                                                </f:facet>  
+                                            </h:panelGrid>
+                                        </p:dialog>
+                                    </div>
+                                </section>
+                            </section>
+                        </f:facet>
+                    </p:toolbar>
+                    <div class=" ui-fluid ui-panel-title">
+                        <p:panel header="Actualizar datos del Registro" id="panel" >
+                            <h:panelGroup >
+                                <!-- Datos del Registro -->
+                                <div class="card card-w-title">
+                                    <h1>Datos del Registro</h1>
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+
+                              
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cecom" value="#{selectedComit08.cecom}" />
+                                            <label>Clave Empresa Cargo Comité</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nocom" value="#{selectedComit08.nocom}" />
+                                            <label>Nombre Empresa Cargo Comité</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cdcom" value="#{selectedComit08.cdcom}" />
+                                            <label>Clave Departamento Cargo Comité</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ndcom" value="#{selectedComit08.ndcom}" />
+                                            <label>Nombre Departamento Cargo Comité</label>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvcom" value="#{selectedComit08.cvcom}" />
+                                            <label>Clave Cargo Comité</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nccom" value="#{selectedComit08.nccom}" />
+                                            <label>Nombre Cargo Comité</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="orcom" value="#{selectedComit08.orcom}" />
+                                            <label>Orden Cargo Comité</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ntcom" value="#{selectedComit08.ntcom}" />
+                                            <label>Número de Trabajador</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="npcom" value="#{selectedComit08.npcom}" />
+                                            <label>Nombre Persona Cargo Comité</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="t1com" value="#{selectedComit08.t1com}" />
+                                            <label>Teléfono No. 1 Oficina</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="t2com" value="#{selectedComit08.t2com}" />
+                                            <label>Teléfono No. 2 Oficina</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tccom" value="#{selectedComit08.tccom}" />
+                                            <label>Teléfono Celular</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="macom" value="#{selectedComit08.macom}" />
+                                            <label>Dirección de Correo</label>
+                                        </h:panelGroup>
+
+
+
+
+
+                                    </p:panelGrid>
+                                </div>
+                            </h:panelGroup>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <f:metadata>
+        <f:viewParam id="parameter1" name="param1" value="#{userSessionBean.aspirante}"/>
+        <f:event listener="#{traba36aBacking.getTraba36aRequest(userSessionBean.aspirante)}" type="preRenderView"/>
+        <f:event listener="#{mediaBean.printPDF('')}" type="preRenderView"/>
+    </f:metadata>
+
+    <f:view encoding="UTF-8" contentType="text/html" locale="#{localeBean.locale}">
+
+        <h:head>
+            <ui:insert name="metadata">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+                <meta name="apple-mobile-web-app-capable" content="yes" />
+                <meta name="google" value="notranslate" />
+                <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+                <meta http-equiv="Cache-Control" content="no-cache, no-store" />
+                <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, post-check=0, pre-check=0" />
+                <meta http-equiv="Cache-Control" content="max-age=0" />
+                <meta http-equiv="expires" content="-1" />
+                <meta http-equiv="expires" content="Tue, 17 Mar 1983 00:00:00 GMT" />
+                <meta http-equiv="pragma" content="no-cache" />
+                <meta http-equiv="Last-Modified" content="0"/>
+            </ui:insert>
+            <title>Sistema de Información de Recursos Humanos</title>
+            <h:outputScript name="jquery/jquery-plugins.js" library="primefaces"/>
+            <h:outputScript name="js/nanoscroller.js" library="ultima-layout" />
+            <h:outputScript name="js/layout.js" library="ultima-layout" />
+            <h:outputScript name="js/ripple.js" library="ultima-layout" />
+            <h:outputScript name="js/swipe.js" library="ultima-layout" />
+            <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/favicon.ico"/>
+            <link rel="icon" type="image/x-icon" href="#{request.contextPath}/favicon.ico"/>
+            <ui:insert name="head"/>
+        </h:head>
+
+        <h:body style="width:100%;height:100%" >
+
+            <p:layout fullPage="true" style="background-color:#FFFFFF;" >
+
+                <p:layoutUnit position="center" id="centerLayout"  style="width:100%;height:100%">
+
+                    <pe:documentViewer  cache="false" style="width:100%; height:100%;" value="#{mediaBean.streamedContent}"  download="documento.pdf"/> 
+
+                </p:layoutUnit>
+
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>

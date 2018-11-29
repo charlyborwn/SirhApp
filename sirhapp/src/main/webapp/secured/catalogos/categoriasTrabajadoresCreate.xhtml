@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Categorias Trabajadores"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton  type="submit" value="Agregar Registro" update="panelForm" id="submit" action="#{categ01Backing.go(2)}" actionListener="#{categ01AddBacking.register()}"  icon="ui-icon-person"/>
+                        <p:commandButton update="growl" action="#{categ01Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+
+                <p:panel header="Agregar Categoria" id="panel" >
+                    <h:panelGroup >
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2,ui-grid-col-10" styleClass="ui-fluid  ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText id="cvcat" value="#{newCateg01.cvcat}" />
+                                <p:outputLabel value="Clave Categoría" for="cvcat"/>
+                                <p:message for="cvcat" display="text"/>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nocat" value="#{newCateg01.nocat}" />
+                                <label>Nombre de la Categoría</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield" style="width: 111%;">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cecat" value="#{newCateg01.cecat}" label="Empresa" required="true" >
+                                    <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{empre04Backing.getEmpre04List()}" var="emp" itemLabel="#{''.concat(emp.cvemp).concat(' | ').concat(emp.noemp)}" itemValue="#{emp.cvemp}"/>
+                                    <p:ajax event="change" process="@this" update="necat" listener="#{categ01AddBacking.handleChange}" />
+                                </p:selectOneMenu>
+                                <label>Empresa</label>
+                                <p:message for="cecat" display="text"/>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="necat" value="#{newCateg01.necat}"  readonly="true" />
+                                <label>Empresa</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cocat" value="#{newCateg01.cocat}" />
+                                <label>Código Categoría</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxcat" value="#{newCateg01.sxcat}" required="true" requiredMessage="El sueldo de la categoria es requerido"  />
+                                <p:outputLabel value="Sueldo Categoría ($)" for="sxcat"/>
+                                <p:message for="sxcat" display="text"/>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                    </h:panelGroup>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

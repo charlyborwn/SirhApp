@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Images"></h:outputText>
+        </ui:define>
+
+
+        <f:metadata>
+
+            <f:event listener="#{traba36aBacking.getTraba36aRequest('behc830217e82')}" type="preRenderView"/>
+            <f:event listener="#{benef26aBacking.getBenef26aRequest(5)}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+
+
+                            <p:outputPanel id="example">
+                                <p:commandLink update="example">
+                                    <f:setPropertyActionListener target="#{imageController.imageUrl}" value="/files/Documentos/credencial.png" />
+                                    <p:graphicImage value="/files/Documentos/credencial.png" width="150" />
+                                </p:commandLink>
+                                <p:commandLink update="example">
+                                    <f:setPropertyActionListener target="#{imageController.imageUrl}" value="/files/Documentos/comprobante-domicilio.jpg" />
+                                    <p:graphicImage value="/files/Documentos/comprobante-domicilio.jpg" width="150" />
+                                </p:commandLink>
+                                <p:commandLink update="example">
+                                    <f:setPropertyActionListener target="#{imageController.imageUrl}" value="/files/Documentos/acta-nacimiento.jpg" />
+                                    <p:graphicImage value="/files/Documentos/acta-nacimiento.jpg" width="150" />
+                                </p:commandLink>
+
+
+                                <div id="imageWrapper" style="width:600px; height:400px; margin:auto; overflow:scroll; position:relative;">
+                                    <p:graphicImage id="myImage" value="#{imageController.imageUrl}" />
+                                </div>
+
+                                <pe:imageAreaSelect id="areaSelect"
+                                                    for="myImage"
+                                                    widgetVar="areaSelectWidget"
+                                                    autoHide="true"
+                                                    handles="false"
+                                                    movable="false"
+                                                    persistent="false"
+                                                    resizable="false"
+                                                    parentSelector="#imageWrapper">
+                                    <p:ajax event="selectEnd" listener="#{imageController.selectEndListener}"/>
+                                </pe:imageAreaSelect>
+
+                                <pe:imageRotateAndResize id="rotateAndResize" for="myImage" widgetVar="rotateAndResizeWidget">
+                                    <p:ajax event="rotate" listener="#{imageController.rotateListener}" oncomplete="PF('areaSelectWidget').reload();"/>
+                                    <pe:javascript event="resize" execute="PF('areaSelectWidget').reload();"/>
+                                </pe:imageRotateAndResize>
+
+                                <p:commandButton icon="ui-icon-arrowreturnthick-1-w" value="Rotate Left"
+                                                 onclick="PF('rotateAndResizeWidget').rotateLeft(90);return false;"/>
+                                <p:commandButton icon="ui-icon-arrowreturnthick-1-e" value="Rotate Right"
+                                                 onclick="PF('rotateAndResizeWidget').rotateRight(90);return false;"/>
+                                <p:commandButton icon="ui-icon-zoomin" value="Scale +"
+                                                 onclick="PF('rotateAndResizeWidget').scale(1.05);return false;"/>
+                                <p:commandButton icon="ui-icon-zoomout" value="Scale -"
+                                                 onclick="PF('rotateAndResizeWidget').scale(0.95);return false;"/>
+                            </p:outputPanel>
+
+
+                            <p:graphicImage id="nature" name="/images/SINFOTO.gif" library="ultima-layout" />
+
+                            <p:resizable for="nature" animate="true" ghost="true">
+                                <p:ajax listener="#{resizableView.onResize}"/>
+                            </p:resizable>
+
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

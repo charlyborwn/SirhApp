@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Familiares del Trabajador"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="familiarListForm">
+                <p:toolbar rendered="#{userSessionBean.trabajador gt 0}">
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="#{traba36BackingBean.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup class="table-responsive">
+                    <p:dataTable id="familiarDatalist" var="famil32" value="#{famil32BackingBean.famil32List}" selectionMode="single" reflow="true"
+                                 selection="#{famil32BackingBean.selectedFamil32Bean}" rowKey="#{famil32.idfam}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['familiares.EmptyList']}">
+
+                        <p:ajax event="rowSelect"   update="familiarCreateButton familiarViewButton familiarEditButton familiarDeleteButton"/>
+                        <p:ajax event="rowUnselect" update="familiarCreateButton familiarViewButton familiarEditButton familiarDeleteButton"/>
+
+                        <p:column headerText="Tipo de familiar">
+                            <h:outputText value="#{famil32.tpfam}" />
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{famil32.ncfam}" />
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="familiarCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}"  actionListener="#{famil32BackingBean.prepareCreateFamil32()}" update=":familiarCreateForm" oncomplete="PF('familiarCreateDialog').show(); "/>
+                            <p:commandButton type="submit" process="@form" id="familiarViewButton" icon="ui-icon-search" value="#{bundle.View}" update=":familiarViewForm" actionListener="#{famil32BackingBean.prepareSelectFamil32()}" oncomplete="PF('familiarViewDialog').show(); " disabled="#{empty famil32BackingBean.selectedFamil32Bean}"/>
+                            <p:commandButton type="submit" process="@form" id="familiarEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" update=":familiarEditForm" actionListener="#{famil32BackingBean.prepareSelectFamil32()}" oncomplete="PF('familiarEditDialog').show(); " disabled="#{empty famil32BackingBean.selectedFamil32Bean}"/>
+                            <p:commandButton type="submit" process="@form" id="familiarDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{famil32BackingBean.deleteFamil32()}" update="growl,familiarDatalist" disabled="#{empty famil32BackingBean.selectedFamil32Bean}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="familiarCreate.xhtml"/>
+            <ui:include src="familiarEdit.xhtml"/>
+            <ui:include src="familiarView.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>

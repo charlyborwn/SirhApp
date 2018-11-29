@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">>
+    <f:metadata>
+        <f:event listener="#{event43Backing.getEvent43Request(userSessionBean.nueve)}" type="preRenderView" rendered="#{userSessionBean.nueve gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm" enctype="multipart/form-data">
+            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+            
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar>
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton type="submit" update="growl" value="Actualizar" action="#{event43Backing.go(2)}" actionListener="#{event43Backing.updateEvent43()}" icon="ui-icon-update">
+                            </p:commandButton> 
+                            <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" icon="ui-icon-delete" >
+                            </p:commandButton>
+                            <p:commandButton update="growl" action="#{event43Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            </p:commandButton>
+                            <!--Secciones-->
+                            <section id="secAll">
+                                <!--Seccion Dialogo Eliminar-->
+                                <section id="secEliminar">
+                                    <div class="ui-g">
+                                        <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                                            <h:panelGrid columns="2" cellpadding="5">
+                                                <p:outputLabel style="color:black;" />
+                                                <f:facet name="footer">
+                                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                        <p:commandButton value="Cancelar" update="growl" onclick="PF('eliminar').hide();"  />
+                                                        <p:commandButton type="submit" update="growl" value="Eliminar" action="#{event43Backing.go(2)}" actionListener="#{event43Backing.deleteEvent43()}"  oncomplete="PF('eliminar').hide();" class="red-btn">
+                                                            <f:setPropertyActionListener target="#{userSessionBean.nueve}"
+                                                                                         value="#{-1}" />
+                                                        </p:commandButton>
+                                                    </p:panelGrid>
+                                                </f:facet>  
+                                            </h:panelGrid>
+                                        </p:dialog>
+                                    </div>
+                                </section>
+                            </section>
+                        </f:facet>
+                    </p:toolbar>
+                    <div class=" ui-fluid ui-panel-title">
+                        <p:panel header="Actualizar datos del Registro" id="panel" >
+                            <h:panelGroup >
+                                <!-- Datos del Registro -->
+                                <div class="card card-w-title">
+                                    <h1>Datos del Registro</h1>
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nueve" value="#{selectedEvent43.nueve}" />
+                                            <label>Número de Evento</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ceeve" value="#{selectedEvent43.ceeve}" />
+                                            <label>Clave Empresa</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="neeve" value="#{selectedEvent43.neeve}" />
+                                            <label>Nombre Empresa</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="fceve" value="#{selectedEvent43.fceve}" />
+                                            <label>Fecha del Evento</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="hoeve" value="#{selectedEvent43.hoeve}" />
+                                            <label>Hora del Evento</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="uneve" value="#{selectedEvent43.uneve}" />
+                                            <label>Número de Unidad</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="maeve" value="#{selectedEvent43.maeve}" />
+                                            <label>Marca</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="moeve" value="#{selectedEvent43.moeve}" />
+                                            <label>Modelo</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pleve" value="#{selectedEvent43.pleve}" />
+                                            <label>Placas</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rueve" value="#{selectedEvent43.rueve}" />
+                                            <label>Número de Ruta</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="roeve" value="#{selectedEvent43.roeve}" />
+                                            <label>Ruta Origen</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rdeve" value="#{selectedEvent43.rdeve}" />
+                                            <label>Ruta Destino</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rfeve" value="#{selectedEvent43.rfeve}" />
+                                            <label>RFC Chofer</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nceve" value="#{selectedEvent43.nceve}" />
+                                            <label>Nombre Chofer</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tceve" value="#{selectedEvent43.tceve}" />
+                                            <label>Teléfono Celular</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="deeve" value="#{selectedEvent43.deeve}" />
+                                            <label>Descripción del Evento</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="reeve" value="#{selectedEvent43.reeve}" />
+                                            <label>Resolución del Evento</label>
+                                        </h:panelGroup>
+
+
+
+
+                                    </p:panelGrid>
+                                </div>
+                            </h:panelGroup>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

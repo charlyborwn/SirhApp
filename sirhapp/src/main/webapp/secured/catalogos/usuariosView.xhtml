@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Usuarios"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{usuar24Backing.getUsuar24Request(userSessionBean.cvusu)}" type="preRenderView" rendered="#{userSessionBean.cvusu gt 0}"/>
+        </f:metadata>
+
+        <ui:define name="head">
+            <style type="text/css">
+                .ui-button {
+                    margin-right: 4px;
+                }
+
+                .form-grid td {
+                    padding: 16px 2px;
+                }
+
+                .md-inputfield .ui-selectonemenu > label {
+                    color: transparent;
+                }
+
+                .md-inputfield .ui-selectonemenu.ui-state-filled > label {
+                    color: #212121;
+                }
+            </style>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm">
+                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+                <p:toolbar>
+                    <f:facet name="left"></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton action="#{usuar24Backing.go(1)}"  process="@this" value="Editar" rendered="#{not empty selectedUsuar24 and usuar24Backing.active eq true}"  icon="ui-icon-update"/>
+                        <p:commandButton  onclick="PF('activar').show();" process="@this"  value="Activar"  type="button" rendered="#{usuar24Backing.active eq false}" class="red-btn" icon="ui-icon-unarchive"/>
+                        <p:commandButton update="growl" action="#{usuar24Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home" actionListener="#{userSessionBean.setCvusu(null)}"/>
+
+                        <section id="secActivar">
+                            <div class="ui-g">
+                                <p:dialog id="activar" widgetVar="activar" header="¿Deseas activar el registro?" closeOnEscape="true" modal="true"  >
+                                    <h:panelGrid columns="1" cellpadding="5">
+                                        <p:outputLabel value="" style="color:black;" />
+                                        <f:facet name="footer">
+                                            <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                <p:commandButton value="Cancelar" update="growl" onclick="PF('activar').hide();"  />
+                                                <p:commandButton type="submit" update="growl" value="Activar" action="#{usuar24Backing.go(2)}" actionListener="#{usuar24Backing.acivateUsuar24()}" class="red-btn"/>
+                                            </p:panelGrid>
+                                        </f:facet>
+                                    </h:panelGrid>
+                                    <p:ajax event="close" update="activar" />
+                                </p:dialog>
+                            </div>
+                        </section>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Datos del Usuario">
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="username"  value="#{selectedUsuar24.cvusu}"  size="40"
+                                         required="true" requiredMessage="Usuario requerido"
+                                         validatorMessage="El nombre de usuario no cumple la longitud minima requerida" maxlength="10" 
+                                         tabindex="1"  pt:placeholder="Usuario" 
+                                         style="text-transform: capitalize;"
+                                          readonly="true">
+                                <f:validateLength maximum="10" minimum="2" />
+                            </p:inputText>
+                            <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-user"></i></p:outputLabel>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="ui-inputgroup">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="email" value="#{selectedUsuar24.cousu}" size="40" readonly="true" style="text-transform: none !important;" />
+                            <p:outputLabel class="ui-inputgroup-addon"><i class="fa fa-envelope"></i></p:outputLabel>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apusu" value="#{selectedUsuar24.ncusu}" readonly="true" />
+                            <label>Nombre Completo</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="neusu" value="#{selectedUsuar24.neusu}" readonly="true" />
+                            <label>Empresa en la que labora el usuario</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+
+                    
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="seusu" value="#{sedes53Backing.getSedes53RequestString(selectedUsuar24.seusu)}"  readonly="true"/>
+                            <label>Complejo Empresa</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="emusu" value="#{empre04Backing.getEmpre04RequestString(selectedUsuar24.emusu)}"  readonly="true"/>
+                            <label>Empresa Permitida</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="deusu" value="#{depar03Backing.getDepar03Request(selectedUsuar24.emusu,selectedUsuar24.deusu)}"  readonly="true"/>
+                            <label>Departamento Permitido</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:panelGrid columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nausu" value="#{niacc33Backing.getNiacc33RequestRol(selectedUsuar24.nausu)}"  readonly="true"/>
+                            <label>Nivel de Acceso del Usuario</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Kardex Trabajadores"></h:outputText>
+        </ui:define>
+
+
+        <ui:define name="content">
+            <p:tooltip />
+            <h:form id="searchForm" class="form-search">     
+                <p:panel id="panelBuscar" header="Kardex Trabajadores">
+                    <p:panelGrid columns="4" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="nt" 
+                                         value="#{traba36BackingBean.nt}" 
+                                         mask="999999999"  maxlength="9"  autoClear="false" slotChar=""
+                                         style="width: 132px;">
+                                <f:ajax event="blur" execute="nt" 
+                                        listener="#{traba36BackingBean.handleChange}" 
+                                        render="results growl"/>
+                                <p:ajax event="change" process="@this rfc curp imss ap am n" />
+                            </p:inputMask>
+                            <p:outputLabel value="Clave del Trabajador" for="nt" />
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield" >
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="rfc" autocomplete="false"
+                                         value="#{traba36BackingBean.rfc}" 
+                                         mask="aaaa999999***" maxlength="13" autoClear="false" slotChar=""
+                                         >
+                                <p:ajax event="change" process="@this nt curp imss ap am n" />
+                            </p:inputMask>
+                            <p:outputLabel value="RFC" for="rfc" />
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="curp" autocomplete="true"
+                                         value="#{traba36BackingBean.curp}" 
+                                         mask="aaaa999999aaaaaa**" maxlength="18" autoClear="false" 
+                                         slotChar=""
+                                         >
+                                <p:ajax event="change" process="@this nt rfc imss ap am n" />
+                            </p:inputMask>
+                            <label>CURP</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield" >
+                            <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  id="imss" autocomplete="true" 
+                                         value="#{traba36BackingBean.imss}" 
+                                         mask="99999999999" maxlength="11" autoClear="false" slotChar="">
+                                <p:ajax event="change" process="@this nt rfc curp ap am n" />
+                            </p:inputMask>
+                            <label>IMSS</label>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:panelGrid id="pgNc" columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ap" value="#{traba36BackingBean.ap}" autocomplete="true" transient="true" required="false" 
+                                         requiredMessage="Apellido Paterno es requerido"
+                                         >
+                                <p:ajax event="change" process="@this nt rfc curp imss am n" />
+                            </p:inputText>
+                            <label>Apellido Paterno</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="am"  value="#{traba36BackingBean.am}" autocomplete="true" transient="true" required="false" 
+                                         requiredMessage="Apellido Materno es requerido" 
+                                         >
+                                <p:ajax event="change" process="@this nt rfc curp imss ap n" />
+                            </p:inputText>
+                            <label>Apellido Materno</label>
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="n"  value="#{traba36BackingBean.n}" autocomplete="true" transient="true" required="false" 
+                                         requiredMessage="Nombre(s) es requerido"
+                                         >
+                                <p:ajax event="change" process="@this nt rfc curp imss ap am" />
+                            </p:inputText>
+                            <label>Nombre(s)</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+
+                    <f:facet name="footer" >
+                        <p:panelGrid columns="6" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton 
+                                onkeypress="return submitenter(this, event)"
+                                id="submit"
+                                type="submit"
+                                value="Buscar"
+                                class="green-btn"
+                                icon="fa fa-search" update="results"
+                                actionListener="#{traba36BackingBean.retrieveTraba36ListActionListener()}">
+                                <f:ajax execute="nt rfc ap am n curp imss" render="results growl"/>
+                            </p:commandButton>
+                            <p:button 
+                                onkeypress="return submitenter(this, event)"
+                                icon="ui-icon-delete"
+                                value="Limpiar"
+                                class="blue-grey-btn"
+                                outcome="#{facesContext.viewRoot.viewId}">
+                            </p:button >
+
+                        </p:panelGrid>
+                    </f:facet> 
+                </p:panel>
+
+                <h:panelGroup id="results" >
+                    <h:panelGroup id="dataResults" rendered="#{not empty traba36BackingBean.rfc || not empty traba36BackingBean.nt || not empty traba36BackingBean.am || not empty traba36BackingBean.curp || not empty traba36BackingBean.imss || not empty traba36BackingBean.ap || not empty traba36BackingBean.n }">
+                        <p:panel rendered="#{traba36BackingBean.traba36List.size()==0}">
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                <h:outputText id="informationMessage" 
+                                              value="#{traba36BackingBean.infoMessage}" 
+                                              class="ui-content-title"/>
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <ui:include src="#{traba36BackingBean.selectedTraba36Bean ne null ? './findDataTrabajadores.xhtml' : './empty.xhtml'}"/>
+                        <h:panelGroup rendered="#{traba36BackingBean.traba36List.size()>1}">
+                            <p:panel rendered="#{traba36BackingBean.infoMessageTra ne null}">
+                                <h:outputText id="informationMessageTra" 
+                                              value="#{traba36BackingBean.infoMessageTra} - Haga clic en el boton Continuar"
+                                              class="ui-content-title"/>
+                            </p:panel>
+
+                            <p:dataTable 
+                                id="trabajadoresDatalist" 
+                                value="#{traba36BackingBean.traba36List}" 
+                                var="traba36" 
+                                selectionMode="single" 
+                                selection="#{traba36BackingBean.selectedTraba36Bean}"
+                                rendered="#{not empty traba36BackingBean.traba36List}"
+                                paginator="true"
+                                rowKey="#{traba36.idtra}" 
+                                rows="10"
+                                rowsPerPageTemplate="10,20,30,40,50"
+                                emptyMessage="#{msg['trabajadores.EmptyList']}">
+
+                                <p:ajax event="rowSelect"   update="trabajadorEditButton   "/>
+                                <p:ajax event="rowUnselect" update="trabajadorEditButton   "/>
+
+                                <p:column headerText="NO" style="width:5px;">
+                                    <h:outputText value="#{traba36.nutra}" />
+                                </p:column>
+
+                                <p:column headerText="RFC"  style="width:5px;">
+                                    <h:outputText value="#{traba36.rftra}"/>
+                                </p:column>
+                                <p:column headerText="CURP" style="width:20px;">
+                                    <h:outputText value="#{traba36.cutra}" />
+                                </p:column>
+                                <p:column headerText="IMSS" style="width:20px;">
+                                    <h:outputText value="#{traba36.ritra}" />
+                                </p:column>
+                                <p:column headerText="Nombre" style="width:40px;" >
+                                    <h:outputText value="#{traba36.nctra}" />
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <p:commandButton type="submit" 
+                                                     process="@this" 
+                                                     id="trabajadorEditButton" 
+                                                     icon="ui-icon-search" 
+                                                     value="Continuar"  
+                                                     action="/secured/kardex/trabajadores.xhtml?faces-redirect=true"
+                                                     actionListener="#{userSessionBean.setTrabajadorKardex(traba36BackingBean.selectedTraba36Bean.nutra)}"
+                                                     disabled="#{empty traba36BackingBean.selectedTraba36Bean}"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

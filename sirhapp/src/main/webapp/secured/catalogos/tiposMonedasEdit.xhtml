@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">>
+    <f:metadata>
+        <f:event listener="#{moned46Backing.getMoned46Request(userSessionBean.idmon)}" type="preRenderView" rendered="#{userSessionBean.idmon gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm" enctype="multipart/form-data">
+            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+            
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:toolbar>
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton type="submit" update="growl" value="Actualizar" action="#{moned46Backing.go(2)}" actionListener="#{moned46Backing.updateMoned46()}" icon="ui-icon-update">
+                            </p:commandButton> 
+                            <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" icon="ui-icon-delete" >
+                            </p:commandButton>
+                            <p:commandButton update="growl" action="#{moned46Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            </p:commandButton>
+                            <!--Secciones-->
+                            <section id="secAll">
+                                <!--Seccion Dialogo Eliminar-->
+                                <section id="secEliminar">
+                                    <div class="ui-g">
+                                        <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                                            <h:panelGrid columns="2" cellpadding="5">
+                                                <p:outputLabel style="color:black;" />
+                                                <f:facet name="footer">
+                                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                        <p:commandButton value="Cancelar" update="growl" onclick="PF('eliminar').hide();"  />
+                                                        <p:commandButton type="submit" update="growl" value="Eliminar" action="#{moned46Backing.go(2)}" actionListener="#{moned46Backing.deleteMoned46()}"  oncomplete="PF('eliminar').hide();" class="red-btn">
+                                                            <f:setPropertyActionListener target="#{userSessionBean.idmon}"
+                                                                                         value="#{-1}" />
+                                                        </p:commandButton>
+                                                    </p:panelGrid>
+                                                </f:facet>  
+                                            </h:panelGrid>
+                                        </p:dialog>
+                                    </div>
+                                </section>
+                            </section>
+                        </f:facet>
+                    </p:toolbar>
+                    <div class=" ui-fluid ui-panel-title">
+                        <p:panel header="Actualizar datos del Registro" id="panel" >
+                            <h:panelGroup >
+                                <!-- Datos del Registro -->
+                                <div class="card card-w-title">
+                                    <h1>Datos del Registro</h1>
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ncmon" value="#{selectedMoned46.ncmon}" />
+                                            <label>Nombre Corto Moneda</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nlmon" value="#{selectedMoned46.nlmon}" />
+                                            <label>Nombre Largo Moneda</label>
+                                        </h:panelGroup>
+
+
+
+
+                                    </p:panelGrid>
+                                </div>
+                            </h:panelGroup>
+                        </p:panel>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

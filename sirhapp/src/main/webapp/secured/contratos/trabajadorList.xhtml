@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+        <h:form id="trabajadoresListForm">            
+            <h:panelGroup>
+                <p:panel rendered="#{contr27Backing.infoMessageTra ne null}">
+                    <h:outputText id="informationMessageTra" 
+                                  value="#{contr27Backing.infoMessageTra} - Haga clic en el boton Continuar"
+                                  class="ui-content-title"/>
+                </p:panel>
+
+                <p:dataTable 
+                    id="trabajadoresDatalist" 
+                    value="#{contr27Backing.traba36List}" 
+                    var="traba36" 
+                    selectionMode="single" 
+                    selection="#{contr27Backing.selectedTraba36Cto}"
+                    rendered="#{not empty contr27Backing.traba36List}"
+                    paginator="true"
+                    rowKey="#{traba36.idtra}" 
+                    rows="10"
+                    rowsPerPageTemplate="10,20,30,40,50"
+                    emptyMessage="#{msg['aspirantes.EmptyList']}">
+
+                    <p:ajax event="rowSelect" update="trabajadorEditButton "/>
+                    <p:ajax event="rowUnselect" update="trabajadorEditButton "/>
+
+                    <p:column headerText="NO" style="width:5px;">
+                        <h:outputText value="#{traba36.nutra}"/>
+                    </p:column>
+
+                    <p:column headerText="RFC" style="width:5px;">
+                        <h:outputText value="#{traba36.rftra}"/>
+                    </p:column>
+                    <p:column headerText="CURP" style="width:20px;">
+                        <h:outputText value="#{traba36.cutra}"/>
+                    </p:column>
+                    <p:column headerText="IMSS" style="width:20px;">
+                        <h:outputText value="#{traba36.ritra}"/>
+                    </p:column>
+                    <p:column headerText="Nombre" style="width:40px;">
+                        <h:outputText value="#{traba36.nctra}"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" 
+                                         process="@this" 
+                                         id="trabajadorEditButton" 
+                                         icon="ui-icon-search" 
+                                         value="Continuar" 
+                                         action="/secured/contratos/contratoTrabajador.xhtml?faces-redirect=true"
+                                         actionListener="#{userSessionBean.setContratoTrabajador(selectedTraba36Cto.nutra)}" 
+                                         disabled="#{empty contr27Backing.selectedTraba36Cto}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:panelGroup>
+        </h:form>
+    </ui:composition>
+</html>

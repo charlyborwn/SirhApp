@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class=" ui-fluid ui-panel-title">
+                    <p:dialog id="callAuthDlg" widgetVar="callAuthDialog" header="¿Deseas borrar el registro?" modal="true" resizable="false">
+                        <h:form id="callAuthForm">
+                            <p:panelGrid id="callAuthPanel" style="text-align: center;" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="username"
+                                                 value="#{userProfileBean.user}" 
+                                                 required="true" 
+                                                 requiredMessage="Usuario requerido" 
+                                                 tabindex="1"  autocomplete="off"
+                                                 disabled="true" readonly="true">
+                                        <f:validateLength maximum="8" minimum="2" />
+                                    </p:inputText>
+                                    <label>Usuario</label>
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="md-inputfield">
+                                    <p:password id="password"  
+                                                value="#{loginBean.password}" 
+                                                requiredMessage="El password es requerido" tabindex="2"
+                                                required="true"  autocomplete="off" feedback="false" class="ui-minusculas">
+                                        <f:validateLength maximum="256" minimum="2" />
+                                    </p:password>
+                                    <label>Password</label>
+                                </h:panelGroup>
+
+                                <f:facet name="footer">
+                                    <p:panelGrid columns="2" layout="grid" style="text-align: center;" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                        <p:commandButton oncomplete="if (args &amp;&amp; !args.validationFailed) handleLoginRequest(xhr, status, args)" 
+                                                         id="submit"
+                                                         value="Borrar"
+                                                         actionListener="#{loginBean.auth}" 
+                                                         update="growl callAuthPanel" icon="ui-icon-delete" tabindex="3" process="@this password beanName beanMethod action variableBeanName variableBeanMethod variableBeanValue variableBeanType" >
+
+                                        </p:commandButton>
+                                        <p:commandButton value="#{bundle.Cancel}" onclick="PF('callAuthDialog').hide()" class="ui-button-text"/>
+                                    </p:panelGrid>
+                                </f:facet>
+                            </p:panelGrid>
+                            <h:inputHidden value="#{loginBean.beanName}" id="beanName"/>
+                            <h:inputHidden value="#{loginBean.beanMethod}" id="beanMethod"/>
+                            <h:inputHidden value="#{loginBean.action}" id="action"/>
+                            <h:inputHidden value="#{loginBean.variableBeanName}" id="variableBeanName"/>
+                            <h:inputHidden value="#{loginBean.variableBeanMethod}" id="variableBeanMethod"/>
+                            <h:inputHidden value="#{loginBean.variableBeanValue}" id="variableBeanValue"/>
+                            <h:inputHidden value="#{loginBean.variableBeanType}" id="variableBeanType"/>
+                        </h:form>
+                        <script type="text/javascript">
+                            function handleLoginRequest(xhr, status, args) {
+                                if (args.validationFailed || !args.loggedIn) {
+                                    PF('callAuthDialog').jq.effect("shake", {times: 5}, 100);
+                                } else {
+                                    PF('callAuthDialog').hide();
+                                }
+                            }
+                        </script>
+                    </p:dialog>
+                </div>
+            </div>
+        </div>
+    </ui:composition>
+</html>

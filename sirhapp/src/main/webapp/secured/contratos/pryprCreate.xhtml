@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Premios y prestaciones"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{prypr34BackingBean.prepareCreate()}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm" enctype="multipart/form-data">
+                <p:toolbar>
+                    <f:facet name="left"><ui:include src="headerPrypr.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <p:commandButton  type="submit" value="Registrar" update="panelForm growl" id="submit" action="#{prypr34BackingBean.go(2)}" actionListener="#{prypr34BackingBean.register()}"  icon="ui-icon-person"/>
+                        <p:commandButton update="growl" action="/secured/contratos/pryprList.xhtml?faces-redirect=true" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Nuevo premios y prestaciones" id="panel" collapsed="true" />
+                <p:tabView>
+                    <p:tab title="Datos del Contrato">
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-10,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup>
+                                <p:panelGrid columns="4" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" style="margin-left: -14px !important;" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ntcto" value="#{prypr34BackingBean.newPrypr34.ntpry}" readonly="true" />
+                                        <label>N/Trabajador</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rfcto" value="#{prypr34BackingBean.newPrypr34.rfpry}" readonly="true" />
+                                        <label>RFC/Trabajador</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" style="margin-left: -14px !important;" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apcto" value="#{prypr34BackingBean.newPrypr34.nnpry}" readonly="true" />
+                                        <label>Nombre</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <p:lightBox rendered="#{prypr34BackingBean.newPrypr34.pfpry.length() gt 0 || not prypr34BackingBean.newPrypr34.pfpry eq null }"> 
+                                    <h:outputLink value="#{bundle.PathRelativeFull}#{prypr34BackingBean.newPrypr34.pfpry}" title="Fotografia de #{prypr34BackingBean.newPrypr34.nnpry}" rendered="#{prypr34BackingBean.newPrypr34.pfpry.length() gt 0 and prypr34BackingBean.newPrypr34.pfpry ne null }" >                                
+                                        <h:graphicImage class="w3-card-4 " value="#{bundle.PathRelativeShort}#{prypr34BackingBean.newPrypr34.pfpry}" style="height: 70px;" />                            
+                                    </h:outputLink>
+                                </p:lightBox>                               
+                                <h:graphicImage class="w3-card-4 " name="images/SINFOTO.gif" library="ultima-layout" style="height: 70px;" rendered="#{prypr34BackingBean.newPrypr34.pfpry.length() eq 0 || prypr34BackingBean.newPrypr34.pfpry eq null }" />                           
+                            </h:panelGroup>
+                        </p:panelGrid>                        
+                        <p:panelGrid columns="4" layout="grid" columnClasses="ui-grid-col-1, ui-grid-col-4,ui-grid-col-4,ui-grid-col-3" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nucto" value="#{prypr34BackingBean.newPrypr34.nupry}" readonly="true" />
+                                <label>N/Contrato</label>
+                            </h:panelGroup> 
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sscto" value="#{prypr34BackingBean.newPrypr34.sspry}" readonly="true" />
+                                <p:outputLabel value="Status del Contrato" for="sscto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="fscto" value="#{prypr34BackingBean.newPrypr34.fspry}" readonly="true" >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <p:outputLabel value="Fecha Status Contrato" for="fscto" />
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="secto" value="#{sedes53Backing.getSedes53RequestString(prypr34BackingBean.newPrypr34.espry)}" readonly="true" />
+                                <p:outputLabel value="Complejo" for="secto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvcto" value="#{prypr34BackingBean.newPrypr34.cepry}" readonly="true" />
+                                <p:outputLabel value="Clave Empresa" for="cvcto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="necto" value="#{prypr34BackingBean.newPrypr34.nepry}" readonly="true" />
+                                <label>Empresa</label>
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ndcto" value="#{prypr34BackingBean.newPrypr34.ndpry}" readonly="true" />
+                                <p:outputLabel value="Clave Departamento" for="ndcto" />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nbcto" value="#{prypr34BackingBean.newPrypr34.depry}" readonly="true" />
+                                <label>Departamento</label>
+                            </h:panelGroup>                            
+                            <p:outputLabel value=""/>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cscto" value="#{prypr34BackingBean.newPrypr34.cspry}" readonly="true" />
+                                <label>Clave Sección</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nscto" value="#{prypr34BackingBean.newPrypr34.sepry}" readonly="true" />
+                                <label>Nombre Sección</label>
+                            </h:panelGroup>                            
+                            <p:outputLabel value=""/>
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cccto" value="#{prypr34BackingBean.newPrypr34.ccpry}" readonly="true" />
+                                <p:outputLabel value="Clave Categoría" for="cccto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cacto" value="#{prypr34BackingBean.newPrypr34.capry}" readonly="true" />
+                                <label>Categoría</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxcto" value="#{prypr34BackingBean.newPrypr34.sxpry}" readonly="true" />
+                                <label>Sueldo Diario ($)</label>
+                            </h:panelGroup>                           
+                            <p:outputLabel value=""/>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tucto" value="#{prypr34BackingBean.newPrypr34.ctpry}" readonly="true" />
+                                <p:outputLabel value="Clave Turno" for="tucto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ttcto" value="#{prypr34BackingBean.newPrypr34.nopry}" readonly="true" />
+                                <label>Nombre Turno</label>
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-selectonemenu">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tccto" value="#{prypr34BackingBean.newPrypr34.tcpry}" readonly="true" />
+                                <p:outputLabel value="Clave Tipo de Contrato" for="tccto" />
+                            </h:panelGroup>                           
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nccto" value="#{prypr34BackingBean.newPrypr34.copry}" readonly="true" />
+                                <label>Tipo de Contrato</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="incto" value="#{prypr34BackingBean.newPrypr34.icpry}" readonly="true" >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <p:outputLabel value="Inicio Contrato" for="incto" />
+                            </h:panelGroup>                            
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tecto" value="#{prypr34BackingBean.newPrypr34.fcpry}" readonly="true" >
+                                    <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                                </p:inputText>
+                                <p:outputLabel value="Termino Contrato" for="tecto" />
+                            </h:panelGroup>                        
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Premio/Prestación: #{prypr34BackingBean.newPrypr34.tppry}">
+                        <f:facet name="actions">
+                        </f:facet>
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-6,ui-grid-col-6" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fipry" value="#{prypr34BackingBean.newPrypr34.fipry}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                            mask="true" mindate="01/01/1917" />
+                                <label>Fecha de Solicitud</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="w1pry" title="Tipo de Premio/Prestacion" value="#{prypr34BackingBean.newPrypr34.w1pry}" required="true" requiredMessage="Debe seleccionar un tipo de Premio/prestación" >
+                                    <f:selectItem itemLabel="Seleccione una opción" itemValue=" " noSelectionOption="true"/>
+                                    <f:selectItems value="#{prypr34BackingBean.listTipyp20}" var="pyp" itemLabel="#{pyp.nopyp}" itemValue="#{pyp.hmpyp}"/>
+                                    <p:ajax event="change" process="@this" update="filePrypr panelPrypr fileUploadPrypr" />
+                                </p:selectOneMenu>
+                                <p:outputLabel for="w1pry" value="Tipo de Premio/Prestacion" />
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-7" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        </p:panelGrid>
+                        <p:panelGrid columns="1" layout="grid"  styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputTextarea  rows="3" id="sopry" value="#{prypr34BackingBean.newPrypr34.sopry}" />
+                                <label>Caracteristicas</label>
+                            </h:panelGroup>
+                        </p:panelGrid>       
+
+                        <h:panelGroup  id="panelPrypr" >
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{prypr34BackingBean.newPrypr34.w1pry.length() gt 0}">
+                                <p:panelGrid id="filePrypr" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                                
+                                    <label>Archivo de solicitud</label>
+                                    <h:panelGroup styleClass="md-inputfield">
+
+                                        <p:fileUpload id="fileUploadPrypr" 
+                                                      allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                      invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                      label="#{bundle.LblDOCEXP}" 
+                                                      uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="filePrypr"
+                                                      auto="true" required="true" requiredMessage="Debe proporcionar el archivo"
+                                                      rendered="#{prypr34BackingBean.newPrypr34.pspry.length() eq 0 || prypr34BackingBean.newPrypr34.pspry eq null}"
+                                                      value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                            <h:panelGroup rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension eq 'pdf' }">
+                                                <div id="ui-graphicimage">
+                                                    <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{''.concat(fileUploadBean.webFolder).concat(fileUploadBean.fileName)}');" style="height: 140px;max-height: 140px" 
+                                                                    value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" />
+                                                </div>
+                                            </h:panelGroup>
+                                            <p:lightBox id="lightBoxFileUpload1" rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension ne 'pdf' }" > 
+                                                <h:outputLink value="#{bundle.PathRelativeFull}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" title="Premio/Prestacion de #{prypr34BackingBean.newPrypr34.nnpry}" > 
+                                                    <h:graphicImage id="imageFileUpload1" class=" w3-card-4" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" style="height: 140px;max-height: 140px" />
+                                                </h:outputLink>
+                                            </p:lightBox>
+                                            <f:attribute name="rootFolderAttr" value="#{prypr34BackingBean.newPrypr34.rfpry}/"></f:attribute>
+                                            <f:attribute name="fileTypeAttr" value="#{prypr34BackingBean.newPrypr34.w1pry}"></f:attribute>
+                                            <f:attribute name="idAttr" value="#{prypr34BackingBean.newPrypr34.rfpry}"></f:attribute>
+                                            <f:attribute name="ownBackingAttr" value="#{'prypr34BackingBean'}"></f:attribute>
+                                            <f:attribute name="ownVariableBackingAttr" value="#{'setPspry'}"></f:attribute>
+                                            <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                        </p:fileUpload>
+
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{prypr34BackingBean.newPrypr34.pspry}">
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" onclick="rcPdfViewForm1();" style="height: 140px;max-height: 140px" 
+                                                            value="#{bundle.PathRelativeShort}#{prypr34BackingBean.newPrypr34.pspry}" />                                     
+                                            <p:remoteCommand id="rcPdfViewForm1" name="rcPdfViewForm1" oncomplete="PF('pdfViewDialog').show();" update="pdfViewForm" 
+                                                             actionListener="#{mediaBean.getPdf(prypr34BackingBean.newPrypr34.pspry)}"/>                                   
+                                        </div>
+                                    </h:panelGroup>
+                                    <p:lightBox rendered="#{!prypr34BackingBean.newPrypr34.f1pry}"> 
+                                        <h:outputLink value="#{bundle.PathRelativeFull}#{prypr34BackingBean.newPrypr34.pspry}" title="Premio/Prestacion de #{prypr34BackingBean.newPrypr34.nnpry}" rendered="#{prypr34BackingBean.newPrypr34.pspry.length() gt 0 and prypr34BackingBean.newPrypr34.pspry ne null }" > 
+                                            <div id="ui-graphicimage">
+                                                <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px;" value="#{bundle.PathRelativeShort}#{prypr34BackingBean.newPrypr34.pspry}" />
+                                            </div>
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <p:commandButton type="submit" value="Borrar" rendered="#{prypr34BackingBean.newPrypr34.pspry.length() gt 0 and prypr34BackingBean.newPrypr34.pspry ne null}"
+                                                     icon="ui-icon-delete" class="red-btn" 
+                                                     actionListener="#{prypr34BackingBean.updatePrypr34File('pspry')}"
+                                                     update="panelForm growl" >
+                                    </p:commandButton>
+                                </p:panelGrid>
+                                <h:panelGroup styleClass="md-selectonemenu" >
+                                    <p:outputLabel for="sapry" value="Solicitud Aprobada" style=" margin-top: -20px;  color: #3F51B5;" />
+                                    <p:selectOneRadio id="sapry" value="#{prypr34BackingBean.newPrypr34.sapry}" columns="2"  
+                                                      style="text-align: center;  white-space: nowrap;" >
+                                        <f:selectItem itemLabel="Si" itemValue="SI" />
+                                        <f:selectItem itemLabel="No" itemValue="NO" />
+                                        <p:ajax event="change" process="@this" update="panelPrypr" />
+                                    </p:selectOneRadio>
+                                </h:panelGroup>
+
+                                <h:panelGroup  styleClass="md-inputfield" rendered="#{prypr34BackingBean.newPrypr34.sapry.equals('SI')}">
+                                    <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fppry" value="#{prypr34BackingBean.newPrypr34.fppry}"
+                                                locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                mask="true" mindate="01/01/1917" />
+                                    <label>Fecha que se otorga el Premio o Prestación</label>
+                                </h:panelGroup>
+                                <h:panelGroup  styleClass="md-inputfield" rendered="#{prypr34BackingBean.newPrypr34.sapry.equals('NO')}">
+                                    <p:inputTextarea  rows="3" id="crpry" value="#{prypr34BackingBean.newPrypr34.crpry}"  />
+                                    <label>Causa de rechazo</label>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                        </h:panelGroup>
+                    </p:tab>
+                    <p:tab title="Beneficiario">
+                        <f:facet name="actions">
+                        </f:facet>
+                        <p:panelGrid columns="1" layout="grid"  styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="bepry" value="#{prypr34BackingBean.newPrypr34.bepry}" />
+                                <label>Nombre del Beneficiario</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="papry" value="#{prypr34BackingBean.newPrypr34.papry}" style="margin-bottom:10px;" >
+                                    <f:selectItem itemLabel="Seleccione el parentesco" itemValue=" " noSelectionOption="true" />
+                                    <f:selectItems value="#{tipar19Backing.tipar19List}" var="ben" itemLabel="#{ben.notip}" itemValue="#{ben.notip}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Parentesco" for="papry"  style="  color: #3F51B5;"  />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);" id="impry" value="#{prypr34BackingBean.newPrypr34.impry}" />
+                                <p:outputLabel value="Importe ($)" for="impry"/>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="mopry" value="#{prypr34BackingBean.newPrypr34.mopry}"  style="margin-bottom:10px;" >
+                                    <f:selectItem itemLabel="Seleccione la Moneda" itemValue=" " noSelectionOption="true" />
+                                    <f:selectItems value="#{moned46Backing.moned46List}" var="mon" itemLabel="#{mon.nlmon}" itemValue="#{mon.ncmon}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Moneda" for="mopry"  style="  color: #3F51B5;"  />
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tipry" value="#{prypr34BackingBean.newPrypr34.tipry}" />
+                                <p:outputLabel value="Tipo de Cambio ($)" for="tipry"/>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="ftpry" value="#{prypr34BackingBean.newPrypr34.ftpry}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                            mask="true" mindate="01/01/1917" />
+                                <label>Fecha Tipo de cambio</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:panelGrid id="fileJustificante" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">                                
+                                <p:fileUpload id="fileUploadJustificante" 
+                                              allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                              invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                              label="#{bundle.LblDOCEXP}" 
+                                              uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                              update="fileJustificante"
+                                              auto="true" required="true" requiredMessage="Debe proporcionar el archivo"
+                                              rendered="#{prypr34BackingBean.newPrypr34.ptpry.length() eq 0 || prypr34BackingBean.newPrypr34.ptpry eq null}"
+                                              value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                    <h:panelGroup rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension eq 'pdf' }">
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{''.concat(fileUploadBean.webFolder).concat(fileUploadBean.fileName)}');" style="height: 140px;max-height: 140px" 
+                                                            value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" />
+                                        </div>
+                                    </h:panelGroup>
+                                    <p:lightBox id="lightBoxFileUpload2" rendered="#{fileUploadBean.fileName ne null and fileUploadBean.extension ne 'pdf' }" > 
+                                        <h:outputLink value="#{bundle.PathRelativeFull}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" title="Justificante de #{prypr34BackingBean.newPrypr34.nnpry}" > 
+                                            <h:graphicImage id="imageFileUpload2" class=" w3-card-4" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}" style="height: 140px;max-height: 140px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <f:attribute name="rootFolderAttr" value="#{prypr34BackingBean.newPrypr34.rfpry}/"></f:attribute>
+                                    <f:attribute name="fileTypeAttr" value="#{prypr34BackingBean.newPrypr34.w2pry}"></f:attribute>
+                                    <f:attribute name="idAttr" value="#{prypr34BackingBean.newPrypr34.rfpry}"></f:attribute>
+                                    <f:attribute name="ownBackingAttr" value="#{'prypr34BackingBean'}"></f:attribute>
+                                    <f:attribute name="ownVariableBackingAttr" value="#{'setPtpry'}"></f:attribute>
+                                    <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                </p:fileUpload>                               
+                                <h:panelGroup rendered="#{prypr34BackingBean.newPrypr34.ptpry}">
+                                    <div id="ui-graphicimage">
+                                        <h:graphicImage class="card ui-shadow-5" onclick="rcPdfViewForm2();" style="height: 140px;max-height: 140px" 
+                                                        value="#{bundle.PathRelativeShort}#{prypr34BackingBean.newPrypr34.ptpry}" />                                     
+                                        <p:remoteCommand id="rcPdfViewForm2" name="rcPdfViewForm2" oncomplete="PF('pdfViewDialog').show();" update="pdfViewForm" 
+                                                         actionListener="#{mediaBean.getPdf(prypr34BackingBean.newPrypr34.ptpry)}"/>                                   
+                                    </div>
+                                </h:panelGroup>
+                                <p:lightBox rendered="#{!prypr34BackingBean.newPrypr34.f2pry}"> 
+                                    <h:outputLink value="#{bundle.PathRelativeFull}#{prypr34BackingBean.newPrypr34.ptpry}" title="Justificante de #{prypr34BackingBean.newPrypr34.nnpry}" rendered="#{prypr34BackingBean.newPrypr34.ptpry.length() gt 0 and prypr34BackingBean.newPrypr34.ptpry ne null }" > 
+                                        <div id="ui-graphicimage">
+                                            <h:graphicImage class="card ui-shadow-5" style="height: 140px;max-height: 140px;" value="#{bundle.PathRelativeShort}#{prypr34BackingBean.newPrypr34.ptpry}" />
+                                        </div>
+                                    </h:outputLink>
+                                </p:lightBox>
+                                <p:commandButton type="submit" value="Borrar" rendered="#{prypr34BackingBean.newPrypr34.ptpry.length() gt 0 and prypr34BackingBean.newPrypr34.ptpry ne null}"
+                                                 icon="ui-icon-delete" class="red-btn" 
+                                                 actionListener="#{prypr34BackingBean.updatePrypr34File('ptpry')}"
+                                                 update="panelForm growl" >
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </p:tab>
+                </p:tabView>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

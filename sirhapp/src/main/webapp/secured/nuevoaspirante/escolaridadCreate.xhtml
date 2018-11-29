@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="escolaridadCreateDlg" widgetVar="escolaridadCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Escolaridad">
+            <h:form id="escolaridadCreateForm">
+                <p:panel header="Agregar">
+                    <h:panelGroup   id="displayEscolaridadCreate" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <p:tabView id="tabEscolaridadCreate"  activeIndex="#{traba36aWizardBacking.escol30aTab}"  >
+                            <p:ajax event="tabChange" listener="#{traba36aWizardBacking.onTabChangeEscol30a}"  process="tabEscolaridadCreate" />
+                            <p:tab title="Datos">
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-selectonemenu" layout="block" style="width:400px;" >
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tnescA" value="#{traba36aWizardBacking.newEscol30aWiz.tnescA}"  
+                                                         styleClass="ui-selectonemenu"  
+                                                         autoWidth="true" required="true" requiredMessage="Debe proporcionar la escolaridad">
+                                            <f:selectItem itemLabel="Seleccione la escolaridad" itemValue=" " noSelectionOption="true"  />
+                                            <f:selectItems value="#{estud10Backing.estud10List}" var="est" itemLabel="#{est.niest}" itemValue="#{est.niest}"/>
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Escolaridad" for="tnescA" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="niescA" value="#{traba36aWizardBacking.newEscol30aWiz.niescA}"  required="true" requiredMessage="Debe proporcionar la institucion" >
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputText>
+                                        <p:outputLabel value="Nombre Institución" for="niescA" />
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup  styleClass="md-inputfield">
+                                        <p:autoComplete onkeydown="ModifyEnterKeyPressAsTab(event);"  id="esescA" dropdown="true" value="#{traba36aWizardBacking.newEscol30aWiz.esescA}" completeMethod="#{traba36aWizardBacking.especialidadLaboral}" style="margin-bottom:10px;">
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:autoComplete>
+                                        <p:outputLabel value="Especialidad (Autocomplete)" for="esescA" />
+                                    </h:panelGroup>
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:outputLabel for="ceescA" value="Certificado"/>
+                                        </h:panelGroup>
+                                        <p:selectOneRadio id="ceescA" value="#{traba36aWizardBacking.newEscol30aWiz.ceescA}" columns="2"  
+                                                          style="text-align: center;  white-space: nowrap;">
+                                            <f:selectItem itemLabel="Si" itemValue="si" />
+                                            <f:selectItem itemLabel="No" itemValue="no" />
+                                            <p:ajax event="change"  process="@this"/>
+                                        </p:selectOneRadio>
+                                    </p:panelGrid>
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group"> <h:panelGroup >
+                                        <p:outputLabel value="Años cursados"/>
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="acescA" value="#{traba36aWizardBacking.newEscol30aWiz.acescA}" />
+                                        <p:slider for="acescA" minValue="1" maxValue="10" step=".5">
+                                            <p:ajax event="slideEnd"  process="@this" />
+                                        </p:slider>
+                                    </h:panelGroup>
+                                    <!-- Observaciones -->
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obescA" value="#{traba36aWizardBacking.newEscol30aWiz.obescA}" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+                            </p:tab>
+                            <p:tab title="Cursa Actualmente">
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+
+                            </p:tab>
+                        </p:tabView>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{traba36aWizardBacking.registerEscol30a()}" value="#{bundle.Save}" update="displayEscolaridadCreate panelForm:escolaridadListForm:escolaridadDatalist growl" oncomplete="handleSubmit(args, 'escolaridadCreateDialog');"  class="red-btn" />
+                            <p:commandButton  value="#{bundle.Cancel}" onclick="PF('escolaridadCreateDialog').hide();" />
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

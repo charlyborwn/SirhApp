@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <h:form>
+            <p:idleMonitor onactive="PF('sessionTimeOutDialog').show();" timeout="#{session.maxInactiveInterval * 1000}" />
+            <p:dialog header="#{msg['error.sessionTimeOut.header']}" widgetVar="sessionTimeOutDialog" 
+                      modal="true"  closable="false" visible="false" width="300px" responsive="true" class="ui-dialog" >
+
+                <span class="ui-icon ui-icon-alert" style="float: left; margin: 8px 8px 0;" />
+                <p:outputLabel value="#{msg['error.sessionTimeOut.text']}" style="font-weight: lighter;color:black;"/>
+
+                <f:facet name="footer">
+                    <div style="margin-top:auto; margin-bottom:auto;text-align:center;">
+                        <input id="confirmBackToLogin" type="button" value="#{msg['error.sessionTimeOut.button']}"
+                               onclick="window.location = '#{facesContext.externalContext.requestContextPath}/login.xhtml';" />
+                    </div>
+                </f:facet>  
+            </p:dialog>
+        </h:form>
+    </ui:composition>
+</html>

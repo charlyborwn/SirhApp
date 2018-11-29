@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="escolaridadEditDlg" widgetVar="escolaridadEditDialog" modal="true" resizable="false" appendTo="@(body)" header="Estudios">
+            <h:form id="escolaridadEditForm">
+                <p:panel header="Actualizar" rendered="#{escol30aBackingBean.selectedEscol30aBean != null}">
+                    <h:panelGroup   id="displayEscolaridadEdit" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <p:tabView id="tabEscolaridadCreate"  activeIndex="#{escol30aBackingBean.escol30aTab}"  >
+                            <p:ajax event="tabChange" listener="#{escol30aBackingBean.onTabChangeEscol30a}"  process="tabEscolaridadCreate" />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-selectonemenu" layout="block" style="width:400px;" >
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tnescA" value="#{escol30aBackingBean.selectedEscol30aBean.tnescA}"  
+                                                         styleClass="ui-selectonemenu"  
+                                                         autoWidth="true" required="true" requiredMessage="Debe proporcionar la escolaridad">
+                                            <f:selectItem itemLabel="Seleccione la escolaridad" itemValue=" " noSelectionOption="true"  />
+                                            <f:selectItems value="#{estud10Backing.estud10List}" var="est" itemLabel="#{est.niest}" itemValue="#{est.niest}"/>
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Escolaridad" for="tnescA" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="niescA" value="#{escol30aBackingBean.selectedEscol30aBean.niescA}" required="true" requiredMessage="Debe proporcionar la institucion" >
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:inputText>
+                                        <p:outputLabel value="Nombre Institución" for="niescA" />
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup  styleClass="md-inputfield">
+                                        <p:autoComplete onkeydown="ModifyEnterKeyPressAsTab(event);"  id="esescA" dropdown="true" value="#{escol30aBackingBean.selectedEscol30aBean.esescA}" completeMethod="#{escol30aBackingBean.especialidadLaboral}" style="margin-bottom:10px;">
+                                            <p:ajax event="change"  process="@this" />
+                                        </p:autoComplete>
+                                        <p:outputLabel value="Especialidad (Autocomplete)" for="esescA" />
+                                    </h:panelGroup>
+
+
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:outputLabel for="ceescA" value="Certificado"/>
+                                        </h:panelGroup>
+                                        <p:selectOneRadio id="ceescA" value="#{escol30aBackingBean.selectedEscol30aBean.ceescA}" columns="2"  
+                                                          style="text-align: center;  white-space: nowrap;">
+                                            <f:selectItem itemLabel="Si" itemValue="si" />
+                                            <f:selectItem itemLabel="No" itemValue="no" />
+                                            <p:ajax event="change"  process="@this"/>
+                                        </p:selectOneRadio>
+                                    </p:panelGrid>
+                                </p:panelGrid>
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+
+                                    <h:panelGroup >
+                                        <p:outputLabel value="Años cursados"/>
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="acescA" value="#{escol30aBackingBean.selectedEscol30aBean.acescA}" />
+                                    </h:panelGroup>
+                                    <p:slider for="acescA" minValue="1" maxValue="8.0" step="1" >
+                                        <p:ajax event="slideEnd"  process="@this"  />
+                                    </p:slider>
+                                    <!-- Observaciones -->
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obescA" value="#{escol30aBackingBean.selectedEscol30aBean.obescA}" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+                            </p:tab>
+                            <p:tab title="Cursa Actualmente">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup>
+                                        <p:selectOneRadio id="caescA" value="#{escol30aBackingBean.selectedEscol30aBean.caescA}" 
+                                                          columns="2"  
+                                                          style="text-align: center;  white-space: nowrap;">
+                                            <f:selectItem itemLabel="Si" itemValue="si" />
+                                            <f:selectItem itemLabel="No" itemValue="no" />
+                                            <f:ajax event="change" execute="caescA" listener="#{escol30aBackingBean.handleChange}"  render="escol30aIH escolaridadEditForm"/>
+                                        </p:selectOneRadio>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield" rendered="#{escol30aBackingBean.selectedEscol30aBean.caescA.equals('si')}">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="hcescA" value="#{escol30aBackingBean.selectedEscol30aBean.hcescA}" readonly="true" />
+                                        <label>Horarios que cursa actualmente (editelos en los sig. controles despues guarde)</label>
+                                    </h:panelGroup>
+
+                                    <p:pickList id="diasSemana" value="#{escol30aBackingBean.dias}" var="dias" itemLabel="#{dias}" itemValue="#{dias}"  rendered="#{escol30aBackingBean.selectedEscol30aBean.caescA.equals('si')}"  >
+                                        <p:ajax event="transfer"  process="@this" />               
+                                        <p:ajax event="select" process="@this"/>
+                                        <p:ajax event="unselect" process="@this"/>
+                                    </p:pickList>
+                                    <h:panelGroup>
+                                        <h:panelGroup  id="escol30aIH"  styleClass="md-inputfield" rendered="#{escol30aBackingBean.selectedEscol30aBean.caescA.equals('si')}">
+                                            <p:outputLabel  id="displayRange"  value="De las #{escol30aBackingBean.escol30aI}  a las  #{escol30aBackingBean.escol30aF} Hrs" style="margin-top:  -20px;"/>
+                                            <p:slider  minValue="6" maxValue="22"  for="txt6,txt7" display="displayRange" style="width: 200px" range="true" displayTemplate="De las {min} a las {max} Hrs">
+                                                <p:ajax event="slideEnd" listener="#{escol30aBackingBean.onSlideEnd}"  process="@this,displayRange" />
+                                            </p:slider>
+                                        </h:panelGroup>
+                                        <h:inputHidden id="txt6" value="#{escol30aBackingBean.escol30aI}" />
+                                        <h:inputHidden id="txt7" value="#{escol30aBackingBean.escol30aF}" />
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <p:fileUpload id="fileUploadFotografia" allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                              invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                              label="#{bundle.LblDOCESC}" 
+                                              uploadLabel="#{bundle.LblUpload}"
+                                              cancelLabel="#{bundle.LblCancel}"
+                                              update="escolaridadEditForm,growl" 
+                                              mode="advanced"
+                                              rendered="#{escol30aBackingBean.selectedEscol30aBean.paescA.length() eq null }"
+                                              value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                    <p:graphicImage  class=" w3-card-4" id="up" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  style="width: 200px"   rendered="#{fileUploadBean.fileName ne null}" />
+                                    <f:attribute name="rootFolderAttr" value="#{escol30aBackingBean.rfc}/"></f:attribute>
+                                    <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                    <f:attribute name="fileTypeAttr" value="#{'DOCESC'}"></f:attribute>
+                                    <f:attribute name="idAttr" value="#{escol30aBackingBean.selectedEscol30aBean.idescA.toString()}"></f:attribute>
+                                    <f:attribute name="ownBackingAttr" value="#{'escol30aBackingBean'}"></f:attribute>
+                                    <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                </p:fileUpload>
+
+                                <p:lightBox  id="lightBox1" rendered="#{escol30aBackingBean.selectedEscol30aBean.paescA.length() gt 0 and escol30aBackingBean.selectedEscol30aBean.paescA ne null}"  > 
+                                    <h:outputLink  value="#{bundle.PathRelativeFull}#{escol30aBackingBean.selectedEscol30aBean.paescA}"  title="Documento de escolaridad #{escol30aBackingBean.selectedEscol30aBean.tnescA}"  > 
+                                        <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{escol30aBackingBean.selectedEscol30aBean.paescA}"  style="width: 200px" />
+                                    </h:outputLink>
+                                </p:lightBox>
+
+                                <p:commandButton type="submit" value="Borrar" rendered="#{escol30aBackingBean.selectedEscol30aBean.paescA.length() gt 0 and escol30aBackingBean.selectedEscol30aBean.paescA ne null and fileUploadBean.fileName eq null}"
+                                                 icon="ui-icon-delete" class="red-btn" 
+                                                 actionListener="#{escol30aBackingBean.updateEscol30aFoto}"
+                                                 update="escolaridadEditForm growl" >
+                                </p:commandButton>
+                            </p:tab>
+                        </p:tabView>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{escol30aBackingBean.updateEscol30a}" value="#{bundle.Save}" update="displayEscolaridadEdit,escolaridadListForm:escolaridadDatalist,growl" oncomplete="handleSubmit(args, 'escolaridadEditDialog');"/>
+                            <p:commandButton value="#{bundle.Close}" onclick="PF('escolaridadEditDlg').hide();"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

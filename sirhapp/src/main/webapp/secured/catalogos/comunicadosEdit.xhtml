@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">>
+    <f:metadata>
+        <f:event listener="#{repor50Backing.getRepor50Request(userSessionBean.idrep)}" type="preRenderView" rendered="#{userSessionBean.idrep gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm" enctype="multipart/form-data">
+            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{hashBean.md5}" id="taskID" type="hidden" />
+            <p:toolbar>
+                <f:facet name="left"></f:facet>
+                <f:facet name="right">
+                    <p:commandButton type="submit" update="growl" value="Actualizar" action="#{repor50Backing.go(2)}" actionListener="#{repor50Backing.updateRepor50()}" icon="ui-icon-update"/> 
+                    <p:commandButton  onclick="PF('eliminar').show();" value="Eliminar"  type="button" icon="ui-icon-delete" />
+                    <p:commandButton update="growl" action="#{repor50Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                    <!--Secciones-->
+                    <section id="secAll">
+                        <!--Seccion Dialogo Eliminar-->
+                        <section id="secEliminar">
+                            <div class="ui-g">
+                                <p:dialog id="eliminar" widgetVar="eliminar" header="¿Deseas borrar el registro?" modal="true" closeOnEscape="true" resizable="false" >
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <p:outputLabel style="color:black;" />
+                                        <f:facet name="footer">
+                                            <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                <p:commandButton value="Cancelar" update="growl" onclick="PF('eliminar').hide();"  />
+                                                <p:commandButton type="submit" update="growl" value="Eliminar" action="#{repor50Backing.go(2)}" actionListener="#{repor50Backing.deleteRepor50()}"  oncomplete="PF('eliminar').hide();" class="red-btn">
+                                                    <f:setPropertyActionListener target="#{userSessionBean.idrep}"
+                                                                                 value="#{-1}" />
+                                                </p:commandButton>
+                                            </p:panelGrid>
+                                        </f:facet>  
+                                    </h:panelGrid>
+                                </p:dialog>
+                            </div>
+                        </section>
+                    </section>
+                </f:facet>
+            </p:toolbar>
+            <p:panel header="Actualizar datos del Registro" id="panel" >
+                <h:panelGroup >
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="tirep" value="#{selectedRepor50.tirep}" />
+                            <label>Titulo</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="aurep" value="#{selectedRepor50.aurep}" />
+                            <label>Autor</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvrep" value="#{selectedRepor50.cvrep}" />
+                            <label>Clave Comunicado</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="derep" value="#{selectedRepor50.derep}" />
+                            <label>Descripcion</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

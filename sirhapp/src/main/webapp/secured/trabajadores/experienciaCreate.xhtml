@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="experienciaCreateDlg" widgetVar="experienciaCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Experiencia">
+            <h:form id="experienciaCreateForm">
+                <p:panel header="Agregar un nuevo Experiencia">
+                    <h:panelGroup   id="displayExperienciaCreate">
+                        <p:tabView id="tabExperienciaCreate"  activeIndex="#{exper31BackingBean.exper31Tab}"  style="width: 600px"  >
+                            <p:ajax event="tabChange" listener="#{exper31BackingBean.onTabChangeExper31}"  process="tabExperienciaCreate" />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="emexp" label="Empresa" value="#{exper31BackingBean.newExper31Bean.emexp}" required="true" requiredMessage="Empresa: El dato es requerido" />
+                                         <p:outputLabel value="Empresa" for="emexp"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ceexp" label="Experiencia" value="#{exper31BackingBean.newExper31Bean.ceexp}" required="true" requiredMessage="Experiencia: El dato es requerido"  />
+                                          <p:outputLabel value="Cargo en Experiencia" for="ceexp"/>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="inexp" label="Inicio"  value="#{exper31BackingBean.newExper31Bean.inexp}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" required="true" requiredMessage="Inicio: El dato es requerido"  />
+                                        <p:outputLabel value="Inicio" for="inexp"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="teexp" label="Termino"  value="#{exper31BackingBean.newExper31Bean.teexp}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" required="true" requiredMessage="Termino: El dato es requerido"  />
+                                         <p:outputLabel value="Término" for="teexp"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="csexp" value="#{exper31BackingBean.newExper31Bean.csexp}" />
+                                        <label>Causa de Separación</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxexp"  label="Salario" value="#{exper31BackingBean.newExper31Bean.sxexp}"  required="true" requiredMessage="Salario: El dato es requerido" />
+                                         <p:outputLabel value="Salario Percibido ($)" for="sxexp"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="siexp" value="#{exper31BackingBean.newExper31Bean.siexp}" />
+                                        <label>SirhApp</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tdexp" value="#{exper31BackingBean.newExper31Bean.tdexp}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tcbenA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono de la Empresa</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="jiexp" value="#{exper31BackingBean.newExper31Bean.jiexp}" />
+                                        <label>Jefe Inmediato</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cjexp" value="#{exper31BackingBean.newExper31Bean.cjexp}" />
+                                        <label>Cargo Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tcexp" value="#{exper31BackingBean.newExper31Bean.tcexp}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tcbenA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono Contacto Jefe</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="email" value="#{exper31BackingBean.newExper31Bean.maexp}"
+                                                     validatorMessage="El correo no tiene el formato correcto"
+                                                     required="false" class="ui-minusculas">
+                                            <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                            <f:ajax event="change" execute="tcbenA" />       
+                                        </p:inputText>
+                                        <label>Correo Electrónico del Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obdoc" value="#{exper31BackingBean.newExper31Bean.obexp}" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Direccion Empresa">
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+
+                            </p:tab>
+                        </p:tabView>
+
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{exper31BackingBean.registerExper31()}" value="#{bundle.Save}" update="displayExperienciaCreate,experienciaListForm:experienciaDatalist, growl" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('experienciaCreateDialog').hide(); handleSubmit(args,'experienciaCreateDialog');"  class="red-btn" />
+                            <p:commandButton  value="#{bundle.Cancel}" onclick="experienciaCreateDialog.hide()" />
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

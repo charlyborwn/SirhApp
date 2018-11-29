@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition >
+        <h:form id="contratoListForm">            
+            <h:panelGroup rendered="#{userSessionBean.contratoTrabajador>0}">
+                <p:dataTable 
+                    id="contratosDatalist" 
+                    value="#{contr27BackingBean.contr27List}" 
+                    var="contr27" 
+                    selectionMode="single" 
+                    selection="#{contr27BackingBean.selectedContr27}"
+                    paginator="true"
+                    rowKey="#{contr27.idcto}" 
+                    rows="10"
+                    rowsPerPageTemplate="10,20,30,40,50"
+                    emptyMessage="#{contr27BackingBean.infoMessage}"
+                    paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}">
+
+                    <p:ajax event="rowSelect"   update="contratoEditButton  contratoAusenciasButton "/>
+                    <p:ajax event="rowUnselect" update="contratoEditButton  contratoAusenciasButton "/>
+
+                    <f:facet name="{Exporters}">
+                        <h:panelGroup class="ui-float-right">
+                            <h:commandLink rendered="#{contr27BackingBean.contr27List.size() gt 0 and facesContext.viewRoot.viewId.equals('/secured/contratos/contratoTrabajador.xhtml')}" >
+                                <p:graphicImage name="/images/excel.png" library="ultima-layout" width="24"/>
+                                <p:dataExporter type="xls" target="contratoListForm:contratosDatalist" fileName="contratos_trabajador_#{userSessionBean.contratoTrabajador}" />
+                            </h:commandLink>
+
+                            <h:commandLink rendered="#{contr27BackingBean.contr27List.size() gt 0 and facesContext.viewRoot.viewId.equals('/secured/contratos/contratoTrabajador.xhtml')}" >
+                                <p:graphicImage name="/images/pdf.png" library="ultima-layout" width="24"/>
+                                <p:dataExporter type="pdf" target="contratoListForm:contratosDatalist" fileName="contratos_trabajador_#{userSessionBean.contratoTrabajador}"/>
+                            </h:commandLink>
+
+                            <h:commandLink rendered="#{contr27BackingBean.contr27List.size() gt 0 and facesContext.viewRoot.viewId.equals('/secured/contratos/contratoTrabajador.xhtml')}" >
+                                <p:graphicImage name="/images/csv.png" library="ultima-layout" width="24"/>
+                                <p:dataExporter type="csv" target="contratoListForm:contratosDatalist" fileName="contratos_trabajador_#{userSessionBean.contratoTrabajador}" />
+                            </h:commandLink>
+                        </h:panelGroup>
+                    </f:facet>
+
+                    <p:column headerText="N/Contrato" style="width:5px;">
+                        <h:outputText value="#{contr27.nucto}" />
+                    </p:column>
+
+                    <p:column headerText="Estatus"  style="width:5px;">
+                        <h:outputText value="#{contr27.sscto}"/>
+                    </p:column>
+
+                    <p:column headerText="Complejo" style="width:5px;">
+                        <h:outputText value="#{sedes53Backing.getSedes53RequestString(contr27.secto)}" />
+                    </p:column>
+
+                    <p:column headerText="Empresa"  style="width:5px;">
+                        <h:outputText value="#{contr27.necto}"/>
+                    </p:column>
+
+                    <p:column headerText="Departamento" style="width:40px;" >
+                        <h:outputText value="#{contr27.nbcto}" />
+                    </p:column>
+
+                    <p:column headerText="Activo" style="width:5px;" >
+                        <h:outputText value="#{contr27.stcto}" />
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton type="submit" 
+                                         process="@this" 
+                                         id="contratoEditButton" 
+                                         icon="ui-icon-search" 
+                                         value="Ver Contrato"  
+                                         action="/secured/contratos/contratoView.xhtml?faces-redirect=true"
+                                         disabled="#{empty contr27BackingBean.selectedContr27}">
+                            <f:setPropertyActionListener target="#{userSessionBean.contrato}" 
+                                                         value="#{contr27BackingBean.selectedContr27.idcto}" />
+                        </p:commandButton>
+                        <p:commandButton type="submit" 
+                                         process="@this" 
+                                         id="contratoAusenciasButton" 
+                                         icon="ui-icon-search" 
+                                         value="Ver Ausencias"  
+                                         action="#{userSessionBean.goBusquedaApriv('')}"
+                                         disabled="#{empty contr27BackingBean.selectedContr27}">
+                            <f:setPropertyActionListener target="#{userSessionBean.contrato}" 
+                                                         value="#{contr27BackingBean.selectedContr27.idcto}" />
+                        </p:commandButton>
+                        <p:commandButton type="submit" 
+                                         process="@this" 
+                                         id="contratoNewButton" 
+                                         icon="ui-icon-search" 
+                                         value="Crear Contrato"  
+                                         action="/secured/contratos/contratoCreate.xhtml?faces-redirect=true"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:panelGroup>
+        </h:form>
+    </ui:composition>
+</html>

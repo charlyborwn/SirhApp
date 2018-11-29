@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="content">
+        <h:form id="panelForm" >
+
+            <p:toolbar>
+                <f:facet name="left"></f:facet>
+                <f:facet name="right">
+                    <c:if test="#{request.isUserInRole('0')||request.isUserInRole('1')}">
+                        <p:commandButton  type="submit" value="Agregar Registro" update="panelForm growl" id="submit" action="#{ubica23Backing.go(2)}" actionListener="#{ubica23AddBacking.register()}"  icon="ui-icon-person"/>
+                        <p:commandButton update="growl" action="#{ubica23Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                            <f:setPropertyActionListener target="#{userSessionBean.idubi}" 
+                                                         value="#{null}" />
+                        </p:commandButton> 
+                    </c:if>
+                </f:facet>
+            </p:toolbar>
+            <p:panel header="Agregar un nuevo Registro" id="panel" >
+                <h:panelGroup >
+
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="paubi" value="#{newUbica23.paubi}" />
+                            <label>Pais</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="esubi" value="#{newUbica23.esubi}" />
+                            <label>Estado</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="muubi" value="#{newUbica23.mdubi}" />
+                            <label>Mun/Del</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="loubi" value="#{newUbica23.loubi}" />
+                            <label>Localidad Ciudad</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="coubi" value="#{newUbica23.coubi}" />
+                            <label>Colonia</label>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cpubi" value="#{newUbica23.cpubi}" />
+                            <label>Código Postal Ubicación</label>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

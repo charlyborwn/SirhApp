@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{petic51Backing.getPetic51Request(userSessionBean.idpet)}" type="preRenderView" rendered="#{userSessionBean.idpet gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm">
+            <p:toolbar>
+                <f:facet name="left"></f:facet>
+                <f:facet name="right">
+                    <span class="ui-separator" style="padding-right: 5px;">
+                        <span class="fa fa-ellipsis-v SoftGray" />
+                    </span>
+                    <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                        <p:commandButton action="#{petic51Backing.go(1)}"  process="@this" value="Editar" rendered="#{not empty selectedPetic51}"  icon="ui-icon-update"/>
+                    </c:if>
+                    <p:commandButton update="growl" action="#{petic51Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                        <f:setPropertyActionListener target="#{userSessionBean.idpet}" 
+                                                     value="#{null}" />
+                    </p:commandButton> 
+                </f:facet>
+            </p:toolbar>
+            <p:panel header="Datos del Registro"  styleClass=" ui-g-12"> <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="srpet" value="#{selectedPetic51.srpet}" readonly="true" />
+                        <label>Fecha de solicitud de comunicado</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="rspet" value="#{selectedPetic51.rspet}" readonly="true" />
+                        <label>Fecha de respuesta de solicitud</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="espet" value="#{selectedPetic51.espet}" readonly="true" />
+                        <label>Estado de respuesta</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="repet" value="#{selectedPetic51.repet}" readonly="true" />
+                        <label>Identificador del comunicado</label>
+                    </h:panelGroup>
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvpet" value="#{selectedPetic51.cvpet}" readonly="true" />
+                        <label>Usuario que solicita el comunicado</label>
+                    </h:panelGroup>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

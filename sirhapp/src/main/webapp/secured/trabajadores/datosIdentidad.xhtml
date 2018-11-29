@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Datos Identidad de Trabajadores"></h:outputText>
+        </ui:define>
+
+        <f:metadata>
+            <f:event listener="#{traba36Backing.getTraba36Request(userSessionBean.trabajador)}" type="preRenderView" />
+            <f:event listener="#{ident49Backing.getIdent49Request(userSessionBean.trabajador)}" type="preRenderView"/>
+        </f:metadata>
+
+        <ui:define name="content">
+            <h:form id="panelForm" >
+                <p:toolbar rendered="#{userSessionBean.trabajador gt 0}">
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;" >
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                            <p:commandButton action="#{ident49Backing.go(0)}"  process="@this" value="Nuevo" rendered="#{empty ident49Backing.selectedIdent49  and ident49Backing.active eq true}" icon="ui-icon-plus">
+                            </p:commandButton>
+                            <p:commandButton action="#{ident49Backing.go(1)}"  process="@this" value="Editar" rendered="#{not empty ident49Backing.selectedIdent49}"  icon="ui-icon-update">
+                                <f:setPropertyActionListener target="#{userSessionBean.trabajadorIdentidad}" 
+                                                             value="#{ident49Backing.selectedIdent49.ntide}" />
+                            </p:commandButton>
+                            <p:commandButton  onclick="PF('activar').show();" process="@this"  value="Activar"  type="button" rendered="#{empty ident49Backing.selectedIdent49  and ident49Backing.active eq false}" class="red-btn" icon="ui-icon-unarchive">
+                            </p:commandButton>
+                        </c:if>
+                        <p:commandButton update="growl" action="#{traba36BackingBean.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                        </p:commandButton> 
+                        <!--Secciones-->
+                        <section id="secAll">
+                            <!--Seccion Dialogo Activar Registro-->
+                            <section id="secActivar">
+                                <div class="ui-g">
+                                    <p:dialog id="activar" widgetVar="activar" header="¿Deseas activar el registro?" closeOnEscape="true" modal="true"  >
+                                        <h:panelGrid columns="1" cellpadding="5">
+                                            <p:outputLabel value="" style="color:black;" />
+                                            <f:facet name="footer">
+                                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                    <p:commandButton value="Cancelar" update="growl" onclick="PF('activar').hide();"  />
+                                                    <p:commandButton type="buttom" update="growl" value="Activar" action="#{ident49Backing.go(2)}" actionListener="#{ident49Backing.acivateIdent49(userSessionBean.trabajador)}" class="red-btn"  process="@this">
+                                                    </p:commandButton>
+                                                </p:panelGrid>
+                                            </f:facet>
+                                        </h:panelGrid>
+                                        <p:ajax event="close" update="activar" />
+                                    </p:dialog>
+                                </div>
+                            </section>
+                        </section>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Datos de Identidad" id="panel" rendered="#{userSessionBean.trabajador gt 0}">
+                    <p:panel rendered="#{empty ident49Backing.selectedIdent49}">
+                        <h:outputText id="informationMessage" 
+                                      value="#{ident49Backing.infoMessage}" 
+                                      rendered="#{ident49Backing.infoMessage ne null}"
+                                      class="informationMessage">
+
+                        </h:outputText>
+                    </p:panel>
+                    <h:panelGroup  rendered="#{not empty ident49Backing.selectedIdent49}">
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                            <h:panelGroup styleClass="md-inputfield" >
+                                <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true" id="riide" autocomplete="false" transient="true"
+                                             required="true" requiredMessage="El Registro del IMSS es Obligatorio" size="21" 
+                                             value="#{ident49Backing.selectedIdent49.riide}" mask="99999999999" maxlength="11" autoClear="false" slotChar=""
+                                             >
+                                    <f:validateLength minimum="11" ></f:validateLength>
+                                </p:inputMask>
+                                <label>IMSS</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="uiide" value="#{ident49Backing.selectedIdent49.uiide}" />
+                                <label>Unidad Médica Imss</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="ceide" value="#{ident49Backing.selectedIdent49.ceide}" />
+                                <label>Clave Elector INE</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="eeide" value="#{ident49Backing.selectedIdent49.eeide}" />
+                                <label>Número de Estado INE</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="meide" value="#{ident49Backing.selectedIdent49.meide}" />
+                                <label>Número de Municipio INE</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="leide" value="#{ident49Backing.selectedIdent49.leide}" />
+                                <label>Número de Localidad INE</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="siide" value="#{ident49Backing.selectedIdent49.siide}" />
+                                <label>Número de Sección INE</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="emide" value="#{ident49Backing.selectedIdent49.emide}" />
+                                <label>Año de Emisión INE</label>
+                            </h:panelGroup>
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"   id="veide" value="#{ident49Backing.selectedIdent49.veide}" />
+                                <label>Fecha de Vencimiento INE</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"   id="neide" value="#{ident49Backing.selectedIdent49.neide}" />
+                                <label>Número OCR Credencial INE</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="rgide" value="#{ident49Backing.selectedIdent49.rgide}" />
+                                <label>Religion</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="ecide" value="#{ident49Backing.selectedIdent49.ecide}" />
+                                <label>Estado Civil</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="tside" value="#{ident49Backing.selectedIdent49.tside}" />
+                                <label>Tipo de Sangre</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="dside" value="#{ident49Backing.selectedIdent49.dside}" />
+                                <label>Donador de Sangre</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"   id="diide" value="#{ident49Backing.selectedIdent49.diide}" />
+                                <label>Situacion de discapacidad</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true" id="fdide" value="#{ident49Backing.selectedIdent49.fdide}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true"  
+                                            showOn="button" mindate="01/01/1917" />
+                                <label>Fecha Ultima Donación de Sangre</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="doide" value="#{ident49Backing.selectedIdent49.doide}" />
+                                <label>Donador de Organos</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"   id="alide" value="#{ident49Backing.selectedIdent49.alide}" />
+                                <label>Alergico a</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true" id="kgide" value="#{ident49Backing.selectedIdent49.kgide}"   >
+                                    <f:validateDoubleRange minimum="45" maximum="200" />
+                                </p:inputNumber>
+                                <label>Peso (kgs)</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true" id="fkide" value="#{ident49Backing.selectedIdent49.fkide}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true"  
+                                            showOn="button" mindate="01/01/1917" />
+                                <label>Fecha Ultimo Peso</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true" id="eside" value="#{ident49Backing.selectedIdent49.eside}" mask="9.99" autoClear="false" slotChar="0"  >
+                                    <f:validateDoubleRange minimum="1.0" maximum="2.21" />
+                                </p:inputMask>
+                                <label>Estatura (mts)</label>
+                            </h:panelGroup>
+
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true" id="fmide" value="#{ident49Backing.selectedIdent49.fmide}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true"  
+                                            showOn="button" mindate="01/01/1917" />
+                                <label>Fecha Ultima Estatura</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" disabled="true"  pt:data-tooltip="Ingrese valor numerico. Ej. 36"
+                                             id="ccide" value="#{ident49Backing.selectedIdent49.ccide}" />
+                                <label>Talla Camisa</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" disabled="true"  pt:data-tooltip="Ingrese valor numerico. Ej. 32"
+                                             id="ppide" value="#{ident49Backing.selectedIdent49.ppide}" />
+                                <label>Talla Pantalón</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" disabled="true"  pt:data-tooltip="Ingrese valor numerico. Ej. 27.5"  
+                                             id="zaide" value="#{ident49Backing.selectedIdent49.zaide}" />
+                                <label>Talla Zapatos</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="nlide" value="#{ident49Backing.selectedIdent49.nlide}" />
+                                <label>Número de Licencia de Manejo</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true" id="vlide" value="#{ident49Backing.selectedIdent49.vlide}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true"  
+                                            showOn="button" mindate="01/01/1917" />
+                                <label>Vigencia Licencia de Manejo</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="elide" value="#{ident49Backing.selectedIdent49.elide}" />
+                                <label>Lugar Expedición Licencia Manejo</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="apide" value="#{ident49Backing.selectedIdent49.apide}" />
+                                <label>Tiene Automóvil Propio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="mtide" value="#{ident49Backing.selectedIdent49.mtide}" />
+                                <label>Marca Automóvil Propio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="otide" value="#{ident49Backing.selectedIdent49.otide}" />
+                                <label>Modelo Automóvil Propio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true"  id="aoide" 
+                                             value="#{ident49Backing.selectedIdent49.aoide}" mask="9999" maxlength="4" autoClear="false" slotChar="">
+                                    <f:validateLength minimum="4" ></f:validateLength>
+                                </p:inputMask>
+                                <p:outputLabel value="Año del Automóvil Propio" for="plide"/>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true"  id="plide" 
+                                             value="#{ident49Backing.selectedIdent49.plide}" mask="" maxlength="8" autoClear="false" slotChar="">
+                                    <f:validateLength minimum="6" ></f:validateLength>
+                                </p:inputMask>
+                                <p:outputLabel value="Placas del Automóvil Propio" for="plide"/>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);"  readonly="true" disabled="true" id="iiide" value="#{ident49Backing.selectedIdent49.iiide}" minValue="0" maxValue="100" decimalPlaces="0" symbol="%" symbolPosition="s" emptyValue="sign" requiredMessage="Debe proporcionar el porcentage" />
+                                <label>Porcentaje de Inglés</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" disabled="true" id="ifide" value="#{ident49Backing.selectedIdent49.ifide}" minValue="0" maxValue="100" decimalPlaces="0" symbol="%" symbolPosition="s" emptyValue="sign" requiredMessage="Debe proporcionar el porcentage" >
+
+                                </p:inputNumber>
+                                <label>Porcentaje de Frances</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="olide" value="#{ident49Backing.selectedIdent49.olide}" />
+                                <label>Otro Idioma</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" disabled="true" id="ioide" value="#{ident49Backing.selectedIdent49.ioide}" minValue="0" maxValue="100" decimalPlaces="0" symbol="%" symbolPosition="s" emptyValue="sign" requiredMessage="Debe proporcionar el porcentage" />
+                                <label>Porcentaje Otro Idioma</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="a1ide" value="#{ident49Backing.selectedIdent49.a1ide}" />
+                                <label>Actividad 1 Extracurricular</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="a2ide" value="#{ident49Backing.selectedIdent49.a2ide}" />
+                                <label>Actividad 2 Extracurricular</label>
+                            </h:panelGroup>
+
+                        </p:panelGrid>
+                    </h:panelGroup>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

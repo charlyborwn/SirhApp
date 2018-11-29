@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="ui-g">
+            <p:dialog id="callConfDlg" widgetVar="callConfDialog" header="¿Deseas borrar el registro?" modal="true" resizable="false">
+                <h:form id="callConfForm">
+                    <p:panelGrid id="callConfPanel" style="text-align: center;" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                        <f:facet name="footer">
+                            <p:panelGrid columns="2" layout="grid" style="text-align: center;" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                <p:commandButton oncomplete="if (args &amp;&amp; !args.validationFailed) handleLoginRequest(xhr, status, args)" 
+                                                 id="submit"
+                                                 value="Eliminar"
+                                                 actionListener="#{loginBean.withOutAuth}" 
+                                                 update="growl callConfPanel" icon="ui-icon-delete" tabindex="3" process="@this  beanName beanMethod action" class="red-btn"> 
+                                </p:commandButton>
+                                <p:commandButton value="#{bundle.Cancel}" onclick="PF('callConfDialog').hide()" class="ui-button-text"/>
+                            </p:panelGrid>
+                        </f:facet>
+                    </p:panelGrid>
+                    <h:inputHidden value="#{loginBean.beanName}" id="beanName"/>
+                    <h:inputHidden value="#{loginBean.beanMethod}" id="beanMethod"/>
+                    <h:inputHidden value="#{loginBean.action}" id="action"/>
+                </h:form>
+                <script type="text/javascript">
+                    function handleLoginRequest(xhr, status, args) {
+                        if (args.validationFailed || !args.loggedIn) {
+                            PF('callConfDialog').jq.effect("shake", {times: 5}, 100);
+                        } else {
+                            PF('callConfDialog').hide();
+                        }
+                    }
+                </script>
+            </p:dialog>
+        </div>
+    </ui:composition>
+</html>

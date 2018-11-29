@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="experienciaCreateDlg" widgetVar="experienciaCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Experiencia">
+            <h:form id="experienciaCreateForm">
+                <p:panel header="Agregar un nuevo Experiencia">
+                    <h:panelGroup   id="displayExperienciaCreate">
+                        <p:tabView id="tabExperienciaCreate"  activeIndex="#{traba36aWizardBacking.exper31aTab}"  style="width: 600px"  >
+                            <p:ajax event="tabChange" listener="#{traba36aWizardBacking.onTabChangeExper31a}"  process="tabExperienciaCreate" />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="emexpA" value="#{traba36aWizardBacking.newExper31aWiz.emexpA}" required="true"  />
+                                         <p:outputLabel value="Empresa" for="emexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="ceexpA" value="#{traba36aWizardBacking.newExper31aWiz.ceexpA}" required="true"   />
+                                          <p:outputLabel value="Cargo en Experiencia" for="ceexpA"/>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="inexpA" value="#{traba36aWizardBacking.newExper31aWiz.inexpA}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" required="true"   />
+                                        <p:outputLabel value="Inicio" for="inexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="teexpA" value="#{traba36aWizardBacking.newExper31aWiz.teexpA}"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy" 
+                                                    mask="true"
+                                                    showOn="button" mindate="01/01/1917" required="true"   />
+                                         <p:outputLabel value="Término" for="teexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="csexpA" value="#{traba36aWizardBacking.newExper31aWiz.csexpA}" />
+                                        <label>Causa de Separación</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputNumber onkeydown="ModifyEnterKeyPressAsTab(event);" id="sxexpA" value="#{traba36aWizardBacking.newExper31aWiz.sxexpA}"  required="true" />
+                                        <p:outputLabel value="Salario Percibido ($)" for="sxexpA"/>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="siexpA" value="#{traba36aWizardBacking.newExper31aWiz.siexpA}" />
+                                        <label>SirhApp</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tdexpA" value="#{traba36aWizardBacking.newExper31aWiz.tdexpA}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tcbenA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono de la Empresa</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="jiexpA" value="#{traba36aWizardBacking.newExper31aWiz.jiexpA}" />
+                                        <label>Jefe Inmediato</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cjexpA" value="#{traba36aWizardBacking.newExper31aWiz.cjexpA}" />
+                                        <label>Cargo Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tcexpA" value="#{traba36aWizardBacking.newExper31aWiz.tcexpA}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tcbenA" />        
+                                        </p:inputMask>
+                                        <label>Teléfono Contacto Jefe</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="email" value="#{traba36aWizardBacking.newExper31aWiz.maexpA}"
+                                                     validatorMessage="El correo no tiene el formato correcto"
+                                                     required="false" class="ui-minusculas">
+                                            <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                            <f:ajax event="change" execute="tcbenA" />       
+                                        </p:inputText>
+                                        <label>Correo Electrónico del Jefe Inmediato</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+
+
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputTextarea  rows="3" id="obdocA" value="#{traba36aWizardBacking.newExper31aWiz.obexpA}" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Direccion Empresa">
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+                            </p:tab>
+                            <p:tab title="Documento">
+
+                                <h:outputText  value="Debe guardar primero para poder llenar este apartado"/>
+
+
+                            </p:tab>
+                        </p:tabView>
+
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{traba36aWizardBacking.registerExper31a()}" value="#{bundle.Save}" update="displayExperienciaCreate,panelForm:experienciaListForm:experienciaDatalist, growl" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('experienciaCreateDialog').hide(); handleSubmit(args,'experienciaCreateDialog');"  class="red-btn" />
+                            <p:commandButton  value="#{bundle.Cancel}" onclick="PF('experienciaCreateDialog').hide();" />
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

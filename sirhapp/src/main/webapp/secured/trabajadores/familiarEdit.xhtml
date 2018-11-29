@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="familiarEditDlg" widgetVar="familiarEditDialog" modal="true" resizable="false" appendTo="@(body)" header="Familiares">
+            <h:form id="familiarEditForm">
+                <p:panel header="Editar" rendered="#{famil32BackingBean.selectedFamil32Bean != null}" >
+                    <h:panelGroup id="displayFamiliarEdit">
+                        <p:tabView id="tabFamiliarEdit"  activeIndex="#{famil32BackingBean.famil32Tab}"  style="width: 600px">
+                            <p:ajax event="tabChange" listener="#{famil32BackingBean.onTabChangeFamil32}"  process="tabFamiliarEdit" />
+                            <p:tab title="Datos">
+                                <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-selectonemenu" >
+
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"    id="tpfam" value="#{famil32BackingBean.selectedFamil32Bean.tpfam}" required="true"   autoWidth="true"  >
+                                            <f:selectItem itemLabel="Seleccione el parentesco" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{tipar19Backing.tipar19List}" var="par" itemLabel="#{par.notip}" itemValue="#{par.notip}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Parentesco" for="tpfam" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup  styleClass="md-selectonemenu">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="sefam" value="#{famil32BackingBean.selectedFamil32Bean.sefam}" required="true"    autoWidth="true" >
+                                            <f:selectItem itemLabel="Seleccione el Sexo" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{sexoo12Backing.sexoo12List}" var="sex" itemLabel="#{sex.nosex}" itemValue="#{sex.nosex}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Sexo" for="sefam" />
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="orfam" value="#{famil32BackingBean.selectedFamil32Bean.orfam}" />
+                                        <label>Orden</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="apfam" value="#{famil32BackingBean.selectedFamil32Bean.apfam}"  required="true"   />
+                                        <p:outputLabel value="Apellido Paterno" for="apfam" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="amfam" value="#{famil32BackingBean.selectedFamil32Bean.amfam}"  required="true"  />
+                                        <p:outputLabel value="Apellido Materno" for="amfam" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nofam" value="#{famil32BackingBean.selectedFamil32Bean.nofam}" required="true"   />
+                                        <p:outputLabel value="Nombre(s)" for="nofam" />
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-selectonemenu" >
+                                        <p:outputLabel for="vifam" value="Vive" style=" margin-top: -20px;  color: #3F51B5;" />
+                                        <p:selectOneRadio id="vifam" value="#{famil32BackingBean.selectedFamil32Bean.vifam}" columns="2"  
+                                                          style="text-align: center;  white-space: nowrap;" >
+                                            <f:selectItem itemLabel="Si" itemValue="si" />
+                                            <f:selectItem itemLabel="No" itemValue="no" />
+                                        </p:selectOneRadio>
+
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="fnfam" value="#{famil32BackingBean.selectedFamil32Bean.fnfam}" required="true"
+                                                    locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                                    mask="true"  
+                                                    showOn="button" mindate="01/01/1917"  />
+                                        <p:outputLabel value="Fecha de Nacimiento" for="fnfam" />
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="offam" value="#{famil32BackingBean.selectedFamil32Bean.offam}" />
+                                        <label>Ocupación</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <!-- Observaciones -->
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                    <h:panelGroup styleClass="md-inputfield " >
+                                        <p:inputTextarea  rows="3" value="#{famil32BackingBean.selectedFamil32Bean.obfam}" />
+                                        <label>Observaciones</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Direccion">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" >
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:outputLabel for="famsn_dir" value="Vive en el mismo domicilio"/>
+                                    </h:panelGroup>
+                                    <p:selectOneRadio id="famsn_dir" value="#{famil32BackingBean.selectedFamil32Bean.vmfam}" columns="2"  
+                                                      style="text-align: center;  white-space: nowrap;">
+                                        <f:selectItem itemLabel="Si" itemValue="si" />
+                                        <f:selectItem itemLabel="No" itemValue="no" />
+                                        <f:ajax event="change" execute="famsn_dir" listener="#{famil32BackingBean.handleChange}"  render="familiarEditForm"/>
+                                    </p:selectOneRadio>
+                                </p:panelGrid>
+
+                                <p:panelGrid  columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{famil32BackingBean.selectedFamil32Bean.vmfam.equals('si')}">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cpfam" value="#{famil32BackingBean.selectedFamil32Bean.cpfam}" disabled="true" />
+                                        <label>Código Postal</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="pafam" value="#{famil32BackingBean.selectedFamil32Bean.pafam}" disabled="true" />
+                                        <label>País</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="esfam" value="#{famil32BackingBean.selectedFamil32Bean.esfam}" disabled="true" />
+                                        <label>Estado</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="mdfam" value="#{famil32BackingBean.selectedFamil32Bean.mdfam}" disabled="true" />
+                                        <label>Mun/Del</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="lofam" value="#{famil32BackingBean.selectedFamil32Bean.lofam}" disabled="true" />
+                                        <label>Población Pariente</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cofam" value="#{famil32BackingBean.selectedFamil32Bean.cofam}" disabled="true" />
+                                        <label>Colonia</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" rendered="#{famil32BackingBean.selectedFamil32Bean.vmfam.equals('no')}">
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="codigopostalfam"  
+                                                     value="#{famil32BackingBean.selectedFamil32Bean.cpfam}" mask="99999" maxlength="5">
+                                            <p:ajax event="keyup" listener="#{famil32BackingBean.handleChange}" update="paisfam estadofam municipiofam ciudadfam coloniafam" process="@this" />
+                                        </p:inputMask>
+                                        <label>Código Postal</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"     id="paisfam" value="#{famil32BackingBean.selectedFamil32Bean.pafam}"
+
+                                                          style="margin-bottom:10px;"  >
+                                            <f:selectItem itemLabel="Seleccione el Pais" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems  value="#{famil32BackingBean.paises}" var="paubi" itemLabel="#{paubi}" itemValue="#{paubi}" />
+                                            <p:ajax listener="#{famil32BackingBean.handleChange}" update="estadofam municipiofam ciudadfam coloniafam" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Pais</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="estadofam" 
+                                                         value="#{famil32BackingBean.selectedFamil32Bean.esfam}">
+                                            <f:selectItem itemLabel="Seleccione el Estado" itemValue=" " noSelectionOption="true"  />
+                                            <f:selectItems value="#{famil32BackingBean.estados}" var="esubi" itemLabel="#{esubi}" itemValue="#{esubi}"/>
+                                            <p:ajax listener="#{famil32BackingBean.handleChange}" update="municipiofam ciudadfam coloniafam" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Estado</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="municipiofam" 
+                                                         value="#{famil32BackingBean.selectedFamil32Bean.mdfam}">
+                                            <f:selectItem itemLabel="Seleccione el Mun/Del" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{famil32BackingBean.municipios}" var="muubi" itemLabel="#{muubi}" itemValue="#{muubi}"/>
+                                            <p:ajax listener="#{famil32BackingBean.handleChange}" update="ciudadfam coloniafam" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Mun/Del</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="ciudadfam" 
+                                                         value="#{famil32BackingBean.selectedFamil32Bean.lofam}">
+                                            <f:selectItem  itemLabel="Población, Localidad, Ciudad" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{famil32BackingBean.ciudades}" var="ciubi" itemLabel="#{ciubi}" itemValue="#{ciubi}"/>
+                                            <p:ajax listener="#{famil32BackingBean.handleChange}" update="coloniafam" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Población, Localidad, Ciudad</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup class="md-selectonemenu" layout="block">
+                                        <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"   id="coloniafam" 
+                                                         value="#{famil32BackingBean.selectedFamil32Bean.cofam}" autoWidth="true" style="width: 50px;">
+                                            <f:selectItem itemLabel="Seleccione la Colonia" itemValue=" " noSelectionOption="true" />
+                                            <f:selectItems value="#{famil32BackingBean.colonias}" var="coubi" itemLabel="#{coubi}" itemValue="#{coubi}"/>
+                                            <p:ajax listener="#{famil32BackingBean.handleChange}" update="codigopostalfam" process="@this" />
+                                        </p:selectOneMenu>
+                                        <label>Colonia</label>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cafam" value="#{famil32BackingBean.selectedFamil32Bean.cafam}" disabled="#{famil32BackingBean.selectedFamil32Bean.vmfam.equals('si')}"/>
+                                        <label>Calle y Número</label>
+                                    </h:panelGroup>
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tcbenA" value="#{famil32BackingBean.selectedFamil32Bean.tdfam}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tdfam" />        
+                                        </p:inputMask>
+                                        <label>Teléfono Domicilio</label>
+                                    </h:panelGroup>
+
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputMask onkeydown="ModifyEnterKeyPressAsTab(event);"   id="tcfam" value="#{famil32BackingBean.selectedFamil32Bean.tcfam}" mask="(99)9999-9999" >
+                                            <f:ajax event="change" execute="tdfam" />        
+                                        </p:inputMask>
+                                        <label>Teléfono Celular</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  id="cefamemail" value="#{famil32BackingBean.selectedFamil32Bean.cefam}"
+                                                     validatorMessage="El correo no tiene el formato correcto"
+                                                     required="false" class="ui-minusculas">
+                                            <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                            <f:ajax event="change" execute="tcbenA" />       
+                                        </p:inputText>
+                                        <label>Correo Electrónico</label>
+                                    </h:panelGroup>
+
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Documento">
+                                <p:panelGrid  columns="1"  layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" value="#{famil32BackingBean.selectedFamil32Bean.ncfam}" readonly="true" />
+                                        <label>Nombre</label>
+                                    </h:panelGroup>
+                                    <h:panelGroup styleClass="md-inputfield">
+                                        <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);"  value="#{famil32BackingBean.selectedFamil32Bean.tpfam}" readonly="true"/>
+                                        <label>Parentesco</label>
+                                    </h:panelGroup>
+
+                                    <p:fileUpload id="fileUploadFotografia" allowTypes="/(\.|\/)(gif|jpe?g|png|jfif|pdf|'')$/" 
+                                                  invalidFileMessage="Este tipo de archivo no se puede cargar"
+                                                  label="#{bundle.LblDOCFAM}"
+                                                  uploadLabel="#{bundle.LblUpload}"
+                                                  cancelLabel="#{bundle.LblCancel}"
+                                                  update="familiarEditForm,growl" 
+                                                  mode="advanced"
+                                                  rendered="#{famil32BackingBean.selectedFamil32Bean.ptfam.length() eq 0 || famil32BackingBean.selectedFamil32Bean.ptfam eq null}"
+                                                  value="#{fileUploadBean.uploadedFile}" fileUploadListener="#{fileUploadBean.handleFileUpload}" >
+                                        <p:graphicImage  class=" w3-card-4" id="up" value="#{bundle.PathRelativeShort}#{fileUploadBean.webFolder}#{fileUploadBean.fileName}"  style="width: 200px"   rendered="#{fileUploadBean.fileName ne null}" />
+                                        <f:attribute name="rootFolderAttr" value="#{selectedTraba36.rftra}/"></f:attribute>
+                                        <f:attribute name="folderTreeAttr" value="#{''}"></f:attribute>
+                                        <f:attribute name="fileTypeAttr" value="#{'DOCFAM'}"></f:attribute>
+                                        <f:attribute name="idAttr" value="#{selectedTraba36.rftra}"></f:attribute>
+                                        <f:attribute name="ownBackingAttr" value="#{'famil32BackingBean'}"></f:attribute>
+                                        <f:attribute name="userAttr" value="#{userProfileBean.user}"></f:attribute>
+                                    </p:fileUpload>
+
+                                    <p:lightBox  id="lightBox1" rendered="#{famil32BackingBean.selectedFamil32Bean.ptfam.length() gt 0 and famil32BackingBean.selectedFamil32Bean.ptfam ne null}"  > 
+                                        <h:outputLink  value="#{bundle.PathRelativeFull}#{famil32BackingBean.selectedFamil32Bean.ptfam}"  title="Documento de familiar #{famil32BackingBean.selectedFamil32Bean.tdfam}"  > 
+                                            <h:graphicImage class=" w3-card-4" value="#{bundle.PathRelativeShort}#{famil32BackingBean.selectedFamil32Bean.ptfam}"  style="width: 200px" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+
+                                    <p:commandButton type="submit" value="Borrar" rendered="#{famil32BackingBean.selectedFamil32Bean.ptfam.length() gt 0 and famil32BackingBean.selectedFamil32Bean.ptfam ne null and fileUploadBean.fileName eq null}"
+                                                     icon="ui-icon-delete" class="red-btn" 
+                                                     actionListener="#{famil32BackingBean.updateFamil32Foto}"
+                                                     update="familiarEditForm growl" >
+                                    </p:commandButton>
+                                </p:panelGrid> 
+                            </p:tab>
+                        </p:tabView>
+
+
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton actionListener="#{famil32BackingBean.updateFamil32()}" value="#{bundle.Save}" update="displayFamiliarEdit,familiarListForm:familiarDatalist,growl" oncomplete="if (args &amp;&amp; !args.validationFailed) PF('familiarEditDialog').hide(); handleSubmit(args,'familiarEditDialog');"  class="red-btn" />
+                            <p:commandButton  value="#{bundle.Cancel}" onclick="familiarEditDialog.hide()" />
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

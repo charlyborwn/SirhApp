@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/WEB-INF/template.xhtml"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:metadata>
+        <f:event listener="#{niacc33Backing.getNiacc33Request(userSessionBean.idnia)}" type="preRenderView" rendered="#{userSessionBean.idnia gt 0}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <h:form id="panelForm">
+            
+            <div class="ui-g">
+                <div class="ui-g-12 ui-lg-12">
+                    <p:toolbar>
+                        <f:facet name="left">
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:commandButton onclick="PF('pdf').show();noCopy();" type="button" icon="ui-icon-print">
+                            </p:commandButton>
+                            <p:commandButton onclick="PF('mail').show()" type="button" icon="ui-icon-send">
+                                <p:resetInput target="panelForm" />
+                            </p:commandButton>
+                            <span class="ui-separator" style="padding-right: 5px;">
+                                <span class="fa fa-ellipsis-v SoftGray" />
+                            </span>
+                            <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                                <p:commandButton action="#{niacc33Backing.go(1)}"  process="@this" value="Editar" rendered="#{not empty selectedNiacc33}"  icon="ui-icon-update">
+                                </p:commandButton>
+                            </c:if>
+                            <p:commandButton update="growl" action="#{niacc33Backing.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                                <f:setPropertyActionListener target="#{userSessionBean.idnia}" 
+                                                             value="#{null}" />
+                            </p:commandButton> 
+                            <!--Secciones-->
+                            <section id="secAll">
+                                <!--Seccion Dialogo Pdf-->
+                                <section id="secPdf">
+                                    <div>
+                                        <p:dialog  id="pdf" widgetVar="pdf" width="100%" height="700" minHeight="700" modal="true" closeOnEscape="true" >
+                                            <pe:documentViewer id="pdfFrame" cache="false" style="width:100%; height:100%;" value="#{mediaBean.streamedContent}"  download="Categorias_Trabajadores.pdf"/> 
+                                            <p:ajax event="close" update="pdf" />
+                                        </p:dialog>
+                                    </div>
+                                </section>
+                                <!--Seccion Dialogo Enviar Mail-->
+                                <section id="secMail">
+                                    <div class="ui-g">
+                                        <p:dialog id="mail"  widgetVar="mail" header="Enviar correo electronico" closeOnEscape="true" modal="true"  resizable="false">
+                                            <p:panelGrid id="pgmail" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group" >
+                                                <h:panelGroup styleClass="md-inputfield" >
+                                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="name"  value="#{mailServiceBean.subject}"
+                                                                 requiredMessage="El nombre es requerido" style="width: 100%"/>
+                                                    <label>Nombre</label>
+                                                </h:panelGroup>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="email" value="#{mailServiceBean.toAddress}" size="40"
+                                                                 requiredMessage="El correo es requerido"
+                                                                 validatorMessage="El correo no tiene el formato correcto"
+                                                                 required="true">
+                                                        <f:validateRegex
+                                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                                    </p:inputText>
+                                                    <label>Enviar correo para:</label>
+                                                </h:panelGroup>
+                                                <h:panelGroup styleClass="md-inputfield">
+                                                    <p:inputTextarea  id="text" value="#{mailServiceBean.text}"  required="true" requiredMessage="Escriba su mensaje" style="width: 100%"/>
+                                                    <label>Mensaje</label>
+                                                </h:panelGroup>
+                                            </p:panelGrid>
+                                            <f:facet name="footer">
+                                                <p:panelGrid columns="2" layout="grid" style="text-align: center;" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                    <p:commandButton  oncomplete="if (args &amp;&amp; !args.validationFailed) PF('mail').hide()"   update="growl  pgmail" type="submit"   id="submit" value="Enviar" actionListener="#{mailServiceBean.sendEmailWithAttachments(niacc33Backing.contentPdf)}" icon="ui-icon-send"  >
+                                                    </p:commandButton> 
+                                                    <p:commandButton    update="panelForm"  type="reset" id="reset" process="@this"  value="Limpiar" icon="ui-icon-clear-all" rendered="#{mailServiceBean.toAddress.length() eq 0}"  >
+                                                    </p:commandButton> 
+                                                    <p:commandButton    update="panelForm"  type="submit" id="rst" process="@this"  value="Limpiar" icon="ui-icon-clear-all" rendered="#{mailServiceBean.toAddress.length() gt 0}"  >
+                                                        <f:setPropertyActionListener target="#{mailServiceBean.text}" 
+                                                                                     value="#{null}" />
+                                                        <f:setPropertyActionListener target="#{mailServiceBean.toAddress}" 
+                                                                                     value="#{null}" />
+                                                        <f:setPropertyActionListener target="#{mailServiceBean.subject}" 
+                                                                                     value="#{null}" />
+                                                        <p:resetInput target="panelForm" />
+                                                    </p:commandButton> 
+                                                </p:panelGrid>
+                                            </f:facet>
+                                            <p:ajax event="close" update="mail" />
+                                        </p:dialog>
+                                    </div>
+                                </section>
+                            </section>
+                        </f:facet>
+                    </p:toolbar>
+                    <p:panel header="Datos del Registro"  styleClass=" ui-g-12">
+                        <div class=" ui-fluid">
+                            <div class="ui-g-12 ui-lg-12 ui">
+                                <div class="card card-w-title">
+                                    <h1>Datos del Registro</h1>
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                                
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cvnia" value="#{selectedNiacc33.cvnia.cvusu}" readonly="true" />
+                                            <label>Usuario</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="nania" value="#{selectedNiacc33.nania}" readonly="true" />
+                                            <label>Nivel de Acceso</label>
+                                        </h:panelGroup>
+                                        <h:panelGroup styleClass="md-inputfield">
+                                            <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="npnia" value="#{selectedNiacc33.npnia}" readonly="true" />
+                                            <label>Nombre del Programa</label>
+                                        </h:panelGroup>
+
+                                    </p:panelGrid>
+                                </div>
+                            </div>
+                        </div>
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

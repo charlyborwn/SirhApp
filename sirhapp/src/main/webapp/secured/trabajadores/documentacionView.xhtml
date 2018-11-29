@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="documentacionViewDlg" widgetVar="documentacionViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Documentacion">
+            <h:form id="documentacionViewForm">
+                <p:panel header="Datos del Documento" rendered="#{docum29Backing.selectedDocum29 != null}">
+                    <h:panelGroup   id="displaydocumentacionView">
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup >
+                                <p:selectOneMenu onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tddoc" disabled="true" value="#{docum29Backing.selectedDocum29.tddoc}" style="margin-bottom:10px;" >
+                                    <f:selectItem itemLabel="Seleccione el tipo de documento" itemValue=" " noSelectionOption="true" />
+                                    <f:selectItems value="#{tidoc18Backing.tidoc18List}" var="doc" itemLabel="#{doc.notid}" itemValue="#{doc.notid}" />
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="cutra" readonly="true" disabled="true" value="#{docum29Backing.selectedDocum29.cadoc}" />
+                                <label>Características</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" id="dedoc" readonly="true" disabled="true" value="#{docum29Backing.selectedDocum29.dedoc}" />
+                                <label>Causa sin Documento</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="indoc" readonly="true" disabled="true" value="#{docum29Backing.selectedDocum29.indoc}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true"  
+                                            showOn="button" mindate="01/01/1917"  />
+                                <label>Inicio Documento</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:calendar onkeydown="ModifyEnterKeyPressAsTab(event);"  id="tedoc" readonly="true" disabled="true" value="#{docum29Backing.selectedDocum29.tedoc}"
+                                            locale="#{localeBean.locale}" navigator="true" yearRange="c-100:c+100" pattern="dd/MM/yyyy"
+                                            mask="true"  
+                                            showOn="button" mindate="01/01/1917" />
+                                <label>Inicio Documento</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                        <!-- Observaciones -->
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputTextarea  rows="3" id="obdoc" readonly="true" disabled="true" value="#{docum29Backing.selectedDocum29.obdoc}" />
+                                <label>Observaciones</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+
+
+                 
+
+                        <h:panelGroup rendered="#{docum29Backing.selectedDocum29.ftdoc}">
+                            <div id="ui-graphicimage">
+                                <h:graphicImage class="card ui-shadow-5" onclick="applyData('#{docum29Backing.selectedDocum29.padoc}');"  style="height: 240px;max-height: 240px"
+                                                value="#{bundle.PathRelativeShort}#{docum29Backing.selectedDocum29.padoc}" />
+                            </div>
+                        </h:panelGroup>
+                        <p:lightBox rendered="#{!docum29Backing.selectedDocum29.ftdoc}">
+                            <h:outputLink value="#{bundle.PathRelativeFull}#{docum29Backing.selectedDocum29.padoc}"  title="#{docum29Backing.selectedDocum29.cadoc}" >  
+                                <div id="ui-graphicimage">
+                                    <h:graphicImage class="card ui-shadow-5" style="height: 240px;max-height: 240px" value="#{bundle.PathRelativeShort}#{docum29Backing.selectedDocum29.padoc}"  />
+                                </div>
+                            </h:outputLink>
+                        </p:lightBox>
+                        <p:lightBox rendered="#{docum29Backing.selectedDocum29.padoc.length() eq 0 || docum29Backing.selectedDocum29.padoc eq null }"> 
+                            <h:outputLink value="/sirhapp/faces/javax.faces.resource/images/SINFOTO.gif?ln=ultima-layout"  title="Sin Documento" rendered="#{docum29Backing.selectedDocum29.padoc.length() eq 0 or docum29Backing.selectedDocum29.padoc eq null}" >  
+                                <div id="ui-graphicimage">
+                                    <h:graphicImage class="card ui-shadow-5" name="images/SINFOTO.gif" library="ultima-layout"  style="height: 240px;max-height: 240px"  />
+                                </div>
+                            </h:outputLink>
+                        </p:lightBox>
+
+
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <p:panelGrid style="text-align: center;" columns="1" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <p:commandButton value="#{bundle.Close}" onclick="documentacionViewDialog.hide()"/>
+                        </p:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

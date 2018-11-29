@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Datos Personales del Aspirante"></h:outputText>
+        </ui:define>
+
+
+
+        <ui:define name="content">
+            <h:form id="panelForm" rendered="#{userSessionBean.aspirante ne null}" >
+                <p:toolbar rendered="#{userSessionBean.aspirante.length() gt 0}">
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;" >
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <c:if test="#{request.isUserInRole('0')|| request.isUserInRole('1')}">
+                            <p:commandButton action="#{datos28aBacking.go(0)}"  process="@this" value="Nuevo" rendered="#{empty datos28aBacking.selectedDatos28a and datos28aBacking.active eq true}" icon="ui-icon-plus">
+                            </p:commandButton>
+                            <p:commandButton action="datosPersonalesEdit.xhtml?faces-redirect=true"
+                                             type="submit"
+                                             value="Editar" 
+                                             rendered="#{not empty datos28aBacking.selectedDatos28a and datos28aBacking.active eq true}"  
+                                             icon="ui-icon-update">
+                            </p:commandButton>
+                            <p:commandButton  onclick="PF('activar').show();" process="@this"  value="Activar"  type="button" rendered="#{datos28aBacking.active eq false}" class="red-btn" icon="ui-icon-unarchive">
+                            </p:commandButton>
+                        </c:if>
+                        <p:commandButton update="growl" action="#{traba36aBacking.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home">
+                        </p:commandButton> 
+                        <!--Secciones-->
+                        <section id="secAll">
+                            <!--Seccion Dialogo Activar Registro-->
+                            <section id="secActivar">
+                                <div class="ui-g">
+                                    <p:dialog id="activar" widgetVar="activar" header="¿Deseas activar el registro?" closeOnEscape="true" modal="true"  >
+                                        <h:panelGrid columns="1" cellpadding="5">
+                                            <p:outputLabel value="" style="color:black;" />
+                                            <f:facet name="footer">
+                                                <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                                    <p:commandButton value="Cancelar" update="growl" onclick="PF('activar').hide();"  />
+                                                    <p:commandButton type="buttom" update="growl" value="Activar" action="#{datos28aBacking.go(2)}" actionListener="#{datos28aBacking.activateDatos28a(userSessionBean.aspirante)}" class="red-btn"  process="@this">
+                                                    </p:commandButton>
+                                                </p:panelGrid>
+                                            </f:facet>
+                                        </h:panelGrid>
+                                        <p:ajax event="close" update="activar" />
+                                    </p:dialog>
+                                </div>
+                            </section>
+                        </section>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Datos Personales del Aspirante" id="panel" rendered="#{userSessionBean.aspirante.length() gt 0}" >
+
+                    <p:panel rendered="#{empty datos28aBacking.selectedDatos28a}">
+                        <h:outputText id="informationMessage" 
+                                      value="#{datos28aBacking.infoMessage}" 
+                                      rendered="#{datos28aBacking.infoMessage ne null}"
+                                      class="informationMessage">
+
+                        </h:outputText>
+                    </p:panel>
+                    <h:panelGroup  rendered="#{not empty datos28aBacking.selectedDatos28a}">
+
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="codigopostal" value="#{datos28aBacking.selectedDatos28a.cpdatA}" />
+                                <label>Código Postal Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="pais" value="#{datos28aBacking.selectedDatos28a.padatA}" />
+                                <label>Pais Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="estado" value="#{datos28aBacking.selectedDatos28a.esdatA}" />
+                                <label>Estado Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="municipio" value="#{datos28aBacking.selectedDatos28a.mddatA}" />
+                                <label>Mun/Del Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="ciudad" value="#{datos28aBacking.selectedDatos28a.lodatA}" />
+                                <label>Población, Localidad, Ciudad</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="colonia" value="#{datos28aBacking.selectedDatos28a.codatA}" />
+                                <label>Colonia Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="cadatA" value="#{datos28aBacking.selectedDatos28a.cadatA}" />
+                                <label>Calle Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="nedatA" value="#{datos28aBacking.selectedDatos28a.nedatA}" />
+                                <label>Número Ext Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="nidatA" value="#{datos28aBacking.selectedDatos28a.nidatA}" />
+                                <label>Número Int Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="r1datA" value="#{datos28aBacking.selectedDatos28a.r1datA}" />
+                                <label>Referencia 1 Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="r2datA" value="#{datos28aBacking.selectedDatos28a.r2datA}" />
+                                <label>Referencia 2 Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="thdatA" value="#{datos28aBacking.selectedDatos28a.thdatA}" />
+                                <label>Tipo de domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="tddatA" value="#{datos28aBacking.selectedDatos28a.tddatA}" />
+                                <label>Teléfono de Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="tcdatA" value="#{datos28aBacking.selectedDatos28a.tcdatA}" />
+                                <label>Teléfono Celular</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="email" value="#{datos28aBacking.selectedDatos28a.cedatA}" size="40" 
+                                             validatorMessage="El correo no tiene el formato correcto"
+                                             required="false" class="ui-minusculas">
+                                    <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                </p:inputText>
+                                <label>Correo Electrónico</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="pndatA" value="#{datos28aBacking.selectedDatos28a.pndatA}" />
+                                <label>País de Nacimiento</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="endatA" value="#{datos28aBacking.selectedDatos28a.endatA}" />
+                                <label>Estado donde nació</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="mndatA" value="#{datos28aBacking.selectedDatos28a.mndatA}" />
+                                <label>Mun/Del donde nació</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="lndatA" value="#{datos28aBacking.selectedDatos28a.lndatA}" />
+                                <label>Población, Localidad, Ciudad  donde nació</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="acdatA" value="#{datos28aBacking.selectedDatos28a.acdatA}" />
+                                <label>Persona para contactar en caso de accidente</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="tpdatA" value="#{datos28aBacking.selectedDatos28a.tpdatA}" />
+                                <label>Parentesco</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="tadatA" value="#{datos28aBacking.selectedDatos28a.tadatA}" />
+                                <label>Teléfono</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="redatA" value="#{datos28aBacking.selectedDatos28a.redatA}" />
+                                <label>Persona para recados</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="ptdatA" value="#{datos28aBacking.selectedDatos28a.ptdatA}" />
+                                <label>Parentesco Persona para recados</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="trdatA" value="#{datos28aBacking.selectedDatos28a.trdatA}" />
+                                <label>Teléfono para recados</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="prdatA" value="#{datos28aBacking.selectedDatos28a.prdatA}" />
+                                <label>Persona que  recomienda</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="f1datA" value="#{datos28aBacking.selectedDatos28a.f1datA}" />
+                                <label>(1) Familiar/Conocido dentro de la empresa</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="f2datA" value="#{datos28aBacking.selectedDatos28a.f2datA}" />
+                                <label>(2) Familiar/Conocido dentro de la empresa</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="f3datA" value="#{datos28aBacking.selectedDatos28a.f3datA}" />
+                                <label>(3) Familiar/Conocido dentro de la empresa</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                    </h:panelGroup>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

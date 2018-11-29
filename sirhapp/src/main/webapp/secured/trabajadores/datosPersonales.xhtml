@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Datos Personales del Trabajador"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" rendered="#{userSessionBean.trabajador ne null}" >
+                <p:toolbar rendered="#{userSessionBean.trabajador gt 0}">
+                    <f:facet name="left"><ui:include src="header.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;" >
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton action="#{datos28BackingBean.go(0)}"  process="@this" value="Nuevo" rendered="#{empty datos28BackingBean.selectedDatos28Bean and datos28BackingBean.active eq true}" icon="ui-icon-plus"/>
+                        <p:commandButton action="datosPersonalesEdit.xhtml?faces-redirect=true"
+                                         type="submit"
+                                         value="Editar" 
+                                         rendered="#{not empty datos28BackingBean.selectedDatos28Bean and datos28BackingBean.active eq true}"  
+                                         icon="ui-icon-update">
+                        </p:commandButton>
+                        <p:commandButton  onclick="PF('activar').show();" process="@this"  value="Activar"  type="button" rendered="#{datos28BackingBean.active eq false}" class="red-btn" icon="ui-icon-unarchive"/>
+                        <p:commandButton update="growl" action="#{traba36BackingBean.go(2)}" process="@this" value="Cancelar" icon="ui-icon-home"/>
+                        <p:dialog id="activar" widgetVar="activar" header="¿Deseas activar el registro?" closeOnEscape="true" modal="true"  >
+                            <h:panelGrid columns="1" cellpadding="5">
+                                <p:outputLabel value="" style="color:black;" />
+                                <f:facet name="footer">
+                                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                                        <p:commandButton value="Cancelar" update="growl" onclick="PF('activar').hide();"  />
+                                        <p:commandButton type="buttom" update="growl" value="Activar" action="#{datos28BackingBean.go(2)}" actionListener="#{datos28BackingBean.activateDatos28}" class="red-btn"  process="@this"/>
+                                    </p:panelGrid>
+                                </f:facet>
+                            </h:panelGrid>
+                            <p:ajax event="close" update="activar" />
+                        </p:dialog>
+                    </f:facet>
+                </p:toolbar>
+                <p:panel header="Datos Personales del Trabajador" id="panel" rendered="#{userSessionBean.trabajador gt 0}" >
+                    <p:panel rendered="#{empty datos28BackingBean.selectedDatos28Bean}">
+                        <h:outputText id="informationMessage" 
+                                      value="#{datos28BackingBean.infoMessage}" 
+                                      rendered="#{datos28BackingBean.infoMessage ne null}"
+                                      class="informationMessage">
+
+                        </h:outputText>
+                    </p:panel>
+                    <h:panelGroup  rendered="#{not empty datos28BackingBean.selectedDatos28Bean}">
+
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="codigopostal" value="#{datos28BackingBean.selectedDatos28Bean.cpdat}" />
+                                <label>Código Postal Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="pais" value="#{datos28BackingBean.selectedDatos28Bean.padat}" />
+                                <label>Pais Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="estado" value="#{datos28BackingBean.selectedDatos28Bean.esdat}" />
+                                <label>Estado Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="municipio" value="#{datos28BackingBean.selectedDatos28Bean.mddat}" />
+                                <label>Mun/Del Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="ciudad" value="#{datos28BackingBean.selectedDatos28Bean.lodat}" />
+                                <label>Población, Localidad, Ciudad</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="colonia" value="#{datos28BackingBean.selectedDatos28Bean.codat}" />
+                                <label>Colonia Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="cadat" value="#{datos28BackingBean.selectedDatos28Bean.cadat}" />
+                                <label>Calle Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="nedat" value="#{datos28BackingBean.selectedDatos28Bean.nedat}" />
+                                <label>Número Ext Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="nidat" value="#{datos28BackingBean.selectedDatos28Bean.nidat}" />
+                                <label>Número Int Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="r1dat" value="#{datos28BackingBean.selectedDatos28Bean.r1dat}" />
+                                <label>Referencia 1 Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="r2dat" value="#{datos28BackingBean.selectedDatos28Bean.r2dat}" />
+                                <label>Referencia 2 Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="thdat" value="#{datos28BackingBean.selectedDatos28Bean.thdat}" />
+                                <label>Tipo de domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="tddat" value="#{datos28BackingBean.selectedDatos28Bean.tddat}" />
+                                <label>Teléfono de Domicilio</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="tcdat" value="#{datos28BackingBean.selectedDatos28Bean.tcdat}" />
+                                <label>Teléfono Celular</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="email" value="#{datos28BackingBean.selectedDatos28Bean.cedat}" size="40" 
+                                             validatorMessage="El correo no tiene el formato correcto"
+                                             required="false" class="ui-minusculas">
+                                    <f:validateRegex  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                </p:inputText>
+                                <label>Correo Electrónico</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="pndat" value="#{datos28BackingBean.selectedDatos28Bean.pndat}" />
+                                <label>País de Nacimiento</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="endat" value="#{datos28BackingBean.selectedDatos28Bean.endat}" />
+                                <label>Estado donde nació</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="mndat" value="#{datos28BackingBean.selectedDatos28Bean.mndat}" />
+                                <label>Mun/Del donde nació</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup class="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="lndat" value="#{datos28BackingBean.selectedDatos28Bean.lndat}" />
+                                <label>Población, Localidad, Ciudad  donde nació</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="acdat" value="#{datos28BackingBean.selectedDatos28Bean.acdat}" />
+                                <label>Persona para contactar en caso de accidente</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="tpdat" value="#{datos28BackingBean.selectedDatos28Bean.tpdat}" />
+                                <label>Parentesco</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="tadat" value="#{datos28BackingBean.selectedDatos28Bean.tadat}" />
+                                <label>Teléfono</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-fluid ui-panelgrid-blank form-group">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="redat" value="#{datos28BackingBean.selectedDatos28Bean.redat}" />
+                                <label>Persona para recados</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-selectonemenu" layout="block">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="ptdat" value="#{datos28BackingBean.selectedDatos28Bean.ptdat}" />
+                                <label>Parentesco Persona para recados</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="trdat" value="#{datos28BackingBean.selectedDatos28Bean.trdat}" />
+                                <label>Teléfono para recados</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="prdat" value="#{datos28BackingBean.selectedDatos28Bean.prdat}" />
+                                <label>Persona que  recomienda</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="f1dat" value="#{datos28BackingBean.selectedDatos28Bean.f1dat}" />
+                                <label>(1) Familiar/Conocido dentro de la empresa</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true"  id="f2dat" value="#{datos28BackingBean.selectedDatos28Bean.f2dat}" />
+                                <label>(2) Familiar/Conocido dentro de la empresa</label>
+                            </h:panelGroup>
+
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText onkeydown="ModifyEnterKeyPressAsTab(event);" readonly="true" id="f3dat" value="#{datos28BackingBean.selectedDatos28Bean.f3dat}" />
+                                <label>(3) Familiar/Conocido dentro de la empresa</label>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                    </h:panelGroup>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

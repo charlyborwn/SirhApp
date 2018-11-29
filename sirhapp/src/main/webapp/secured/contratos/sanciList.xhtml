@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition  template="/WEB-INF/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="Sanciones"></h:outputText>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="panelForm" rendered="#{userSessionBean.contrato ne null}">
+                <p:toolbar>
+                    <f:facet name="left"><ui:include src="headerSanci.xhtml" /></f:facet>
+                    <f:facet name="right">
+                        <span class="ui-separator" style="padding-right: 5px;">
+                            <span class="fa fa-ellipsis-v SoftGray" />
+                        </span>
+                        <p:commandButton update="growl" action="/secured/contratos/contratoView.xhtml?faces-redirect=true" process="@this" value="Cancelar" icon="ui-icon-home">
+                        </p:commandButton> 
+                    </f:facet>
+                </p:toolbar>
+                <h:panelGroup  id="results" class="table-responsive">
+                    <p:panel rendered="#{!contr27BackingBean.active}">
+                        <h:outputText id="informationMessage" 
+                                      value="El contrato fue eliminado previamente, la informacion no se puede mostrar." 
+                                      class="informationMessage">
+
+                        </h:outputText>
+                    </p:panel>
+                    <p:dataTable var="sanci35" value="#{sanci35BackingBean.listSanci35}" selectionMode="single" reflow="true"
+                                 selection="#{sanci35BackingBean.selectedSanci35}" rowKey="#{sanci35.idsan}" paginator="true" rows="10" rowsPerPageTemplate="10,50,100" emptyMessage="#{msg['sanci.EmptyList']}"
+                                 rendered="#{contr27BackingBean.active}">
+
+                        <p:ajax event="rowSelect"   update="sanciCreateButton sanciViewButton sanciEditButton"/>
+                        <p:ajax event="rowUnselect" update="sanciCreateButton sanciViewButton sanciEditButton"/>
+
+                        <f:facet name="header">
+                            <h:outputText value="#{userSessionBean.contratoTsanci}" />
+                        </f:facet>
+                        <p:column headerText="Tipo Sancion">
+                            <h:outputText value="#{sanci35.cusan}" />
+                        </p:column>
+                        <p:column headerText="Sancion">
+                            <h:outputText value="#{sanci35BackingBean.getTipsa47Nopsa(sanci35.cusan,sanci35.w1san)}" />
+                        </p:column>
+                        <p:column headerText="Fecha Inicio">
+                            <h:outputText value="#{sanci35.icsan}" >
+                                <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Fecha Termino">
+                            <h:outputText value="#{sanci35.fcsan}" >
+                                <f:convertDateTime locale="#{localeBean.locale}" pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton type="submit" process="@form" id="sanciCreateButton" icon="ui-icon-plus" value="#{bundle.Create}" update="growl" action="/secured/contratos/sanciCreate.xhtml?faces-redirect=true" rendered="#{!userSessionBean.contratoTsanci.equals('TODAS')}" />
+                            <p:commandButton type="submit" process="@form" id="sanciViewButton" icon="ui-icon-search" value="#{bundle.View}" update="growl" action="/secured/contratos/sanciView.xhtml?faces-redirect=true" actionListener="#{sanci35BackingBean.prepareSelect()}" disabled="#{empty sanci35BackingBean.selectedSanci35}" />
+                            <p:commandButton type="submit" process="@form" id="sanciEditButton" icon="ui-icon-pencil" value="#{bundle.Edit}" update="growl" action="/secured/contratos/sanciEdit.xhtml?faces-redirect=true" actionListener="#{sanci35BackingBean.prepareSelect()}" disabled="#{empty sanci35BackingBean.selectedSanci35}" />
+                        </f:facet>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
